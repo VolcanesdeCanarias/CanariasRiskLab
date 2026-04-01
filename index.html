@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canarias RiskLab</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --panel: rgba(255,255,255,0.96);
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 10px 24px rgba(15,23,42,0.14);
+      --blue: #1d4ed8;
+      --muted: #64748b;
+      --green: #2f9e44;
+      --orange: #dd6b20;
+      --red: #dc2626;
+
+      --eq1: #c7d2fe;
+      --eq2: #93c5fd;
+      --eq3: #60a5fa;
+      --eq4: #3b82f6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: #111827;
+    }
+
+    header {
+      background: #f3f4f6;
+      border-bottom: 2px solid var(--blue);
+      padding: 10px 14px 8px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin-top: 3px;
+      color: #475569;
+      font-size: 0.92rem;
+    }
+
+    #map-wrap {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 76px);
+      min-height: 720px;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .panel {
+      position: absolute;
+      z-index: 1000;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 9px 10px;
+      backdrop-filter: blur(4px);
+    }
+
+    .panel h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+    }
+
+    .panel,
+    .panel div,
+    .panel td,
+    .panel th,
+    .panel small,
+    .panel label,
+    .panel button,
+    .panel select,
+    .panel span,
+    .panel li {
+      font-size: 0.84rem;
+      line-height: 1.24;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4px;
+    }
+
+    #sources-panel {
+      top: 12px;
+      left: 12px;
+      width: 220px;
+    }
+
+    #topright-panel {
+      top: 12px;
+      right: 12px;
+      width: 365px;
+      max-width: calc(100% - 24px);
+      border-left: 6px solid var(--orange);
+    }
+
+    .status-title {
+      font-weight: 800;
+      margin-bottom: 5px;
+      font-size: 0.98rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 8px 0;
+    }
+
+    .form-row {
+      display: grid;
+      gap: 5px;
+      margin: 7px 0;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      padding: 6px 8px;
+      background: white;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+      margin-bottom: 7px;
+    }
+
+    .toggle-btn {
+      border: none;
+      background: #e2e8f0;
+      color: #0f172a;
+      border-radius: 9px;
+      padding: 5px 9px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .toggle-btn.active {
+      background: var(--blue);
+      color: white;
+    }
+
+    .control-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 8px;
+      margin-top: 5px;
+    }
+
+    .control-list label {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #bottom-toggle {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 12px;
+      z-index: 1100;
+      border: none;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.84rem;
+    }
+
+    #bottom-panel {
+      left: 12px;
+      right: 12px;
+      bottom: 48px;
+      height: 170px;
+      padding-bottom: 6px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    #bottom-panel.collapsed {
+      transform: translateY(205px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 7px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: #e2e8f0;
+      color: #0f172a;
+      border-radius: 9px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .tab-btn.active {
+      background: var(--blue);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      height: 108px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .chart-box {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 3px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 4px 3px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #475569;
+      font-size: 0.76rem;
+    }
+
+    .badge {
+      display: inline-block;
+      min-width: 70px;
+      text-align: center;
+      color: white;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 0.74rem;
+    }
+
+    .green { background: var(--green); }
+    .orange { background: var(--orange); }
+    .red { background: var(--red); }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      gap: 5px 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 2px 0;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.18);
+      flex: 0 0 auto;
+    }
+
+    .triangle-legend {
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 16px solid #0f4c81;
+    }
+
+    .square-legend {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.18);
+      flex: 0 0 auto;
+    }
+
+    .tri-volcano {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid #0f4c81;
+      position: relative;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.28));
+    }
+
+    .tri-volcano::after {
+      content: "";
+      position: absolute;
+      left: -3px;
+      top: 8px;
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-bottom: 7px solid #f6ad55;
+    }
+
+    .popup-title {
+      font-weight: 800;
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+    }
+
+    .popup-row {
+      margin: 2px 0;
+    }
+
+    .leaflet-popup-content {
+      min-width: 220px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-bottom: 7px;
+    }
+
+    .kpi {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 9px;
+      padding: 6px 8px;
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    .insight-card {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 9px;
+      padding: 7px 9px;
+      margin-bottom: 6px;
+    }
+
+    .infra-pill {
+      display: inline-block;
+      background: #edf2f7;
+      border: 1px solid #e2e8f0;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      margin-right: 5px;
+      margin-bottom: 4px;
+    }
+
+    .leaflet-control-attribution {
+      font-size: 11px;
+    }
+
+    @media (max-width: 980px) {
+      #map-wrap {
+        height: 1320px;
+      }
+
+      #sources-panel,
+      #topright-panel,
+      #bottom-panel {
+        left: 12px;
+        right: 12px;
+        width: auto;
+      }
+
+      #sources-panel { top: 12px; }
+      #topright-panel { top: 160px; }
+
+      #bottom-toggle {
+        bottom: 12px;
+      }
+
+      #bottom-panel {
+        top: 435px;
+        bottom: auto;
+        height: 820px;
+      }
+
+      #bottom-panel.collapsed {
+        transform: translateY(860px);
+      }
+
+      .tab-content {
+        height: 735px;
+      }
+
+      .legend-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .control-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Canarias RiskLab</h1>
+    <div class="subtitle">Observatorio ciudadano experimental de actividad sísmica y volcánica en Canarias</div>
+  </header>
+
+  <div id="map-wrap">
+    <div id="map"></div>
+
+    <div id="sources-panel" class="panel">
+      <h3>Fuentes</h3>
+      <div><strong>IGN Canarias</strong> · reciente + histórico operativo desde 2011</div>
+      <div><strong>USGS</strong> · últimas 24h</div>
+      <div class="small-note">Índice RiskLab experimental. No equivale al semáforo volcánico oficial.</div>
+    </div>
+
+    <div id="topright-panel" class="panel">
+      <div id="status-title" class="status-title">Índice RiskLab: cargando…</div>
+      <div id="status-note" class="small-note">Índice experimental de observación. No equivale al semáforo volcánico oficial.</div>
+
+      <div class="divider"></div>
+
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="mode-citizens">Ciudadanía</button>
+        <button class="toggle-btn" id="mode-analysis">Análisis</button>
+      </div>
+
+      <div class="form-row">
+        <label for="island-filter"><strong>Modo por isla</strong></label>
+        <select id="island-filter">
+          <option value="Todas">Todas las islas</option>
+          <option value="Tenerife">Tenerife</option>
+          <option value="La Palma">La Palma</option>
+          <option value="El Hierro">El Hierro</option>
+          <option value="Gran Canaria">Gran Canaria</option>
+          <option value="Lanzarote">Lanzarote</option>
+          <option value="Fuerteventura">Fuerteventura</option>
+          <option value="La Gomera">La Gomera</option>
+          <option value="Atlántico-Canarias">Atlántico-Canarias</option>
+        </select>
+      </div>
+
+      <div class="control-list">
+        <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
+        <label><input type="checkbox" id="toggle-ign" checked> Sismos IGN</label>
+        <label><input type="checkbox" id="toggle-usgs"> Sismos USGS</label>
+        <label><input type="checkbox" id="toggle-swarms" checked> Enjambres</label>
+        <label><input type="checkbox" id="toggle-heatmap"> Heatmap</label>
+        <label><input type="checkbox" id="toggle-infra" checked> Infraestructuras</label>
+      </div>
+    </div>
+
+    <button id="bottom-toggle">Ocultar análisis</button>
+
+    <div id="bottom-panel" class="panel">
+      <div class="tab-row">
+        <button class="tab-btn active" data-tab="tab-summary">Resumen</button>
+        <button class="tab-btn" data-tab="tab-series">Serie</button>
+        <button class="tab-btn" data-tab="tab-depth">Profundidad</button>
+        <button class="tab-btn" data-tab="tab-compare">Comparación</button>
+        <button class="tab-btn" data-tab="tab-interpret">Interpretación</button>
+        <button class="tab-btn" data-tab="tab-infra">Infraestructuras</button>
+        <button class="tab-btn" data-tab="tab-legend">Leyenda</button>
+      </div>
+
+      <div id="tab-summary" class="tab-content active">
+        <div id="summary-content">Cargando…</div>
+        <div id="summary-note" class="small-note"></div>
+      </div>
+
+      <div id="tab-series" class="tab-content">
+        <div class="chart-box"><canvas id="seriesChart"></canvas></div>
+      </div>
+
+      <div id="tab-depth" class="tab-content">
+        <div class="chart-box"><canvas id="depthChart"></canvas></div>
+      </div>
+
+      <div id="tab-compare" class="tab-content">
+        <div class="chart-box"><canvas id="compareChart"></canvas></div>
+      </div>
+
+      <div id="tab-interpret" class="tab-content">
+        <div id="interpretContent"></div>
+        <div id="regimeContent"></div>
+        <div id="migrationContent"></div>
+        <div id="anomalyContent"></div>
+        <div id="territorialContent"></div>
+      </div>
+
+      <div id="tab-infra" class="tab-content">
+        <div id="infraContent"></div>
+      </div>
+
+      <div id="tab-legend" class="tab-content">
+        <div class="legend-grid">
+          <div>
+            <div class="legend-item"><div class="triangle-legend"></div><span>Volcán</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq1)"></div><span>Sismo IGN &lt; 1</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN 1–1.9</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq3)"></div><span>Sismo IGN 2–2.9</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq4)"></div><span>Sismo IGN ≥ 3</span></div>
+          </div>
+          <div>
+            <div class="legend-item"><div class="dot" style="background:#111"></div><span>Sismo USGS</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>Índice / anomalía baja</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--orange)"></div><span>Índice / anomalía moderada</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--red)"></div><span>Índice / anomalía marcada</span></div>
+            <div class="legend-item"><div class="square-legend" style="background:#94a3b8"></div><span>Infraestructura de emergencia</span></div>
+          </div>
+        </div>
+        <div class="small-note" style="margin-top:8px;">
+          El Índice RiskLab y la señal de anomalía son experimentales y no equivalen al semáforo volcánico oficial.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const map = L.map("map", { preferCanvas: true }).setView([28.35, -16.25], 8);
+
+    map.setMaxBounds([
+      [26.2, -19.8],
+      [30.4, -11.8]
+    ]);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    const volcanoLayer = L.layerGroup().addTo(map);
+    const ignLayer = L.layerGroup().addTo(map);
+    const usgsLayer = L.layerGroup();
+    const swarmLayer = L.layerGroup().addTo(map);
+    const infraLayer = L.layerGroup().addTo(map);
+
+    let heatLayer = null;
+    let seriesChart = null;
+    let depthChart = null;
+    let compareChart = null;
+
+    let ignEvents = [];
+    let usgsEvents = [];
+    let summary = {};
+    let risklabIndex = null;
+    let interpretation = null;
+    let depthProfile = null;
+    let compareData = null;
+    let infrastructures = [];
+    let swarmCandidates = [];
+    let seriesData = null;
+    let regimeData = null;
+    let migrationData = null;
+    let anomalyData = null;
+    let territorialData = null;
+
+    let currentMode = "citizens";
+
+    const VOLCANOES = [
+      { name:"Teide", island:"Tenerife", lat:28.2724, lon:-16.6425, status:"Activo", type:"Estratovolcán" },
+      { name:"Pico Viejo", island:"Tenerife", lat:28.2636, lon:-16.6598, status:"Activo", type:"Complejo volcánico" },
+      { name:"Chinyero", island:"Tenerife", lat:28.3128, lon:-16.7872, status:"Histórico", type:"Cono volcánico" },
+      { name:"Garachico / Arenas Negras", island:"Tenerife", lat:28.3738, lon:-16.7639, status:"Histórico", type:"Erupción histórica" },
+      { name:"Sietefuentes", island:"Tenerife", lat:28.2730, lon:-16.4290, status:"Histórico", type:"Erupción histórica" },
+      { name:"Arafo", island:"Tenerife", lat:28.2410, lon:-16.4230, status:"Histórico", type:"Erupción histórica" },
+      { name:"Cumbre Vieja", island:"La Palma", lat:28.5708, lon:-17.8353, status:"Activo", type:"Dorsal volcánica activa" },
+      { name:"Tajogaite", island:"La Palma", lat:28.6128, lon:-17.8660, status:"Reciente", type:"Centro eruptivo 2021" },
+      { name:"Teneguía", island:"La Palma", lat:28.4684, lon:-17.8483, status:"Histórico", type:"Cono volcánico" },
+      { name:"Tagoro", island:"El Hierro", lat:27.6290, lon:-18.0200, status:"Reciente", type:"Erupción submarina 2011" },
+      { name:"Bandama", island:"Gran Canaria", lat:28.0085, lon:-15.4564, status:"Inactivo", type:"Caldera / cono" },
+      { name:"Timanfaya", island:"Lanzarote", lat:29.0167, lon:-13.7500, status:"Histórico", type:"Campo volcánico" },
+      { name:"La Corona", island:"Lanzarote", lat:29.2316, lon:-13.4706, status:"Inactivo", type:"Cono volcánico" }
+    ];
+
+    function selectedIsland() {
+      return document.getElementById("island-filter").value;
+    }
+
+    function safeNumber(v, fallback = 0) {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function formatDate(ev) {
+      if (ev.datetime_iso) {
+        const d = new Date(ev.datetime_iso);
+        if (!isNaN(d.getTime())) return d.toLocaleString("es-ES");
+      }
+      return "—";
+    }
+
+    function magColor(mag) {
+      const m = safeNumber(mag);
+      const css = getComputedStyle(document.documentElement);
+      if (m < 1) return css.getPropertyValue('--eq1').trim();
+      if (m < 2) return css.getPropertyValue('--eq2').trim();
+      if (m < 3) return css.getPropertyValue('--eq3').trim();
+      return css.getPropertyValue('--eq4').trim();
+    }
+
+    function magRadius(mag) {
+      const m = safeNumber(mag);
+      return Math.max(4, 4 + m * 2.7);
+    }
+
+    function volcanoIcon() {
+      return L.divIcon({
+        className: "",
+        html: '<div class="tri-volcano"></div>',
+        iconSize: [24, 24],
+        iconAnchor: [12, 20]
+      });
+    }
+
+    function infraIcon(tipo) {
+      let color = "#94a3b8";
+      if (tipo === "puerto") color = "#475569";
+      if (tipo === "polideportivo") color = "#0ea5e9";
+      if (tipo === "campo_futbol") color = "#22c55e";
+
+      return L.divIcon({
+        className: "",
+        html: `<div style="width:14px;height:14px;border-radius:3px;background:${color};border:1px solid rgba(0,0,0,0.2)"></div>`,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7]
+      });
+    }
+
+    async function fetchJson(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Error en " + url);
+      return await res.json();
+    }
+
+    function drawVolcanoes() {
+      volcanoLayer.clearLayers();
+
+      VOLCANOES
+        .filter(v => selectedIsland() === "Todas" || v.island === selectedIsland())
+        .forEach(v => {
+          const marker = L.marker([v.lat, v.lon], { icon: volcanoIcon() });
+          marker.bindPopup(`
+            <div class="popup-title">${v.name}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${v.island}</div>
+            <div class="popup-row"><strong>Tipo:</strong> ${v.type}</div>
+            <div class="popup-row"><strong>Estado:</strong> ${v.status}</div>
+          `);
+          volcanoLayer.addLayer(marker);
+        });
+    }
+
+    function drawIgn() {
+      ignLayer.clearLayers();
+
+      ignEvents.forEach(ev => {
+        const marker = L.circleMarker([ev.lat, ev.lon], {
+          radius: magRadius(ev.magnitud),
+          color: "#1e293b",
+          weight: 0.9,
+          fillColor: magColor(ev.magnitud),
+          fillOpacity: 0.7
+        });
+
+        marker.bindPopup(`
+          <div class="popup-title">Sismo IGN</div>
+          <div class="popup-row"><strong>Magnitud:</strong> ${safeNumber(ev.magnitud).toFixed(1)}</div>
+          <div class="popup-row"><strong>Profundidad:</strong> ${safeNumber(ev.profundidad_km).toFixed(1)} km</div>
+          <div class="popup-row"><strong>Fecha:</strong> ${formatDate(ev)}</div>
+          <div class="popup-row"><strong>Zona:</strong> ${ev.localizacion || "—"}</div>
+          <div class="popup-row"><strong>Isla:</strong> ${ev.isla || "—"}</div>
+        `);
+
+        ignLayer.addLayer(marker);
+      });
+    }
+
+    function drawUSGS() {
+      usgsLayer.clearLayers();
+
+      usgsEvents.forEach(ev => {
+        const marker = L.circleMarker([ev.lat, ev.lon], {
+          radius: Math.max(4, magRadius(ev.magnitud) - 1),
+          color: "#000",
+          weight: 1.0,
+          fillColor: "#111",
+          fillOpacity: 0.72
+        });
+
+        marker.bindPopup(`
+          <div class="popup-title">Sismo USGS</div>
+          <div class="popup-row"><strong>Magnitud:</strong> ${safeNumber(ev.magnitud).toFixed(1)}</div>
+          <div class="popup-row"><strong>Profundidad:</strong> ${safeNumber(ev.profundidad_km).toFixed(1)} km</div>
+          <div class="popup-row"><strong>Fecha:</strong> ${formatDate(ev)}</div>
+          <div class="popup-row"><strong>Zona:</strong> ${ev.area || "—"}</div>
+        `);
+
+        usgsLayer.addLayer(marker);
+      });
+    }
+
+    function drawHeatmap() {
+      if (heatLayer && map.hasLayer(heatLayer)) map.removeLayer(heatLayer);
+      heatLayer = null;
+
+      const pts = ignEvents
+        .filter(ev => ev.lat && ev.lon)
+        .map(ev => [ev.lat, ev.lon, Math.max(0.2, safeNumber(ev.magnitud) / 4)]);
+
+      if (!pts.length) return;
+
+      heatLayer = L.heatLayer(pts, {
+        radius: 17,
+        blur: 18,
+        maxZoom: 10,
+        minOpacity: 0.22,
+        gradient: {
+          0.20: "#fde68a",
+          0.45: "#f59e0b",
+          0.70: "#f97316",
+          1.00: "#dc2626"
+        }
+      });
+
+      if (document.getElementById("toggle-heatmap").checked) {
+        heatLayer.addTo(map);
+      }
+    }
+
+    function drawSwarms() {
+      swarmLayer.clearLayers();
+
+      swarmCandidates.forEach(c => {
+        const circle = L.circle([c.lat, c.lon], {
+          radius: Math.min(26000, 5000 + c.count * 800),
+          color: "#22c55e",
+          weight: 1.7,
+          fillColor: "#86efac",
+          fillOpacity: 0.08
+        });
+
+        circle.bindPopup(`
+          <div class="popup-title">Posible enjambre experimental</div>
+          <div class="popup-row"><strong>Eventos:</strong> ${c.count}</div>
+          <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(c.magnitud_max).toFixed(1)}</div>
+          <div class="popup-row"><strong>Profundidad media:</strong> ${safeNumber(c.profundidad_media_km).toFixed(1)} km</div>
+          <div class="popup-row"><strong>Zona:</strong> ${c.isla || "—"}</div>
+        `);
+
+        swarmLayer.addLayer(circle);
+      });
+    }
+
+    function drawInfrastructures() {
+      infraLayer.clearLayers();
+
+      infrastructures.forEach(x => {
+        const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo) });
+        marker.bindPopup(`
+          <div class="popup-title">${x.nombre}</div>
+          <div class="popup-row"><strong>Tipo:</strong> ${x.tipo}</div>
+          <div class="popup-row"><strong>Municipio:</strong> ${x.municipio}</div>
+          <div class="popup-row"><strong>Isla:</strong> ${x.isla}</div>
+          <div class="popup-row"><strong>Nota:</strong> recurso de emergencia / acogida (demo)</div>
+        `);
+        infraLayer.addLayer(marker);
+      });
+    }
+
+    function drawSummary() {
+      const target = document.getElementById("summary-content");
+      const note = document.getElementById("summary-note");
+
+      if (!summary || Object.keys(summary).length === 0) {
+        target.innerHTML = "Sin datos.";
+        note.textContent = "";
+        return;
+      }
+
+      const rows = selectedIsland() === "Todas"
+        ? Object.entries(summary)
+        : [[selectedIsland(), summary[selectedIsland()]]].filter(x => x[1]);
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>Isla</th>
+              <th>24h</th>
+              <th>7d</th>
+              <th>30d</th>
+              <th>Mmax</th>
+              <th>Índice</th>
+              <th>Desv. 7d</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      rows.forEach(([island, row]) => {
+        html += `
+          <tr>
+            <td>${island}</td>
+            <td>${safeNumber(row.eventos_24h)}</td>
+            <td>${safeNumber(row.eventos_7d)}</td>
+            <td>${safeNumber(row.eventos_30d)}</td>
+            <td>${safeNumber(row.magnitud_max).toFixed(1).replace(".0","")}</td>
+            <td>${safeNumber(row.risklab_index).toFixed(1)}</td>
+            <td>${safeNumber(row.desviacion_vs_baseline_7d).toFixed(2)}x</td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      target.innerHTML = html;
+      note.innerHTML = `<strong>Índice RiskLab:</strong> señal analítica experimental. <strong>Semáforo oficial:</strong> independiente.`;
+    }
+
+    function updateStatus() {
+      const panel = document.getElementById("topright-panel");
+      const title = document.getElementById("status-title");
+      const note = document.getElementById("status-note");
+
+      if (!risklabIndex) {
+        title.textContent = "Índice RiskLab: sin datos";
+        return;
+      }
+
+      const desviacion = safeNumber(risklabIndex.components?.desviacion_vs_baseline_7d, 0).toFixed(2);
+      const baseline7d = safeNumber(risklabIndex.components?.baseline_media_7d, 0).toFixed(1);
+
+      title.innerHTML = `<strong>${risklabIndex.signal}</strong> · valor: ${safeNumber(risklabIndex.value).toFixed(1)}`;
+      note.innerHTML = `Actividad actual vs baseline 7d: <strong>${desviacion}x</strong> · baseline estimado: <strong>${baseline7d}</strong> eventos / 7d.<br>${risklabIndex.note || ""}`;
+
+      panel.style.borderLeftColor =
+        risklabIndex.color === "green" ? "#2f9e44" :
+        risklabIndex.color === "orange" ? "#dd6b20" :
+        "#dc2626";
+    }
+
+    function buildSeriesChart() {
+      if (seriesChart) seriesChart.destroy();
+
+      const labels = seriesData?.labels || [];
+      const counts = seriesData?.counts || [];
+      const mags = seriesData?.mmax || [];
+
+      seriesChart = new Chart(document.getElementById("seriesChart"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Eventos por día",
+              data: counts,
+              borderColor: "#2563eb",
+              backgroundColor: "rgba(37,99,235,0.12)",
+              fill: true,
+              tension: 0.25,
+              yAxisID: "y"
+            },
+            {
+              label: "Magnitud máxima diaria",
+              data: mags,
+              borderColor: "#1e3a8a",
+              backgroundColor: "rgba(30,58,138,0.04)",
+              fill: false,
+              tension: 0.25,
+              yAxisID: "y1"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: "top" } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } },
+            y1: {
+              beginAtZero: true,
+              position: "right",
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: "Mmax" }
+            }
+          }
+        }
+      });
+    }
+
+    function buildDepthChart() {
+      if (depthChart) depthChart.destroy();
+
+      const labels = Object.keys(depthProfile || {});
+      const values = Object.values(depthProfile || {});
+
+      depthChart = new Chart(document.getElementById("depthChart"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "Eventos",
+            data: values,
+            backgroundColor: ["#dbeafe", "#93c5fd", "#60a5fa", "#3b82f6", "#1e3a8a"]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } }
+          }
+        }
+      });
+    }
+
+    function buildCompareChart() {
+      if (compareChart) compareChart.destroy();
+
+      const labels = ["24h", "7d", "10d", "30d"];
+      const values = [
+        compareData?.compare?.["24h"] ?? 0,
+        compareData?.compare?.["7d"] ?? 0,
+        compareData?.compare?.["10d"] ?? 0,
+        compareData?.compare?.["30d"] ?? 0
+      ];
+
+      compareChart = new Chart(document.getElementById("compareChart"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "Eventos",
+            data: values,
+            backgroundColor: ["#2563eb", "#3b82f6", "#60a5fa", "#93c5fd"]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } }
+          }
+        }
+      });
+    }
+
+    function buildInterpretation() {
+      const target = document.getElementById("interpretContent");
+
+      if (!interpretation) {
+        target.innerHTML = "Sin interpretación disponible.";
+        return;
+      }
+
+      const m = interpretation.metrics || {};
+      const accelerationText = compareData?.acceleration?.label || "sin dato";
+
+      target.innerHTML = `
+        <div class="kpi-grid">
+          <div class="kpi">24h<strong>${m["24h"] ?? 0}</strong></div>
+          <div class="kpi">72h<strong>${m["72h"] ?? 0}</strong></div>
+          <div class="kpi">7d<strong>${m["7d"] ?? 0}</strong></div>
+          <div class="kpi">30d<strong>${m["30d"] ?? 0}</strong></div>
+          <div class="kpi">Mmax<strong>${safeNumber(m["mmax"]).toFixed(1)}</strong></div>
+          <div class="kpi">Desv.<strong>${safeNumber(m["desviacion_vs_baseline_7d"]).toFixed(2)}x</strong></div>
+        </div>
+
+        <div class="insight-card">
+          <strong>Aceleración:</strong> ${accelerationText}.
+        </div>
+
+        <div class="insight-card">
+          <strong>Ficha automática:</strong><br>
+          ${interpretation.text || "Sin texto interpretativo."}
+        </div>
+      `;
+    }
+
+    function buildRegimeCard() {
+      const target = document.getElementById("regimeContent");
+
+      if (!regimeData) {
+        target.innerHTML = "";
+        return;
+      }
+
+      const colorClass =
+        regimeData.color === "green" ? "green" :
+        regimeData.color === "orange" ? "orange" :
+        "red";
+
+      const drivers = (regimeData.drivers || [])
+        .map(x => `<li>${x}</li>`)
+        .join("");
+
+      target.innerHTML = `
+        <div class="insight-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <strong>Cambio de régimen</strong>
+            <span class="badge ${colorClass}">${regimeData.level}</span>
+          </div>
+          <div style="margin-top:5px;"><strong>${regimeData.headline}</strong></div>
+          <div class="small-note" style="margin-top:5px;">Score: ${regimeData.score}</div>
+          <ul style="margin:7px 0 0 18px;padding:0;">
+            ${drivers}
+          </ul>
+          <div class="small-note" style="margin-top:7px;">
+            ${regimeData.note || ""}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildMigrationCard() {
+      const target = document.getElementById("migrationContent");
+
+      if (!migrationData) {
+        target.innerHTML = "";
+        return;
+      }
+
+      const colorClass =
+        migrationData.color === "green" ? "green" :
+        migrationData.color === "orange" ? "orange" :
+        "red";
+
+      const drivers = (migrationData.drivers || [])
+        .map(x => `<li>${x}</li>`)
+        .join("");
+
+      const shift = migrationData.metrics?.shift_towards_surface_km;
+
+      let shiftText = "sin dato";
+      if (typeof shift === "number") {
+        if (shift > 0) shiftText = `${shift} km hacia superficie`;
+        else if (shift < 0) shiftText = `${Math.abs(shift)} km hacia mayor profundidad`;
+        else shiftText = "sin cambio apreciable";
+      }
+
+      target.innerHTML = `
+        <div class="insight-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <strong>Migración sísmica en profundidad</strong>
+            <span class="badge ${colorClass}">${migrationData.trend}</span>
+          </div>
+          <div style="margin-top:5px;"><strong>${migrationData.headline}</strong></div>
+          <div class="small-note" style="margin-top:5px;">
+            Desplazamiento vertical estimado: ${shiftText}
+          </div>
+          <ul style="margin:7px 0 0 18px;padding:0;">
+            ${drivers}
+          </ul>
+          <div class="small-note" style="margin-top:7px;">
+            ${migrationData.note || ""}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildAnomalyCard() {
+      const target = document.getElementById("anomalyContent");
+
+      if (!anomalyData) {
+        target.innerHTML = "";
+        return;
+      }
+
+      const colorClass =
+        anomalyData.color === "green" ? "green" :
+        anomalyData.color === "orange" ? "orange" :
+        "red";
+
+      const drivers = (anomalyData.drivers || [])
+        .map(x => `<li>${x}</li>`)
+        .join("");
+
+      target.innerHTML = `
+        <div class="insight-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <strong>Señal de anomalía RiskLab</strong>
+            <span class="badge ${colorClass}">${anomalyData.nivel}</span>
+          </div>
+          <div style="margin-top:5px;"><strong>Score: ${safeNumber(anomalyData.score).toFixed(1)}</strong></div>
+          <ul style="margin:7px 0 0 18px;padding:0;">
+            ${drivers}
+          </ul>
+        </div>
+      `;
+    }
+
+    function buildTerritorialCard() {
+      const target = document.getElementById("territorialContent");
+
+      if (!territorialData) {
+        target.innerHTML = `
+          <div class="insight-card">
+            Selecciona una isla para ver la lectura territorial operativa.
+          </div>
+        `;
+        return;
+      }
+
+      const types = (territorialData.tipos || [])
+        .map(x => `<span class="infra-pill">${x}</span>`)
+        .join("");
+
+      target.innerHTML = `
+        <div class="insight-card">
+          <strong>Lectura territorial operativa</strong><br>
+          Isla: ${territorialData.isla}<br>
+          Nivel de anomalía: ${territorialData.nivel_anomalia}<br>
+          Infraestructuras demo: ${territorialData.infraestructuras}<br>
+          Lectura: ${territorialData.lectura}
+          <div style="margin-top:6px;">
+            ${types || '<span class="small-note">Sin tipos cargados</span>'}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildInfraContent() {
+      const target = document.getElementById("infraContent");
+
+      if (!infrastructures || infrastructures.length === 0) {
+        target.innerHTML = `
+          <div class="insight-card">
+            No hay infraestructuras cargadas para este filtro.
+          </div>
+        `;
+        return;
+      }
+
+      const byType = {};
+      infrastructures.forEach(x => {
+        byType[x.tipo] = (byType[x.tipo] || 0) + 1;
+      });
+
+      let html = `<div class="insight-card"><strong>Inventario cargado (demo):</strong><br>`;
+      Object.entries(byType).forEach(([tipo, n]) => {
+        html += `<span class="infra-pill">${tipo}: ${n}</span>`;
+      });
+      html += `</div>`;
+
+      infrastructures.forEach(x => {
+        html += `
+          <div class="insight-card">
+            <strong>${x.nombre}</strong><br>
+            Tipo: ${x.tipo}<br>
+            Municipio: ${x.municipio}<br>
+            Isla: ${x.isla}
+          </div>
+        `;
+      });
+
+      target.innerHTML = html;
+    }
+
+    function syncLayers() {
+      toggleLayer("toggle-volcanoes", volcanoLayer);
+      toggleLayer("toggle-ign", ignLayer);
+      toggleLayer("toggle-usgs", usgsLayer);
+      toggleLayer("toggle-swarms", swarmLayer);
+      toggleLayer("toggle-infra", infraLayer);
+
+      if (document.getElementById("toggle-heatmap").checked) {
+        if (heatLayer && !map.hasLayer(heatLayer)) heatLayer.addTo(map);
+      } else {
+        if (heatLayer && map.hasLayer(heatLayer)) map.removeLayer(heatLayer);
+      }
+    }
+
+    function toggleLayer(id, layer) {
+      const checked = document.getElementById(id).checked;
+      if (checked && !map.hasLayer(layer)) map.addLayer(layer);
+      if (!checked && map.hasLayer(layer)) map.removeLayer(layer);
+    }
+
+    function applyMode() {
+      const bottomPanel = document.getElementById("bottom-panel");
+      const bottomToggle = document.getElementById("bottom-toggle");
+      const summaryTab = document.querySelector('[data-tab="tab-summary"]');
+      const interpretTab = document.querySelector('[data-tab="tab-interpret"]');
+
+      document.getElementById("mode-citizens").classList.toggle("active", currentMode === "citizens");
+      document.getElementById("mode-analysis").classList.toggle("active", currentMode === "analysis");
+
+      if (currentMode === "citizens") {
+        summaryTab.click();
+        bottomPanel.classList.remove("collapsed");
+        bottomToggle.textContent = "Ocultar análisis";
+        document.getElementById("toggle-usgs").checked = false;
+        document.getElementById("toggle-heatmap").checked = false;
+      } else {
+        interpretTab.click();
+        bottomPanel.classList.remove("collapsed");
+        bottomToggle.textContent = "Ocultar análisis";
+      }
+
+      syncLayers();
+    }
+
+    async function loadAll() {
+      const island = encodeURIComponent(selectedIsland());
+
+      try {
+        const bundle = await fetchJson(`/api/risklab-bundle?island=${island}`);
+
+        ignEvents = bundle.ign_eventos || [];
+        summary = bundle.summary || {};
+        risklabIndex = bundle.risklab_index || null;
+        interpretation = bundle.interpretation || null;
+        depthProfile = bundle.depth_profile || {};
+        compareData = {
+          compare: bundle.compare || {},
+          acceleration: bundle.acceleration || {},
+          baseline: bundle.baseline || {}
+        };
+        infrastructures = bundle.infraestructuras || [];
+        swarmCandidates = bundle.candidatos_enjambre || [];
+        seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
+        regimeData = bundle.regime || null;
+        migrationData = bundle.migration || null;
+        anomalyData = bundle.anomaly || null;
+        territorialData = bundle.territorial || null;
+
+      } catch (e) {
+        console.error(e);
+      }
+
+      try {
+        const usgsJson = await fetchJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson");
+        usgsEvents = (usgsJson.features || [])
+          .map(feature => ({
+            lat: Number(feature.geometry?.coordinates?.[1]),
+            lon: Number(feature.geometry?.coordinates?.[0]),
+            magnitud: Number(feature.properties?.mag ?? 0),
+            profundidad_km: Number(feature.geometry?.coordinates?.[2] ?? 0),
+            datetime_iso: new Date(feature.properties?.time).toISOString(),
+            area: feature.properties?.place || "",
+            isla: (() => {
+              const txt = String(feature.properties?.place || "").toLowerCase();
+              if (txt.includes("tenerife")) return "Tenerife";
+              if (txt.includes("palma")) return "La Palma";
+              if (txt.includes("hierro")) return "El Hierro";
+              if (txt.includes("gran canaria")) return "Gran Canaria";
+              if (txt.includes("lanzarote")) return "Lanzarote";
+              if (txt.includes("fuerteventura")) return "Fuerteventura";
+              if (txt.includes("gomera")) return "La Gomera";
+              return "Atlántico-Canarias";
+            })()
+          }))
+          .filter(ev => selectedIsland() === "Todas" || ev.isla === selectedIsland());
+      } catch (e) {
+        usgsEvents = [];
+      }
+
+      redrawAll();
+    }
+
+    function redrawAll() {
+      drawVolcanoes();
+      drawIgn();
+      drawUSGS();
+      drawHeatmap();
+      drawSwarms();
+      drawInfrastructures();
+      drawSummary();
+      updateStatus();
+      buildSeriesChart();
+      buildDepthChart();
+      buildCompareChart();
+      buildInterpretation();
+      buildRegimeCard();
+      buildMigrationCard();
+      buildAnomalyCard();
+      buildTerritorialCard();
+      buildInfraContent();
+      syncLayers();
+      applyMode();
+    }
+
+    document.querySelectorAll("#topright-panel input").forEach(el => {
+      el.addEventListener("change", syncLayers);
+    });
+
+    document.getElementById("island-filter").addEventListener("change", loadAll);
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+
+        setTimeout(() => {
+          if (seriesChart) seriesChart.resize();
+          if (depthChart) depthChart.resize();
+          if (compareChart) compareChart.resize();
+          map.invalidateSize();
+        }, 50);
+      });
+    });
+
+    document.getElementById("mode-citizens").addEventListener("click", () => {
+      currentMode = "citizens";
+      applyMode();
+    });
+
+    document.getElementById("mode-analysis").addEventListener("click", () => {
+      currentMode = "analysis";
+      applyMode();
+    });
+
+    document.getElementById("bottom-toggle").addEventListener("click", () => {
+      const panel = document.getElementById("bottom-panel");
+      panel.classList.toggle("collapsed");
+      document.getElementById("bottom-toggle").textContent =
+        panel.classList.contains("collapsed") ? "Mostrar análisis" : "Ocultar análisis";
+    });
+
+    loadAll();
+  </script>
+</body>
+</html>

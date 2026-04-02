@@ -5,25 +5,10 @@ import re
 from datetime import datetime, timedelta, timezone
 from collections import defaultdict
 import os
-import zipfile
-import xml.etree.ElementTree as ET
-import html
 
 app = Flask(__name__, static_folder='.')
 
 IGN_URL = "https://www.ign.es/web/vlc-ultimo-terremoto/-/terremotos-canarias/get10dias"
-KMZ_PATH = os.path.join(os.path.dirname(__file__), "catalogo.kmz")
-
-CATALOG_START_DATE = datetime(2011, 1, 1, tzinfo=timezone.utc)
-
-HISTORICAL_CACHE = {
-    "loaded": False,
-    "events": [],
-    "error": None
-}
-
-ANALYTICS_CACHE = {}
-CACHE_TTL_SECONDS = 300
 
 
 # =========================
@@ -101,59 +86,14 @@ def events_in_days(eventos, days):
     return out
 
 
-def events_between_days_ago(eventos, start_days_ago, end_days_ago):
-    now = now_utc()
-    start_cut = now - timedelta(days=start_days_ago)
-    end_cut = now - timedelta(days=end_days_ago)
-    out = []
-    for e in eventos:
-        dt = parse_event_datetime(e)
-        if dt and start_cut <= dt < end_cut:
-            out.append(e)
-    return out
-
-
 def merge_recent_and_historical(recent_events, historical_events):
-    by_id = {}
-    for e in historical_events:
-        key = e.get("id") or f'{e.get("fecha")}_{e.get("hora_utc")}_{e.get("lat")}_{e.get("lon")}'
-        by_id[key] = e
-
-    for e in recent_events:
-        key = e.get("id") or f'{e.get("fecha")}_{e.get("hora_utc")}_{e.get("lat")}_{e.get("lon")}'
-        by_id[key] = e
-
-    merged = list(by_id.values())
-    merged.sort(key=lambda x: parse_event_datetime(x) or datetime(1970, 1, 1, tzinfo=timezone.utc))
+    # histórico desactivado temporalmente
+    merged = list(recent_events) + list(historical_events)
+    merged.sort(
+        key=lambda x: parse_event_datetime(x) or datetime(1970, 1, 1, tzinfo=timezone.utc),
+        reverse=False
+    )
     return merged
-
-
-def make_cache_key(prefix, island_name=None):
-    return f"{prefix}:{island_name or 'Todas'}"
-
-
-def cache_valid(entry, seconds=CACHE_TTL_SECONDS):
-    if not entry:
-        return False
-    ts = entry.get("timestamp")
-    if not ts:
-        return False
-    return (now_utc() - ts).total_seconds() < seconds
-
-
-def get_or_build_cached(prefix, island_name, builder):
-    key = make_cache_key(prefix, island_name)
-    entry = ANALYTICS_CACHE.get(key)
-
-    if cache_valid(entry):
-        return entry["data"]
-
-    data = builder()
-    ANALYTICS_CACHE[key] = {
-        "timestamp": now_utc(),
-        "data": data
-    }
-    return data
 
 
 # =========================
@@ -256,6 +196,7 @@ def parse_ign_canarias():
         r'(.+)$'
     )
 
+    eventos = []
     for line in lines:
         m = pattern.match(line)
         if not m:
@@ -315,6 +256,7 @@ def fetch_usgs_canarias():
 
         lon, lat, depth = coords[:3]
 
+        # ventana Canarias
         if not (26 <= lat <= 31 and -19 <= lon <= -12):
             continue
 
@@ -336,131 +278,10 @@ def fetch_usgs_canarias():
 
 
 # =========================
-# KMZ histórico
+# Histórico temporalmente desactivado
 # =========================
-def parse_kmz_description(desc_html):
-    desc = html.unescape(desc_html or "")
-    pairs = re.findall(r'<td>(.*?)</td>\s*<td>(.*?)</td>', desc, flags=re.I | re.S)
-
-    data = {}
-    for k, v in pairs:
-        key = clean_text(BeautifulSoup(str(k), "html.parser").get_text(" ", strip=True)).upper()
-        val = clean_text(BeautifulSoup(v, "html.parser").get_text(" ", strip=True))
-        data[key] = val
-
-    return data
-
-
 def load_historical_catalog():
-    if HISTORICAL_CACHE["loaded"]:
-        return HISTORICAL_CACHE["events"]
-
-    if not os.path.exists(KMZ_PATH):
-        HISTORICAL_CACHE["loaded"] = True
-        HISTORICAL_CACHE["events"] = []
-        HISTORICAL_CACHE["error"] = f"No se encontró {KMZ_PATH}"
-        return []
-
-    events = []
-
-    try:
-        with zipfile.ZipFile(KMZ_PATH, "r") as zf:
-            kml_names = [n for n in zf.namelist() if n.lower().endswith(".kml")]
-            if not kml_names:
-                raise RuntimeError("No hay ningún KML dentro del KMZ")
-
-            kml_name = kml_names[0]
-
-            with zf.open(kml_name) as kml_file:
-                context = ET.iterparse(kml_file, events=("end",))
-                for _, elem in context:
-                    tag = elem.tag.split("}")[-1]
-
-                    if tag != "Placemark":
-                        continue
-
-                    try:
-                        name_el = elem.find(".//{*}name")
-                        desc_el = elem.find(".//{*}description")
-                        coords_el = elem.find(".//{*}coordinates")
-
-                        if desc_el is None or coords_el is None:
-                            elem.clear()
-                            continue
-
-                        desc_data = parse_kmz_description(desc_el.text or "")
-                        coords_text = clean_text(coords_el.text or "")
-                        lon_str, lat_str = coords_text.split(",")[:2]
-
-                        lat = float(lat_str)
-                        lon = float(lon_str)
-
-                        fecha_raw = desc_data.get("FECHA", "")
-                        dt = None
-                        if fecha_raw:
-                            try:
-                                dt = datetime.strptime(fecha_raw, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
-                            except Exception:
-                                dt = None
-
-                        if dt and dt < CATALOG_START_DATE:
-                            elem.clear()
-                            continue
-
-                        magnitud = 0.0
-                        for key in ["MAGNITUD", "MBLG", "ML", "MW", "MB"]:
-                            val = desc_data.get(key)
-                            if val:
-                                try:
-                                    x = float(str(val).replace(",", "."))
-                                    if x > 0:
-                                        magnitud = x
-                                        break
-                                except Exception:
-                                    pass
-
-                        profundidad = 0.0
-                        try:
-                            profundidad = float(str(desc_data.get("PROFUNDIDAD", "0")).replace(",", "."))
-                        except Exception:
-                            profundidad = 0.0
-
-                        localizacion = desc_data.get("LOCALIZACIÓN") or desc_data.get("LOCALIZACION") or ""
-                        evid = desc_data.get("EVID", "")
-
-                        fecha = dt.strftime("%d/%m/%Y") if dt else ""
-                        hora = dt.strftime("%H:%M:%S") if dt else ""
-
-                        events.append({
-                            "id": str(evid),
-                            "fecha": fecha,
-                            "hora_utc": hora,
-                            "datetime_iso": dt.isoformat() if dt else None,
-                            "lat": lat,
-                            "lon": lon,
-                            "profundidad_km": profundidad,
-                            "magnitud": magnitud,
-                            "tipo_magnitud": "MbLg",
-                            "localizacion": localizacion or (name_el.text if name_el is not None else ""),
-                            "isla": classify_island(lat, lon),
-                            "source": "IGN_kmz"
-                        })
-
-                    except Exception:
-                        pass
-
-                    elem.clear()
-
-        HISTORICAL_CACHE["loaded"] = True
-        HISTORICAL_CACHE["events"] = events
-        HISTORICAL_CACHE["error"] = None
-        return events
-
-    except Exception as e:
-        HISTORICAL_CACHE["loaded"] = True
-        HISTORICAL_CACHE["events"] = []
-        HISTORICAL_CACHE["error"] = str(e)
-        return []
+    return []
 
 
 # =========================
@@ -562,54 +383,44 @@ def detect_swarm_candidates(eventos):
     return resultados
 
 
-def compute_baseline(events_recent, events_historical, island_name=None):
-    merged = merge_recent_and_historical(events_recent, events_historical)
+def compute_baseline(events_recent, island_name=None):
+    eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
-        merged = [e for e in merged if e["isla"] == island_name]
+        eventos = [e for e in eventos if e["isla"] == island_name]
 
-    baseline_window = events_between_days_ago(merged, 60, 30)
+    ventana = events_in_days(eventos, 10)
 
-    if not baseline_window:
-        baseline_window = events_between_days_ago(merged, 90, 30)
-
-    if not baseline_window:
-        cutoff = now_utc() - timedelta(days=7)
-        baseline_window = [e for e in merged if (parse_event_datetime(e) and parse_event_datetime(e) < cutoff)]
-
-    total_days = 30
-    eventos_totales = len(baseline_window)
+    total_days = 10
+    eventos_totales = len(ventana)
     media_diaria = round(eventos_totales / total_days, 2) if total_days else 0
     media_7d = round(media_diaria * 7, 2)
-    magnitud_media = round(sum(e["magnitud"] for e in baseline_window) / len(baseline_window), 2) if baseline_window else 0
-    profundidad_media = round(sum(e["profundidad_km"] for e in baseline_window) / len(baseline_window), 2) if baseline_window else 0
+
+    magnitud_media = round(sum(e["magnitud"] for e in ventana) / len(ventana), 2) if ventana else 0
+    profundidad_media = round(sum(e["profundidad_km"] for e in ventana) / len(ventana), 2) if ventana else 0
 
     return {
-        "sample_size": len(baseline_window),
+        "sample_size": len(ventana),
         "media_diaria": media_diaria,
         "media_7d": media_7d,
         "magnitud_media": magnitud_media,
         "profundidad_media_km": profundidad_media,
-        "window_note": "Baseline calculado sobre actividad histórica reciente previa (preferencia 60–30 días atrás)."
+        "window_note": "Baseline experimental calculado sobre la ventana reciente disponible."
     }
 
 
-def compare_windows(events_recent, events_historical):
-    merged = merge_recent_and_historical(events_recent, events_historical)
-
+def compare_windows(events_recent):
     return {
-        "24h": len(events_in_hours(merged, 24)),
-        "7d": len(events_in_days(merged, 7)),
-        "10d": len(events_in_days(merged, 10)),
-        "30d": len(events_in_days(merged, 30))
+        "24h": len(events_in_hours(events_recent, 24)),
+        "7d": len(events_in_days(events_recent, 7)),
+        "10d": len(events_in_days(events_recent, 10)),
+        "30d": len(events_in_days(events_recent, 30))
     }
 
 
-def compute_acceleration(events_recent, events_historical):
-    merged = merge_recent_and_historical(events_recent, events_historical)
-
-    e24 = len(events_in_hours(merged, 24))
-    e72 = len(events_in_hours(merged, 72))
+def compute_acceleration(events_recent):
+    e24 = len(events_in_hours(events_recent, 24))
+    e72 = len(events_in_hours(events_recent, 72))
     previous_48_within_72 = max(0, e72 - e24)
 
     if previous_48_within_72 == 0:
@@ -633,20 +444,16 @@ def compute_acceleration(events_recent, events_historical):
     }
 
 
-def detect_depth_migration(events_recent, events_historical, island_name=None):
-    merged = merge_recent_and_historical(events_recent, events_historical)
+def detect_depth_migration(events_recent, island_name=None):
+    eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
-        merged = [e for e in merged if e["isla"] == island_name]
-        events_recent = [e for e in events_recent if e["isla"] == island_name]
-        events_historical = [e for e in events_historical if e["isla"] == island_name]
+        eventos = [e for e in eventos if e["isla"] == island_name]
 
-    last_7d = events_in_days(merged, 7)
-    last_72h = events_in_hours(merged, 72)
-    prev_7d_window = events_between_days_ago(merged, 14, 7)
+    last_7d = events_in_days(eventos, 7)
+    last_72h = events_in_hours(eventos, 72)
 
     mean_72h = round(sum(e["profundidad_km"] for e in last_72h) / len(last_72h), 2) if last_72h else None
-    mean_prev7 = round(sum(e["profundidad_km"] for e in prev_7d_window) / len(prev_7d_window), 2) if prev_7d_window else None
     mean_7d = round(sum(e["profundidad_km"] for e in last_7d) / len(last_7d), 2) if last_7d else None
 
     trend = "sin datos suficientes"
@@ -655,24 +462,19 @@ def detect_depth_migration(events_recent, events_historical, island_name=None):
     score = 0
     drivers = []
 
-    if mean_72h is not None and mean_prev7 is not None:
-        shift_km = round(mean_prev7 - mean_72h, 2)
+    if mean_72h is not None and mean_7d is not None:
+        shift_km = round(mean_7d - mean_72h, 2)
 
-        if shift_km >= 5:
-            trend = "migración superficial marcada"
-            color = "red"
-            score = 3
-            drivers.append(f"la profundidad media reciente es {shift_km} km más superficial que la ventana previa")
-        elif shift_km >= 2:
+        if shift_km >= 3:
             trend = "migración superficial moderada"
             color = "orange"
             score = 2
-            drivers.append(f"la profundidad media reciente es {shift_km} km más superficial que la ventana previa")
-        elif shift_km <= -5:
+            drivers.append(f"la profundidad media reciente es {shift_km} km más superficial que la media 7d")
+        elif shift_km <= -3:
             trend = "migración a mayor profundidad marcada"
             color = "orange"
             score = 2
-            drivers.append(f"la profundidad media reciente es {abs(shift_km)} km más profunda que la ventana previa")
+            drivers.append(f"la profundidad media reciente es {abs(shift_km)} km más profunda que la media 7d")
         else:
             trend = "sin migración clara"
             color = "green"
@@ -683,9 +485,6 @@ def detect_depth_migration(events_recent, events_historical, island_name=None):
     total_recent = len(last_72h)
     shallow_ratio = round(shallow_recent / total_recent, 2) if total_recent > 0 else 0
 
-    if shallow_ratio >= 0.7 and total_recent >= 5:
-        drivers.append("predominio de sismicidad superficial en 72h")
-
     return {
         "headline": trend.capitalize(),
         "trend": trend,
@@ -693,44 +492,34 @@ def detect_depth_migration(events_recent, events_historical, island_name=None):
         "score": score,
         "metrics": {
             "prof_media_72h_km": mean_72h,
-            "prof_media_prev7_km": mean_prev7,
             "prof_media_7d_km": mean_7d,
             "shift_towards_surface_km": shift_km,
             "shallow_ratio_72h": shallow_ratio,
             "eventos_72h": total_recent
         },
         "drivers": drivers,
-        "note": "Detector experimental de migración sísmica en profundidad. No implica por sí mismo ascenso magmático."
+        "note": "Detector experimental de migración sísmica en profundidad."
     }
 
 
-def detect_regime_change(events_recent, events_historical, island_name=None):
-    merged = merge_recent_and_historical(events_recent, events_historical)
+def detect_regime_change(events_recent, island_name=None):
+    eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
-        merged = [e for e in merged if e["isla"] == island_name]
-        events_recent = [e for e in events_recent if e["isla"] == island_name]
-        events_historical = [e for e in events_historical if e["isla"] == island_name]
+        eventos = [e for e in eventos if e["isla"] == island_name]
 
-    last_24h = events_in_hours(merged, 24)
-    last_7d = events_in_days(merged, 7)
-    last_30d = events_in_days(merged, 30)
+    last_24h = events_in_hours(eventos, 24)
+    last_7d = events_in_days(eventos, 7)
+    last_30d = events_in_days(eventos, 30)
 
-    baseline = compute_baseline(events_recent, events_historical, island_name)
-    acceleration = compute_acceleration(events_recent, events_historical)
-    migration = detect_depth_migration(events_recent, events_historical, island_name)
+    baseline = compute_baseline(events_recent, island_name)
+    acceleration = compute_acceleration(eventos)
+    migration = detect_depth_migration(eventos, island_name)
 
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
     deviation_7d = len(last_7d) / baseline_7d
 
     mag_mean_30d = round(sum(e["magnitud"] for e in last_30d) / len(last_30d), 2) if last_30d else 0
-    depth_mean_30d = round(sum(e["profundidad_km"] for e in last_30d) / len(last_30d), 2) if last_30d else 0
-
-    baseline_mag = baseline["magnitud_media"] if baseline["magnitud_media"] > 0 else 0
-    baseline_depth = baseline["profundidad_media_km"] if baseline["profundidad_media_km"] > 0 else depth_mean_30d
-
-    mag_shift = round(mag_mean_30d - baseline_mag, 2)
-    depth_shift = round(baseline_depth - depth_mean_30d, 2)
 
     score = 0
 
@@ -748,14 +537,7 @@ def detect_regime_change(events_recent, events_historical, island_name=None):
     elif acceleration["ratio"] >= 1.2:
         score += 1
 
-    if mag_shift >= 0.5:
-        score += 2
-    elif mag_shift >= 0.2:
-        score += 1
-
-    if depth_shift >= 5:
-        score += 2
-    elif depth_shift >= 2:
+    if mag_mean_30d >= 1.8:
         score += 1
 
     score += migration["score"]
@@ -785,11 +567,8 @@ def detect_regime_change(events_recent, events_historical, island_name=None):
     elif acceleration["label"] == "apreciable":
         bullets.append("aceleración reciente apreciable")
 
-    if mag_shift >= 0.2:
-        bullets.append(f"magnitud media superior al baseline (+{mag_shift:.2f})")
-
-    if depth_shift >= 2:
-        bullets.append(f"sismicidad más superficial que el baseline ({depth_shift:.1f} km)")
+    if mag_mean_30d >= 1.8:
+        bullets.append("magnitud media reciente destacable")
 
     for d in migration["drivers"]:
         if d not in bullets:
@@ -811,36 +590,29 @@ def detect_regime_change(events_recent, events_historical, island_name=None):
             "deviation_7d": round(deviation_7d, 2),
             "acceleration_ratio": acceleration["ratio"],
             "mag_mean_30d": mag_mean_30d,
-            "baseline_mag_mean": baseline_mag,
-            "mag_shift": mag_shift,
-            "depth_mean_30d_km": depth_mean_30d,
-            "baseline_depth_mean_km": baseline_depth,
-            "depth_shift_towards_surface_km": depth_shift,
             "migration_trend": migration["trend"]
         },
         "drivers": bullets,
-        "note": "Detector experimental de cambio de régimen. No implica por sí mismo cambio eruptivo."
+        "note": "Detector experimental de cambio de régimen."
     }
 
 
-def compute_risklab_index(events_recent, events_historical, island_name=None):
-    merged = merge_recent_and_historical(events_recent, events_historical)
+def compute_risklab_index(events_recent, island_name=None):
+    eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
-        merged = [e for e in merged if e["isla"] == island_name]
-        events_recent = [e for e in events_recent if e["isla"] == island_name]
-        events_historical = [e for e in events_historical if e["isla"] == island_name]
+        eventos = [e for e in eventos if e["isla"] == island_name]
 
-    e24 = len(events_in_hours(merged, 24))
-    e7d = len(events_in_days(merged, 7))
-    e30d = events_in_days(merged, 30)
+    e24 = len(events_in_hours(eventos, 24))
+    e7d = len(events_in_days(eventos, 7))
+    e30d = events_in_days(eventos, 30)
 
     mmedia_30d = round(sum(e["magnitud"] for e in e30d) / len(e30d), 2) if e30d else 0
     pmedia_30d = round(sum(e["profundidad_km"] for e in e30d) / len(e30d), 2) if e30d else 0
 
-    accel = compute_acceleration(events_recent, events_historical)["ratio"]
-    baseline = compute_baseline(events_recent, events_historical, island_name)
-    migration = detect_depth_migration(events_recent, events_historical, island_name)
+    accel = compute_acceleration(eventos)["ratio"]
+    baseline = compute_baseline(events_recent, island_name)
+    migration = detect_depth_migration(eventos, island_name)
 
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
     deviation_ratio_7d = round(e7d / baseline_7d, 2)
@@ -889,23 +661,21 @@ def compute_risklab_index(events_recent, events_historical, island_name=None):
     }
 
 
-def compute_anomaly_signal(recent, historical, island=None):
-    merged = merge_recent_and_historical(recent, historical)
+def compute_anomaly_signal(recent, island=None):
+    eventos = list(recent)
 
     if island and island != "Todas":
-        merged = [e for e in merged if e["isla"] == island]
-        recent = [e for e in recent if e["isla"] == island]
-        historical = [e for e in historical if e["isla"] == island]
+        eventos = [e for e in eventos if e["isla"] == island]
 
-    last_24h = events_in_hours(merged, 24)
-    last_7d = events_in_days(merged, 7)
+    last_24h = events_in_hours(eventos, 24)
+    last_7d = events_in_days(eventos, 7)
 
-    baseline = compute_baseline(recent, historical, island)
+    baseline = compute_baseline(recent, island)
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
 
     deviation_score = min((len(last_7d) / baseline_7d) * 20, 30)
 
-    accel_data = compute_acceleration(recent, historical)
+    accel_data = compute_acceleration(eventos)
     accel_score = min(accel_data["ratio"] * 8, 20)
 
     magnitudes = [e["magnitud"] for e in last_7d if e.get("magnitud") is not None]
@@ -918,7 +688,7 @@ def compute_anomaly_signal(recent, historical, island=None):
     elif len(last_24h) >= 5:
         swarm_score = 8
 
-    migration = detect_depth_migration(recent, historical, island)
+    migration = detect_depth_migration(eventos, island)
     migration_score = min(migration.get("score", 0) * 6, 20)
 
     anomaly = deviation_score + accel_score + mag_score + swarm_score + migration_score
@@ -977,18 +747,16 @@ def territorial_summary(island, anomaly, infrastructures):
     }
 
 
-def auto_interpretation(events_recent, events_historical, island_name="Canarias"):
-    merged = merge_recent_and_historical(events_recent, events_historical)
+def auto_interpretation(events_recent, island_name="Canarias"):
+    eventos = list(events_recent)
 
     if island_name and island_name != "Canarias":
-        merged = [e for e in merged if e["isla"] == island_name]
-        events_recent = [e for e in events_recent if e["isla"] == island_name]
-        events_historical = [e for e in events_historical if e["isla"] == island_name]
+        eventos = [e for e in eventos if e["isla"] == island_name]
 
-    e24 = events_in_hours(merged, 24)
-    e72 = events_in_hours(merged, 72)
-    e7d = events_in_days(merged, 7)
-    e30d = events_in_days(merged, 30)
+    e24 = events_in_hours(eventos, 24)
+    e72 = events_in_hours(eventos, 72)
+    e7d = events_in_days(eventos, 7)
+    e30d = events_in_days(eventos, 30)
 
     n24 = len(e24)
     n72 = len(e72)
@@ -997,14 +765,14 @@ def auto_interpretation(events_recent, events_historical, island_name="Canarias"
     mmax = max((e["magnitud"] for e in e30d), default=0)
     pmedia = round(sum(e["profundidad_km"] for e in e30d) / len(e30d), 1) if e30d else 0
 
-    acceleration = compute_acceleration(events_recent, events_historical)
-    baseline = compute_baseline(events_recent, events_historical, island_name if island_name != "Canarias" else None)
+    acceleration = compute_acceleration(eventos)
+    baseline = compute_baseline(eventos, island_name if island_name != "Canarias" else None)
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
     deviation_ratio = round(n7d / baseline_7d, 2)
-    regime = detect_regime_change(events_recent, events_historical, island_name if island_name != "Canarias" else None)
-    migration = detect_depth_migration(events_recent, events_historical, island_name if island_name != "Canarias" else None)
+    regime = detect_regime_change(eventos, island_name if island_name != "Canarias" else None)
+    migration = detect_depth_migration(eventos, island_name if island_name != "Canarias" else None)
 
-    swarm = detect_swarm_candidates(events_recent)
+    swarm = detect_swarm_candidates(eventos)
     swarm_text = ""
     if swarm:
         top_swarm = swarm[0]
@@ -1041,9 +809,7 @@ def auto_interpretation(events_recent, events_historical, island_name="Canarias"
         else:
             fragments.append("El perfil medio de profundidad es relativamente profundo.")
 
-    if migration["trend"] == "migración superficial marcada":
-        fragments.append("El detector experimental observa una migración sísmica superficial marcada.")
-    elif migration["trend"] == "migración superficial moderada":
+    if migration["trend"] == "migración superficial moderada":
         fragments.append("El detector experimental observa una migración sísmica superficial moderada.")
     elif migration["trend"] == "migración a mayor profundidad marcada":
         fragments.append("El detector experimental observa una migración reciente a mayor profundidad.")
@@ -1077,17 +843,15 @@ def auto_interpretation(events_recent, events_historical, island_name="Canarias"
     }
 
 
-def grouped_summary_by_island(events_recent, events_historical):
+def grouped_summary_by_island(events_recent):
     summary = {}
     for isla in [
         "Tenerife", "La Palma", "El Hierro", "Gran Canaria",
         "Lanzarote", "Fuerteventura", "La Gomera", "Atlántico-Canarias"
     ]:
         live = [e for e in events_recent if e["isla"] == isla]
-        hist = [e for e in events_historical if e["isla"] == isla]
-        merged = merge_recent_and_historical(live, hist)
 
-        risk = compute_risklab_index(live, hist, isla) if merged else {
+        risk = compute_risklab_index(live, isla) if live else {
             "value": 0,
             "signal": "Índice RiskLab bajo",
             "baseline": {"media_7d": 0},
@@ -1095,12 +859,12 @@ def grouped_summary_by_island(events_recent, events_historical):
         }
 
         summary[isla] = {
-            "eventos_24h": len(events_in_hours(merged, 24)),
-            "eventos_72h": len(events_in_hours(merged, 72)),
-            "eventos_7d": len(events_in_days(merged, 7)),
-            "eventos_10d": len(events_in_days(merged, 10)),
-            "eventos_30d": len(events_in_days(merged, 30)),
-            "magnitud_max": round(max((x["magnitud"] for x in merged), default=0), 1),
+            "eventos_24h": len(events_in_hours(live, 24)),
+            "eventos_72h": len(events_in_hours(live, 72)),
+            "eventos_7d": len(events_in_days(live, 7)),
+            "eventos_10d": len(events_in_days(live, 10)),
+            "eventos_30d": len(events_in_days(live, 30)),
+            "magnitud_max": round(max((x["magnitud"] for x in live), default=0), 1),
             "risklab_index": risk["value"],
             "risklab_signal": risk["signal"],
             "baseline_7d": risk["baseline"]["media_7d"],
@@ -1200,12 +964,12 @@ def api_usgs_canarias():
 
 @app.route("/api/catalog-historical-status")
 def api_catalog_historical_status():
-    events = historical = []
+    events = []
     return jsonify({
         "ok": True,
         "count": len(events),
-        "loaded": HISTORICAL_CACHE["loaded"],
-        "error": HISTORICAL_CACHE["error"]
+        "loaded": True,
+        "error": None
     })
 
 
@@ -1228,39 +992,13 @@ def api_ign_enjambres():
         }), 500
 
 
-@app.route("/api/ign-serie")
-def api_ign_serie():
-    try:
-        recent = parse_ign_canarias()
-        historical = load_historical_catalog()
-        island_name = request.args.get("island")
-
-        if island_name and island_name != "Todas":
-            recent = [e for e in recent if e["isla"] == island_name]
-            historical = [e for e in historical if e["isla"] == island_name]
-
-        merged = merge_recent_and_historical(recent, historical)
-        serie = serie_temporal(events_in_days(merged, 30))
-        return jsonify({
-            "ok": True,
-            "serie": serie
-        })
-    except Exception as e:
-        return jsonify({
-            "ok": False,
-            "error": str(e),
-            "serie": {"labels": [], "counts": [], "mmax": []}
-        }), 500
-
-
 @app.route("/api/risklab-summary")
 def api_risklab_summary():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         return jsonify({
             "ok": True,
-            "summary": grouped_summary_by_island(recent, historical)
+            "summary": grouped_summary_by_island(recent)
         })
     except Exception as e:
         return jsonify({
@@ -1274,10 +1012,9 @@ def api_risklab_summary():
 def api_risklab_index():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         island_name = request.args.get("island")
 
-        data = compute_risklab_index(recent, historical, island_name if island_name != "Todas" else None)
+        data = compute_risklab_index(recent, island_name if island_name != "Todas" else None)
         return jsonify({
             "ok": True,
             "risklab_index": data
@@ -1294,10 +1031,9 @@ def api_risklab_index():
 def api_risklab_regime():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         island_name = request.args.get("island")
 
-        data = detect_regime_change(recent, historical, island_name if island_name != "Todas" else None)
+        data = detect_regime_change(recent, island_name if island_name != "Todas" else None)
 
         return jsonify({
             "ok": True,
@@ -1315,10 +1051,9 @@ def api_risklab_regime():
 def api_risklab_migration():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         island_name = request.args.get("island")
 
-        data = detect_depth_migration(recent, historical, island_name if island_name != "Todas" else None)
+        data = detect_depth_migration(recent, island_name if island_name != "Todas" else None)
 
         return jsonify({
             "ok": True,
@@ -1336,14 +1071,13 @@ def api_risklab_migration():
 def api_risklab_interpretation():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         island_name = request.args.get("island")
 
         label = "Canarias"
         if island_name and island_name != "Todas":
             label = island_name
 
-        interp = auto_interpretation(recent, historical, label)
+        interp = auto_interpretation(recent, label)
         return jsonify({
             "ok": True,
             "interpretation": interp
@@ -1360,10 +1094,9 @@ def api_risklab_interpretation():
 def api_risklab_depth():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         island_name = request.args.get("island")
 
-        merged = merge_recent_and_historical(recent, historical)
+        merged = list(recent)
         if island_name and island_name != "Todas":
             merged = [e for e in merged if e["isla"] == island_name]
 
@@ -1383,18 +1116,16 @@ def api_risklab_depth():
 def api_risklab_compare():
     try:
         recent = parse_ign_canarias()
-        historical = load_historical_catalog()
         island_name = request.args.get("island")
 
         if island_name and island_name != "Todas":
             recent = [e for e in recent if e["isla"] == island_name]
-            historical = [e for e in historical if e["isla"] == island_name]
 
         return jsonify({
             "ok": True,
-            "compare": compare_windows(recent, historical),
-            "acceleration": compute_acceleration(recent, historical),
-            "baseline": compute_baseline(recent, historical, island_name if island_name != "Todas" else None)
+            "compare": compare_windows(recent),
+            "acceleration": compute_acceleration(recent),
+            "baseline": compute_baseline(recent, island_name if island_name != "Todas" else None)
         })
     except Exception as e:
         return jsonify({
@@ -1442,74 +1173,80 @@ def api_risklab_bundle():
         if island_name == "Todas":
             island_name = None
 
-        def build_bundle():
-            recent = parse_ign_canarias()
-            historical = []
+        recent = parse_ign_canarias()
+        historical = []  # desactivado temporalmente para evitar rotura del bundle
 
-            recent_filtered = recent
-            historical_filtered = historical
+        recent_filtered = recent
+        if island_name:
+            recent_filtered = [e for e in recent if e["isla"] == island_name]
 
-            if island_name:
-                recent_filtered = [e for e in recent if e["isla"] == island_name]
-                historical_filtered = [e for e in historical if e["isla"] == island_name]
+        summary = grouped_summary_by_island(recent)
+        if island_name:
+            summary = {island_name: summary.get(island_name, {})}
 
-            summary = grouped_summary_by_island(recent, historical)
-            if island_name:
-                summary = {island_name: summary.get(island_name, {})}
+        risklab_index = compute_risklab_index(recent_filtered, island_name)
+        interpretation = auto_interpretation(recent_filtered, island_name or "Canarias")
+        depth = depth_profile(events_in_days(recent_filtered, 30))
+        compare = compare_windows(recent_filtered)
+        acceleration = compute_acceleration(recent_filtered)
+        baseline = compute_baseline(recent_filtered, island_name)
+        regime = detect_regime_change(recent_filtered, island_name)
+        migration = detect_depth_migration(recent_filtered, island_name)
+        anomaly = compute_anomaly_signal(recent_filtered, island_name)
 
-            risklab_index = compute_risklab_index(recent_filtered, historical_filtered, island_name)
-            interpretation = auto_interpretation(recent_filtered, historical_filtered, island_name or "Canarias")
-            depth = depth_profile(events_in_days(merge_recent_and_historical(recent_filtered, historical_filtered), 30))
-            compare = compare_windows(recent_filtered, historical_filtered)
-            acceleration = compute_acceleration(recent_filtered, historical_filtered)
-            baseline = compute_baseline(recent_filtered, historical_filtered, island_name)
-            regime = detect_regime_change(recent_filtered, historical_filtered, island_name)
-            migration = detect_depth_migration(recent_filtered, historical_filtered, island_name)
-            anomaly = compute_anomaly_signal(recent_filtered, historical_filtered, island_name)
+        serie = serie_temporal(events_in_days(recent_filtered, 30))
 
-            serie = serie_temporal(
-                events_in_days(merge_recent_and_historical(recent_filtered, historical_filtered), 30)
-            )
+        enjambres = detect_swarm_candidates(recent)
+        if island_name:
+            enjambres = [c for c in enjambres if c["isla"] == island_name]
 
-            enjambres = detect_swarm_candidates(recent)
-            if island_name:
-                enjambres = [c for c in enjambres if c["isla"] == island_name]
+        infra = EMERGENCY_INFRASTRUCTURES[:]
+        if island_name:
+            infra = [x for x in infra if x["isla"] == island_name]
 
-            infra = EMERGENCY_INFRASTRUCTURES[:]
-            if island_name:
-                infra = [x for x in infra if x["isla"] == island_name]
+        territorial = None
+        if island_name:
+            territorial = territorial_summary(island_name, anomaly, EMERGENCY_INFRASTRUCTURES)
 
-            territorial = None
-            if island_name:
-                territorial = territorial_summary(island_name, anomaly, EMERGENCY_INFRASTRUCTURES)
-
-            return {
-                "ok": True,
-                "ign_eventos": recent_filtered,
-                "summary": summary,
-                "risklab_index": risklab_index,
-                "interpretation": interpretation,
-                "depth_profile": depth,
-                "compare": compare,
-                "acceleration": acceleration,
-                "baseline": baseline,
-                "regime": regime,
-                "migration": migration,
-                "anomaly": anomaly,
-                "territorial": territorial,
-                "serie": serie,
-                "candidatos_enjambre": enjambres,
-                "infraestructuras": infra,
-                "catalog_count": len(historical_filtered)
-            }
-
-        data = get_or_build_cached("bundle", island_name or "Todas", build_bundle)
-        return jsonify(data)
-
+        return jsonify({
+            "ok": True,
+            "ign_eventos": recent_filtered,
+            "summary": summary,
+            "risklab_index": risklab_index,
+            "interpretation": interpretation,
+            "depth_profile": depth,
+            "compare": compare,
+            "acceleration": acceleration,
+            "baseline": baseline,
+            "regime": regime,
+            "migration": migration,
+            "anomaly": anomaly,
+            "territorial": territorial,
+            "serie": serie,
+            "candidatos_enjambre": enjambres,
+            "infraestructuras": infra,
+            "catalog_count": len(historical)
+        })
     except Exception as e:
         return jsonify({
             "ok": False,
-            "error": str(e)
+            "error": str(e),
+            "ign_eventos": [],
+            "summary": {},
+            "risklab_index": None,
+            "interpretation": None,
+            "depth_profile": {},
+            "compare": {},
+            "acceleration": {},
+            "baseline": {},
+            "regime": None,
+            "migration": None,
+            "anomaly": None,
+            "territorial": None,
+            "serie": {"labels": [], "counts": [], "mmax": []},
+            "candidatos_enjambre": [],
+            "infraestructuras": [],
+            "catalog_count": 0
         }), 500
 
 
@@ -1523,9 +1260,7 @@ def api_ign_debug():
         return jsonify({
             "ok": True,
             "sample_lines": lines[:40],
-            "html_length": len(html_text),
-            "historical_cache_loaded": HISTORICAL_CACHE["loaded"],
-            "historical_cache_error": HISTORICAL_CACHE["error"]
+            "html_length": len(html_text)
         })
     except Exception as e:
         return jsonify({

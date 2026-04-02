@@ -39,9 +39,12 @@
       --emergencias: #111827;
 
       --municipio-line: #334155;
-      --municipio-fill: rgba(51, 65, 85, 0.04);
+      --municipio-fill: rgba(51, 65, 85, 0.05);
       --municipio-selected-line: #d97706;
       --municipio-selected-fill: rgba(245, 158, 11, 0.18);
+
+      --right-panel-width: 430px;
+      --gutter: 12px;
     }
 
     * { box-sizing: border-box; }
@@ -123,15 +126,17 @@
     #sources-panel {
       top: 12px;
       left: 12px;
-      width: 250px;
+      width: 255px;
     }
 
     #topright-panel {
       top: 12px;
       right: 12px;
-      width: 430px;
+      width: var(--right-panel-width);
       max-width: calc(100% - 24px);
       border-left: 6px solid var(--orange);
+      max-height: calc(100vh - 110px);
+      overflow: auto;
     }
 
     .status-title {
@@ -206,7 +211,7 @@
 
     #bottom-toggle {
       position: absolute;
-      left: 50%;
+      left: calc((100% - var(--right-panel-width) - 24px) / 2);
       transform: translateX(-50%);
       bottom: 12px;
       z-index: 1100;
@@ -223,9 +228,9 @@
 
     #bottom-panel {
       left: 12px;
-      right: 12px;
-      bottom: 48px;
-      height: 230px;
+      right: calc(var(--right-panel-width) + 24px);
+      bottom: 56px;
+      height: 220px;
       padding-bottom: 6px;
       transition: transform 0.25s ease, opacity 0.25s ease;
       transform: translateY(0);
@@ -233,7 +238,7 @@
     }
 
     #bottom-panel.collapsed {
-      transform: translateY(265px);
+      transform: translateY(255px);
       opacity: 0;
       pointer-events: none;
     }
@@ -243,6 +248,11 @@
       gap: 5px;
       flex-wrap: wrap;
       margin-bottom: 7px;
+      position: sticky;
+      top: 0;
+      background: var(--panel);
+      z-index: 1;
+      padding-bottom: 2px;
     }
 
     .tab-btn {
@@ -464,6 +474,16 @@
       font-size: 11px;
     }
 
+    @media (max-width: 1180px) {
+      #bottom-panel {
+        right: 12px;
+      }
+
+      #bottom-toggle {
+        left: 50%;
+      }
+    }
+
     @media (max-width: 980px) {
       #map-wrap {
         height: 1520px;
@@ -478,24 +498,28 @@
       }
 
       #sources-panel { top: 12px; }
-      #topright-panel { top: 185px; }
+      #topright-panel {
+        top: 185px;
+        max-height: none;
+      }
 
       #bottom-toggle {
         bottom: 12px;
+        left: 50%;
       }
 
       #bottom-panel {
-        top: 530px;
+        top: 560px;
         bottom: auto;
-        height: 920px;
+        height: 900px;
       }
 
       #bottom-panel.collapsed {
-        transform: translateY(955px);
+        transform: translateY(940px);
       }
 
       .tab-content {
-        height: 840px;
+        height: 815px;
       }
 
       .legend-grid {
@@ -528,7 +552,6 @@
       <div><strong>USGS</strong> · últimas 24h, filtrado Canarias desde backend</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
-      <div><strong>Islas</strong> · GeoJSON local de Canarias</div>
       <div><strong>Territorio operativo</strong> · capa prototipo RiskLab</div>
       <div class="small-note">Índice RiskLab y señal territorial: uso experimental. No equivalen al semáforo volcánico oficial ni a cartografía oficial de emergencias.</div>
     </div>
@@ -580,21 +603,6 @@
         <label><input type="checkbox" id="toggle-infra" checked> Infraestructuras</label>
         <label><input type="checkbox" id="toggle-exposed" checked> Infra expuestas</label>
       </div>
-
-      <div class="divider"></div>
-
-      <div class="control-list">
-        <label><input type="checkbox" class="type-filter" value="hospital" checked> Hospitales</label>
-        <label><input type="checkbox" class="type-filter" value="aeropuerto" checked> Aeropuertos</label>
-        <label><input type="checkbox" class="type-filter" value="puerto" checked> Puertos</label>
-        <label><input type="checkbox" class="type-filter" value="albergue" checked> Albergues</label>
-        <label><input type="checkbox" class="type-filter" value="polideportivo" checked> Polideportivos</label>
-        <label><input type="checkbox" class="type-filter" value="telecom" checked> Telecom</label>
-        <label><input type="checkbox" class="type-filter" value="subestacion" checked> Energía</label>
-        <label><input type="checkbox" class="type-filter" value="agua" checked> Agua</label>
-        <label><input type="checkbox" class="type-filter" value="carretera" checked> Carreteras</label>
-        <label><input type="checkbox" class="type-filter" value="emergencias" checked> Emergencias</label>
-      </div>
     </div>
 
     <button id="bottom-toggle">Ocultar análisis</button>
@@ -637,8 +645,6 @@
 
       <div id="tab-territory" class="tab-content">
         <div id="territorialContent"></div>
-        <div id="territorialExposureContent"></div>
-        <div id="territorialMunicipalContent"></div>
       </div>
 
       <div id="tab-infra" class="tab-content">
@@ -662,14 +668,8 @@
             <div class="legend-item"><div class="square-legend" style="background:var(--hospital)"></div><span>Hospital</span></div>
             <div class="legend-item"><div class="square-legend" style="background:var(--aeropuerto)"></div><span>Aeropuerto</span></div>
             <div class="legend-item"><div class="square-legend" style="background:var(--puerto)"></div><span>Puerto</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:var(--telecom)"></div><span>Telecom</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:var(--energia)"></div><span>Energía</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:var(--agua)"></div><span>Agua</span></div>
             <div class="legend-item"><div class="square-legend" style="background:#111827;border:2px solid #f59e0b"></div><span>Infra expuesta</span></div>
           </div>
-        </div>
-        <div class="small-note" style="margin-top:8px;">
-          La capa municipal y territorial es prototipo RiskLab para análisis visual. No sustituye cartografía oficial de protección civil.
         </div>
       </div>
     </div>
@@ -697,7 +697,7 @@
     );
 
     const openTopo = L.tileLayer(
-      "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+      "https://{s}.tile.opentopomap.org/{z}/{y}/{x}.png",
       {
         maxZoom: 17,
         attribution: "Map data: &copy; OpenStreetMap contributors, style: &copy; OpenTopoMap"
@@ -725,7 +725,7 @@
     let summary = {};
     let risklabIndex = null;
     let interpretation = null;
-    let depthProfileData = null;
+    let depthProfile = null;
     let compareData = null;
     let infrastructures = [];
     let swarmCandidates = [];
@@ -734,30 +734,48 @@
     let migrationData = null;
     let anomalyData = null;
     let territorialData = null;
-    let municipalitySummary = null;
-    let exposedInfra = [];
 
     let currentMode = "citizens";
-
     let municipalitiesGeoJSON = null;
-    let islandsGeoJSON = null;
     let selectedMunicipalityLayer = null;
-    let municipalitiesAvailable = [];
+
+    const MUNICIPALITIES_BY_ISLAND = {
+      "Tenerife": [
+        "Adeje", "Arafo", "Arico", "Arona", "Buenavista del Norte", "Candelaria",
+        "El Rosario", "El Sauzal", "El Tanque", "Fasnia", "Garachico",
+        "Granadilla de Abona", "Guía de Isora", "Güímar", "Icod de los Vinos",
+        "La Guancha", "La Matanza de Acentejo", "La Orotava", "La Victoria de Acentejo",
+        "Los Realejos", "Los Silos", "Puerto de la Cruz", "San Cristóbal de La Laguna",
+        "San Juan de la Rambla", "Santa Cruz de Tenerife", "Santa Úrsula",
+        "Santiago del Teide", "Tacoronte", "Tegueste", "Vilaflor de Chasna"
+      ],
+      "La Palma": [
+        "Breña Alta", "Breña Baja", "El Paso", "Fuencaliente", "Garafía",
+        "Los Llanos de Aridane", "Puntagorda", "Puntallana", "San Andrés y Sauces",
+        "Santa Cruz de La Palma", "Tazacorte", "Tijarafe", "Villa de Mazo"
+      ],
+      "El Hierro": ["Frontera", "El Pinar", "Valverde"],
+      "Gran Canaria": [
+        "Agaete", "Agüimes", "Artenara", "Arucas", "Firgas", "Gáldar", "Ingenio",
+        "La Aldea de San Nicolás", "Las Palmas de Gran Canaria", "Mogán", "Moya",
+        "San Bartolomé de Tirajana", "Santa Brígida", "Santa Lucía de Tirajana",
+        "Telde", "Teror", "Valsequillo de Gran Canaria", "Vega de San Mateo"
+      ],
+      "Lanzarote": ["Arrecife", "Haría", "San Bartolomé", "Teguise", "Tías", "Tinajo", "Yaiza"],
+      "Fuerteventura": ["Antigua", "Betancuria", "La Oliva", "Pájara", "Puerto del Rosario", "Tuineje"],
+      "La Gomera": ["Agulo", "Alajeró", "Hermigua", "San Sebastián de La Gomera", "Valle Gran Rey", "Vallehermoso"],
+      "Atlántico-Canarias": ["Atlántico-Canarias"]
+    };
 
     const VOLCANOES = [
       { name:"Teide", island:"Tenerife", lat:28.2724, lon:-16.6425, status:"Activo", type:"Estratovolcán" },
       { name:"Pico Viejo", island:"Tenerife", lat:28.2636, lon:-16.6598, status:"Activo", type:"Complejo volcánico" },
       { name:"Chinyero", island:"Tenerife", lat:28.3128, lon:-16.7872, status:"Histórico", type:"Cono volcánico" },
-      { name:"Garachico / Arenas Negras", island:"Tenerife", lat:28.3738, lon:-16.7639, status:"Histórico", type:"Erupción histórica" },
-      { name:"Sietefuentes", island:"Tenerife", lat:28.2730, lon:-16.4290, status:"Histórico", type:"Erupción histórica" },
-      { name:"Arafo", island:"Tenerife", lat:28.2410, lon:-16.4230, status:"Histórico", type:"Erupción histórica" },
       { name:"Cumbre Vieja", island:"La Palma", lat:28.5708, lon:-17.8353, status:"Activo", type:"Dorsal volcánica activa" },
       { name:"Tajogaite", island:"La Palma", lat:28.6128, lon:-17.8660, status:"Reciente", type:"Centro eruptivo 2021" },
-      { name:"Teneguía", island:"La Palma", lat:28.4684, lon:-17.8483, status:"Histórico", type:"Cono volcánico" },
       { name:"Tagoro", island:"El Hierro", lat:27.6290, lon:-18.0200, status:"Reciente", type:"Erupción submarina 2011" },
       { name:"Bandama", island:"Gran Canaria", lat:28.0085, lon:-15.4564, status:"Inactivo", type:"Caldera / cono" },
-      { name:"Timanfaya", island:"Lanzarote", lat:29.0167, lon:-13.7500, status:"Histórico", type:"Campo volcánico" },
-      { name:"La Corona", island:"Lanzarote", lat:29.2316, lon:-13.4706, status:"Inactivo", type:"Cono volcánico" }
+      { name:"Timanfaya", island:"Lanzarote", lat:29.0167, lon:-13.7500, status:"Histórico", type:"Campo volcánico" }
     ];
 
     const VOLCANIC_ZONES = [
@@ -765,67 +783,25 @@
         name: "Teide - Pico Viejo",
         island: "Tenerife",
         description: "Complejo central activo de Tenerife",
-        coords: [
-          [28.33, -16.74],
-          [28.33, -16.55],
-          [28.20, -16.55],
-          [28.20, -16.74]
-        ]
+        coords: [[28.33, -16.74],[28.33, -16.55],[28.20, -16.55],[28.20, -16.74]]
       },
       {
         name: "Dorsal Noroeste de Tenerife",
         island: "Tenerife",
         description: "Alineación estructural volcánica NW",
-        coords: [
-          [28.43, -16.95],
-          [28.39, -16.73],
-          [28.25, -16.78],
-          [28.28, -16.98]
-        ]
+        coords: [[28.43, -16.95],[28.39, -16.73],[28.25, -16.78],[28.28, -16.98]]
       },
       {
         name: "Dorsal Nordeste de Tenerife",
         island: "Tenerife",
         description: "Alineación estructural volcánica NE",
-        coords: [
-          [28.61, -16.33],
-          [28.46, -16.19],
-          [28.30, -16.45],
-          [28.42, -16.56]
-        ]
+        coords: [[28.61, -16.33],[28.46, -16.19],[28.30, -16.45],[28.42, -16.56]]
       },
       {
         name: "Cumbre Vieja",
         island: "La Palma",
         description: "Dorsal volcánica activa de La Palma",
-        coords: [
-          [28.73, -17.92],
-          [28.69, -17.78],
-          [28.42, -17.80],
-          [28.46, -17.94]
-        ]
-      },
-      {
-        name: "Sistema volcánico de El Hierro",
-        island: "El Hierro",
-        description: "Rift y sistema volcánico insular de El Hierro",
-        coords: [
-          [27.83, -18.18],
-          [27.83, -17.88],
-          [27.63, -17.86],
-          [27.60, -18.18]
-        ]
-      },
-      {
-        name: "Timanfaya - Mancha Blanca",
-        island: "Lanzarote",
-        description: "Campo volcánico histórico de Lanzarote",
-        coords: [
-          [29.10, -13.92],
-          [29.10, -13.63],
-          [28.95, -13.63],
-          [28.95, -13.92]
-        ]
+        coords: [[28.73, -17.92],[28.69, -17.78],[28.42, -17.80],[28.46, -17.94]]
       }
     ];
 
@@ -837,21 +813,9 @@
       return document.getElementById("municipality-filter").value;
     }
 
-    function activeInfraTypes() {
-      return Array.from(document.querySelectorAll(".type-filter:checked")).map(x => x.value);
-    }
-
     function safeNumber(v, fallback = 0) {
       const n = Number(v);
       return Number.isFinite(n) ? n : fallback;
-    }
-
-    function normalizeText(s) {
-      return String(s || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim()
-        .toLowerCase();
     }
 
     function formatDate(ev) {
@@ -902,22 +866,6 @@
       return mapColors[tipo] || "#94a3b8";
     }
 
-    function infraLabel(tipo) {
-      const labels = {
-        hospital: "Hospital",
-        aeropuerto: "Aeropuerto",
-        puerto: "Puerto",
-        albergue: "Albergue",
-        polideportivo: "Polideportivo",
-        telecom: "Telecom",
-        subestacion: "Subestación",
-        agua: "Agua",
-        carretera: "Carretera",
-        emergencias: "Emergencias"
-      };
-      return labels[tipo] || tipo;
-    }
-
     function infraIcon(tipo, exposed = false) {
       const color = infraColor(tipo);
       const border = exposed ? "#f59e0b" : "rgba(0,0,0,0.2)";
@@ -931,15 +879,46 @@
       });
     }
 
+    function normalizeText(s) {
+      return String(s || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function canonicalMunicipalityName(name) {
+      const n = normalizeText(name);
+
+      for (const list of Object.values(MUNICIPALITIES_BY_ISLAND)) {
+        for (const item of list) {
+          if (normalizeText(item) === n) return item;
+        }
+      }
+
+      if (n === "fuencaliente de la palma") return "Fuencaliente";
+      if (n === "el pinar de el hierro") return "El Pinar";
+      return name || "";
+    }
+
     async function fetchJson(url) {
       const res = await fetch(url);
       if (!res.ok) throw new Error("Error en " + url);
       return await res.json();
     }
 
+    async function loadMunicipalitiesGeoJSON() {
+      try {
+        municipalitiesGeoJSON = await fetchJson("./municipios_canarias.geojson");
+      } catch (e) {
+        console.error("No se pudo cargar municipios_canarias.geojson", e);
+        municipalitiesGeoJSON = null;
+      }
+    }
+
     function getMunicipalityName(feature) {
       const p = feature?.properties || {};
-      return (
+      return canonicalMunicipalityName(
         p.etiqueta ||
         p.nombre ||
         p.NAMEUNIT ||
@@ -952,25 +931,12 @@
       );
     }
 
-    function getIslandFeatureName(feature) {
-      const p = feature?.properties || {};
-      return (
-        p.etiqueta ||
-        p.nombre ||
-        p.NAMEUNIT ||
-        p.NOMBRE ||
-        p.ISLA ||
-        p.isla ||
-        ""
-      );
-    }
-
     function municipalityBaseStyle() {
       return {
         color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-line').trim(),
         weight: 1,
         fillColor: getComputedStyle(document.documentElement).getPropertyValue('--municipio-fill').trim(),
-        fillOpacity: 0.18
+        fillOpacity: 0.20
       };
     }
 
@@ -983,62 +949,26 @@
       };
     }
 
-    async function loadMunicipalitiesGeoJSON() {
-      try {
-        municipalitiesGeoJSON = await fetchJson("./municipios_canarias.geojson");
-      } catch (e) {
-        console.error("No se pudo cargar municipios_canarias.geojson", e);
-        municipalitiesGeoJSON = null;
-      }
-    }
+    function populateMunicipalityFilter() {
+      const select = document.getElementById("municipality-filter");
+      const current = select.value || "Todos";
+      const island = selectedIsland();
 
-    async function loadIslandsGeoJSON() {
-      try {
-        islandsGeoJSON = await fetchJson("./islas_20170101.json");
-      } catch (e) {
-        console.error("No se pudo cargar islas_20170101.json", e);
-        islandsGeoJSON = null;
-      }
-    }
+      select.innerHTML = `<option value="Todos">Todos</option>`;
 
-    function getFeatureCenterLatLng(feature) {
-      const temp = L.geoJSON(feature);
-      return temp.getBounds().getCenter();
-    }
-
-    function detectIslandForMunicipality(feature) {
-      if (!islandsGeoJSON || !islandsGeoJSON.features) return "Atlántico-Canarias";
-
-      const center = getFeatureCenterLatLng(feature);
-      const latlng = L.latLng(center.lat, center.lng);
-
-      for (const islandFeature of islandsGeoJSON.features) {
-        const layer = L.geoJSON(islandFeature);
-        let inside = false;
-
-        layer.eachLayer(l => {
-          if (typeof l.getBounds === "function" && l.getBounds().contains(latlng)) {
-            inside = true;
-          }
-        });
-
-        if (inside) {
-          const rawName = getIslandFeatureName(islandFeature);
-          const n = normalizeText(rawName);
-
-          if (n.includes("tenerife")) return "Tenerife";
-          if (n.includes("palma")) return "La Palma";
-          if (n.includes("hierro")) return "El Hierro";
-          if (n.includes("gran canaria")) return "Gran Canaria";
-          if (n.includes("lanzarote")) return "Lanzarote";
-          if (n.includes("fuerteventura")) return "Fuerteventura";
-          if (n.includes("gomera")) return "La Gomera";
-
-          return rawName || "Atlántico-Canarias";
-        }
+      if (island === "Todas") {
+        select.value = "Todos";
+        return;
       }
 
-      return "Atlántico-Canarias";
+      (MUNICIPALITIES_BY_ISLAND[island] || []).forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = m;
+        select.appendChild(opt);
+      });
+
+      select.value = (MUNICIPALITIES_BY_ISLAND[island] || []).includes(current) ? current : "Todos";
     }
 
     function buildMunicipalitiesLayer() {
@@ -1052,10 +982,13 @@
 
       const geo = L.geoJSON(municipalitiesGeoJSON, {
         filter: feature => {
-          const featureIsland = detectIslandForMunicipality(feature);
           const featureMuni = getMunicipalityName(feature);
 
-          if (island !== "Todas" && normalizeText(featureIsland) !== normalizeText(island)) return false;
+          if (island !== "Todas") {
+            const allowed = (MUNICIPALITIES_BY_ISLAND[island] || []).map(x => normalizeText(x));
+            if (!allowed.includes(normalizeText(featureMuni))) return false;
+          }
+
           if (muni !== "Todos" && normalizeText(featureMuni) !== normalizeText(muni)) return false;
 
           return true;
@@ -1063,11 +996,10 @@
         style: () => municipalityBaseStyle(),
         onEachFeature: (feature, layer) => {
           const name = getMunicipalityName(feature);
-          const featureIsland = detectIslandForMunicipality(feature);
 
           layer.bindPopup(`
             <div class="popup-title">${name || "Municipio"}</div>
-            <div class="popup-row"><strong>Isla:</strong> ${featureIsland}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${selectedIsland() === "Todas" ? "Canarias" : selectedIsland()}</div>
           `);
 
           if (muni !== "Todos" && normalizeText(name) === normalizeText(muni)) {
@@ -1083,47 +1015,6 @@
     function zoomToSelectedMunicipality() {
       if (selectedMunicipalityLayer) {
         map.fitBounds(selectedMunicipalityLayer.getBounds(), { padding: [24, 24], maxZoom: 11 });
-      }
-    }
-
-    function populateMunicipalityFilterFromGeoJSON() {
-      const select = document.getElementById("municipality-filter");
-      const current = select.value || "Todos";
-      const island = selectedIsland();
-
-      select.innerHTML = `<option value="Todos">Todos</option>`;
-      municipalitiesAvailable = [];
-
-      if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features || island === "Todas") {
-        select.value = "Todos";
-        return;
-      }
-
-      const unique = new Set();
-
-      municipalitiesGeoJSON.features.forEach(feature => {
-        const fIsland = detectIslandForMunicipality(feature);
-        const fName = getMunicipalityName(feature);
-
-        if (!fName) return;
-        if (normalizeText(fIsland) !== normalizeText(island)) return;
-
-        unique.add(fName);
-      });
-
-      municipalitiesAvailable = Array.from(unique).sort((a, b) => a.localeCompare(b, "es"));
-
-      municipalitiesAvailable.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m;
-        opt.textContent = m;
-        select.appendChild(opt);
-      });
-
-      if (municipalitiesAvailable.includes(current)) {
-        select.value = current;
-      } else {
-        select.value = "Todos";
       }
     }
 
@@ -1268,53 +1159,26 @@
           <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(c.magnitud_max).toFixed(1)}</div>
           <div class="popup-row"><strong>Mmedia:</strong> ${safeNumber(c.magnitud_media).toFixed(2)}</div>
           <div class="popup-row"><strong>Profundidad media:</strong> ${safeNumber(c.profundidad_media_km).toFixed(1)} km</div>
-          <div class="popup-row"><strong>Zona:</strong> ${c.isla || "—"}</div>
         `);
 
         swarmLayer.addLayer(circle);
       });
     }
 
-    function filteredInfrastructures() {
-      const types = activeInfraTypes();
-      return infrastructures.filter(x => types.includes(x.tipo));
-    }
-
     function drawInfrastructures() {
       infraLayer.clearLayers();
-
-      filteredInfrastructures().forEach(x => {
+      infrastructures.forEach(x => {
         const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, false) });
-        marker.bindPopup(`
-          <div class="popup-title">${x.nombre}</div>
-          <div class="popup-row"><strong>Tipo:</strong> ${infraLabel(x.tipo)}</div>
-          <div class="popup-row"><strong>Municipio:</strong> ${x.municipio}</div>
-          <div class="popup-row"><strong>Isla:</strong> ${x.isla}</div>
-          <div class="popup-row"><strong>Criticidad:</strong> ${x.criticidad || "media"}</div>
-          <div class="popup-row"><strong>Nota:</strong> ${x.note || "Recurso operativo / demo RiskLab"}</div>
-        `);
         infraLayer.addLayer(marker);
       });
     }
 
     function drawExposedInfra() {
       exposedInfraLayer.clearLayers();
-
-      const allowedTypes = new Set(activeInfraTypes());
-      (exposedInfra || [])
-        .filter(x => allowedTypes.has(x.tipo))
-        .forEach(x => {
-          const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, true) });
-          marker.bindPopup(`
-            <div class="popup-title">${x.nombre}</div>
-            <div class="popup-row"><strong>Tipo:</strong> ${infraLabel(x.tipo)}</div>
-            <div class="popup-row"><strong>Municipio:</strong> ${x.municipio}</div>
-            <div class="popup-row"><strong>Isla:</strong> ${x.isla}</div>
-            <div class="popup-row"><strong>Distancia al centro reciente:</strong> ${safeNumber(x.distancia_km).toFixed(1)} km</div>
-            <div class="popup-row"><strong>Ventana:</strong> 7 días</div>
-          `);
-          exposedInfraLayer.addLayer(marker);
-        });
+      (exposedInfra || []).forEach(x => {
+        const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, true) });
+        exposedInfraLayer.addLayer(marker);
+      });
     }
 
     function drawSummary() {
@@ -1362,18 +1226,6 @@
       });
 
       html += `</tbody></table>`;
-
-      if (municipalitySummary && selectedMunicipality() !== "Todos") {
-        html += `
-          <div class="insight-card" style="margin-top:8px;">
-            <strong>Resumen municipal</strong><br>
-            ${municipalitySummary.municipio} · ${municipalitySummary.isla}<br>
-            Eventos 7d: ${municipalitySummary.eventos_7d} · Eventos 30d: ${municipalitySummary.eventos_30d}<br>
-            Infraestructuras críticas: ${municipalitySummary.infraestructuras_criticas}
-          </div>
-        `;
-      }
-
       target.innerHTML = html;
       note.innerHTML = `<strong>Índice RiskLab:</strong> señal analítica experimental. <strong>Semáforo oficial:</strong> independiente.`;
     }
@@ -1452,8 +1304,8 @@
     function buildDepthChart() {
       if (depthChart) depthChart.destroy();
 
-      const labels = Object.keys(depthProfileData || {});
-      const values = Object.values(depthProfileData || {});
+      const labels = Object.keys(depthProfile || {});
+      const values = Object.values(depthProfile || {});
 
       depthChart = new Chart(document.getElementById("depthChart"), {
         type: "bar",
@@ -1542,20 +1394,10 @@
 
     function buildRegimeCard() {
       const target = document.getElementById("regimeContent");
+      if (!regimeData) { target.innerHTML = ""; return; }
 
-      if (!regimeData) {
-        target.innerHTML = "";
-        return;
-      }
-
-      const colorClass =
-        regimeData.color === "green" ? "green" :
-        regimeData.color === "orange" ? "orange" :
-        "red";
-
-      const drivers = (regimeData.drivers || [])
-        .map(x => `<li>${x}</li>`)
-        .join("");
+      const colorClass = regimeData.color === "green" ? "green" : regimeData.color === "orange" ? "orange" : "red";
+      const drivers = (regimeData.drivers || []).map(x => `<li>${x}</li>`).join("");
 
       target.innerHTML = `
         <div class="insight-card">
@@ -1564,42 +1406,17 @@
             <span class="badge ${colorClass}">${regimeData.level}</span>
           </div>
           <div style="margin-top:5px;"><strong>${regimeData.headline}</strong></div>
-          <div class="small-note" style="margin-top:5px;">Score: ${regimeData.score}</div>
-          <ul style="margin:7px 0 0 18px;padding:0;">
-            ${drivers}
-          </ul>
-          <div class="small-note" style="margin-top:7px;">
-            ${regimeData.note || ""}
-          </div>
+          <ul style="margin:7px 0 0 18px;padding:0;">${drivers}</ul>
         </div>
       `;
     }
 
     function buildMigrationCard() {
       const target = document.getElementById("migrationContent");
+      if (!migrationData) { target.innerHTML = ""; return; }
 
-      if (!migrationData) {
-        target.innerHTML = "";
-        return;
-      }
-
-      const colorClass =
-        migrationData.color === "green" ? "green" :
-        migrationData.color === "orange" ? "orange" :
-        "red";
-
-      const drivers = (migrationData.drivers || [])
-        .map(x => `<li>${x}</li>`)
-        .join("");
-
-      const shift = migrationData.metrics?.shift_towards_surface_km;
-
-      let shiftText = "sin dato";
-      if (typeof shift === "number") {
-        if (shift > 0) shiftText = `${shift} km hacia superficie`;
-        else if (shift < 0) shiftText = `${Math.abs(shift)} km hacia mayor profundidad`;
-        else shiftText = "sin cambio apreciable";
-      }
+      const colorClass = migrationData.color === "green" ? "green" : migrationData.color === "orange" ? "orange" : "red";
+      const drivers = (migrationData.drivers || []).map(x => `<li>${x}</li>`).join("");
 
       target.innerHTML = `
         <div class="insight-card">
@@ -1607,36 +1424,17 @@
             <strong>Migración sísmica en profundidad</strong>
             <span class="badge ${colorClass}">${migrationData.trend}</span>
           </div>
-          <div style="margin-top:5px;"><strong>${migrationData.headline}</strong></div>
-          <div class="small-note" style="margin-top:5px;">
-            Desplazamiento vertical estimado: ${shiftText}
-          </div>
-          <ul style="margin:7px 0 0 18px;padding:0;">
-            ${drivers}
-          </ul>
-          <div class="small-note" style="margin-top:7px;">
-            ${migrationData.note || ""}
-          </div>
+          <ul style="margin:7px 0 0 18px;padding:0;">${drivers}</ul>
         </div>
       `;
     }
 
     function buildAnomalyCard() {
       const target = document.getElementById("anomalyContent");
+      if (!anomalyData) { target.innerHTML = ""; return; }
 
-      if (!anomalyData) {
-        target.innerHTML = "";
-        return;
-      }
-
-      const colorClass =
-        anomalyData.color === "green" ? "green" :
-        anomalyData.color === "orange" ? "orange" :
-        "red";
-
-      const drivers = (anomalyData.drivers || [])
-        .map(x => `<li>${x}</li>`)
-        .join("");
+      const colorClass = anomalyData.color === "green" ? "green" : anomalyData.color === "orange" ? "orange" : "red";
+      const drivers = (anomalyData.drivers || []).map(x => `<li>${x}</li>`).join("");
 
       target.innerHTML = `
         <div class="insight-card">
@@ -1644,149 +1442,47 @@
             <strong>Señal de anomalía RiskLab</strong>
             <span class="badge ${colorClass}">${anomalyData.nivel}</span>
           </div>
-          <div style="margin-top:5px;"><strong>Score: ${safeNumber(anomalyData.score).toFixed(1)}</strong></div>
-          <ul style="margin:7px 0 0 18px;padding:0;">
-            ${drivers}
-          </ul>
+          <ul style="margin:7px 0 0 18px;padding:0;">${drivers}</ul>
         </div>
       `;
     }
 
     function buildTerritorialCard() {
       const target = document.getElementById("territorialContent");
-
       if (!territorialData) {
-        target.innerHTML = `
-          <div class="insight-card">
-            Selecciona una isla para ver la lectura territorial operativa.
-          </div>
-        `;
+        target.innerHTML = `<div class="insight-card">Selecciona una isla para ver la lectura territorial operativa.</div>`;
         return;
       }
-
-      const types = (territorialData.tipos || [])
-        .map(x => `<span class="infra-pill">${infraLabel(x)}</span>`)
-        .join("");
-
-      const exposedCount = territorialData.expuestas_7d ?? 0;
-      const nearestText = territorialData.infra_mas_cercana
-        ? `${territorialData.infra_mas_cercana.nombre} (${safeNumber(territorialData.infra_mas_cercana.distancia_km).toFixed(1)} km)`
-        : "sin dato";
 
       target.innerHTML = `
         <div class="insight-card">
           <strong>Lectura territorial operativa</strong><br>
           Isla: ${territorialData.isla}<br>
           Nivel de anomalía: ${territorialData.nivel_anomalia}<br>
-          Infraestructuras cargadas: ${territorialData.infraestructuras}<br>
-          Infraestructuras expuestas 7d: ${exposedCount}<br>
-          Recurso más cercano al centro reciente: ${nearestText}<br>
+          Infraestructuras demo: ${territorialData.infraestructuras}<br>
           Lectura: ${territorialData.lectura}
-          <div style="margin-top:6px;">
-            ${types || '<span class="small-note">Sin tipos cargados</span>'}
-          </div>
-        </div>
-      `;
-    }
-
-    function buildTerritorialExposureCard() {
-      const target = document.getElementById("territorialExposureContent");
-
-      if (!exposedInfra || exposedInfra.length === 0) {
-        target.innerHTML = `
-          <div class="insight-card">
-            No se detectan infraestructuras expuestas dentro del radio operativo actual.
-          </div>
-        `;
-        return;
-      }
-
-      let html = `
-        <div class="insight-card">
-          <strong>Infraestructuras expuestas (proximidad al centro sísmico reciente)</strong><br>
-      `;
-
-      exposedInfra.slice(0, 8).forEach(x => {
-        html += `
-          <div style="margin-top:6px;">
-            <span class="type-chip" style="background:${infraColor(x.tipo)}">${infraLabel(x.tipo)}</span>
-            ${x.nombre} · ${x.municipio} · ${safeNumber(x.distancia_km).toFixed(1)} km
-          </div>
-        `;
-      });
-
-      html += `</div>`;
-      target.innerHTML = html;
-    }
-
-    function buildTerritorialMunicipalCard() {
-      const target = document.getElementById("territorialMunicipalContent");
-
-      if (!municipalitySummary || selectedMunicipality() === "Todos") {
-        target.innerHTML = `
-          <div class="insight-card">
-            Selecciona un municipio para activar la ficha municipal.
-          </div>
-        `;
-        return;
-      }
-
-      const types = (municipalitySummary.tipos || [])
-        .map(x => `<span class="infra-pill">${infraLabel(x)}</span>`)
-        .join("");
-
-      target.innerHTML = `
-        <div class="insight-card">
-          <strong>Ficha municipal operativa</strong><br>
-          Municipio: ${municipalitySummary.municipio}<br>
-          Isla: ${municipalitySummary.isla}<br>
-          Eventos 7d: ${municipalitySummary.eventos_7d}<br>
-          Eventos 30d: ${municipalitySummary.eventos_30d}<br>
-          Mmax 30d: ${safeNumber(municipalitySummary.magnitud_max_30d).toFixed(1)}<br>
-          Infraestructuras críticas: ${municipalitySummary.infraestructuras_criticas}
-          <div style="margin-top:6px;">
-            ${types || '<span class="small-note">Sin tipos cargados</span>'}
-          </div>
         </div>
       `;
     }
 
     function buildInfraContent() {
       const target = document.getElementById("infraContent");
-      const data = filteredInfrastructures();
-
-      if (!data || data.length === 0) {
-        target.innerHTML = `
-          <div class="insight-card">
-            No hay infraestructuras cargadas para este filtro.
-          </div>
-        `;
+      if (!infrastructures || infrastructures.length === 0) {
+        target.innerHTML = `<div class="insight-card">No hay infraestructuras cargadas para este filtro.</div>`;
         return;
       }
 
-      const byType = {};
-      data.forEach(x => {
-        byType[x.tipo] = (byType[x.tipo] || 0) + 1;
-      });
-
-      let html = `<div class="insight-card"><strong>Inventario cargado:</strong><br>`;
-      Object.entries(byType).forEach(([tipo, n]) => {
-        html += `<span class="infra-pill">${infraLabel(tipo)}: ${n}</span>`;
-      });
-      html += `</div>`;
-
-      data.slice(0, 18).forEach(x => {
+      let html = "";
+      infrastructures.slice(0, 20).forEach(x => {
         html += `
           <div class="insight-card">
-            <span class="type-chip" style="background:${infraColor(x.tipo)}">${infraLabel(x.tipo)}</span><br>
             <strong>${x.nombre}</strong><br>
+            Tipo: ${x.tipo}<br>
             Municipio: ${x.municipio}<br>
-            Isla: ${x.isla}<br>
-            Criticidad: ${x.criticidad || "media"}
+            Isla: ${x.isla}
           </div>
         `;
       });
-
       target.innerHTML = html;
     }
 
@@ -1876,7 +1572,7 @@
         summary = bundle.summary || {};
         risklabIndex = bundle.risklab_index || null;
         interpretation = bundle.interpretation || null;
-        depthProfileData = bundle.depth_profile || {};
+        depthProfile = bundle.depth_profile || {};
         compareData = {
           compare: bundle.compare || {},
           acceleration: bundle.acceleration || {},
@@ -1889,18 +1585,13 @@
         migrationData = bundle.migration || null;
         anomalyData = bundle.anomaly || null;
         territorialData = bundle.territorial || null;
-        municipalitySummary = bundle.municipio_resumen || null;
-        exposedInfra = bundle.infra_expuestas || [];
       } catch (e) {
         console.error(e);
       }
 
       try {
         const usgsJson = await fetchJson("/api/usgs-canarias");
-        usgsEvents = (usgsJson.eventos || []).filter(ev => {
-          if (selectedIsland() !== "Todas" && ev.isla !== selectedIsland()) return false;
-          return true;
-        });
+        usgsEvents = (usgsJson.eventos || []).filter(ev => selectedIsland() === "Todas" || ev.isla === selectedIsland());
       } catch (e) {
         usgsEvents = [];
       }
@@ -1928,8 +1619,6 @@
       buildMigrationCard();
       buildAnomalyCard();
       buildTerritorialCard();
-      buildTerritorialExposureCard();
-      buildTerritorialMunicipalCard();
       buildInfraContent();
       syncLayers();
 
@@ -1943,16 +1632,12 @@
     document.querySelectorAll("#topright-panel input").forEach(el => {
       el.addEventListener("change", () => {
         buildMunicipalitiesLayer();
-        drawInfrastructures();
-        drawExposedInfra();
-        buildInfraContent();
-        buildTerritorialExposureCard();
         syncLayers();
       });
     });
 
     document.getElementById("island-filter").addEventListener("change", async () => {
-      populateMunicipalityFilterFromGeoJSON();
+      populateMunicipalityFilter();
       await loadAll();
     });
 
@@ -1998,8 +1683,7 @@
 
     async function init() {
       await loadMunicipalitiesGeoJSON();
-      await loadIslandsGeoJSON();
-      populateMunicipalityFilterFromGeoJSON();
+      populateMunicipalityFilter();
       await loadAll();
     }
 

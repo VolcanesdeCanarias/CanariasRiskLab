@@ -1200,7 +1200,7 @@ def api_usgs_canarias():
 
 @app.route("/api/catalog-historical-status")
 def api_catalog_historical_status():
-    events = load_historical_catalog()
+    events = historical = []
     return jsonify({
         "ok": True,
         "count": len(events),
@@ -1444,7 +1444,7 @@ def api_risklab_bundle():
 
         def build_bundle():
             recent = parse_ign_canarias()
-            historical = load_historical_catalog()
+            historical = []
 
             recent_filtered = recent
             historical_filtered = historical

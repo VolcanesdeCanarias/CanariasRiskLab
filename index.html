@@ -37,6 +37,11 @@
       --agua: #0ea5e9;
       --carretera: #64748b;
       --emergencias: #111827;
+
+      --municipio-line: #334155;
+      --municipio-fill: rgba(51, 65, 85, 0.04);
+      --municipio-selected-line: #d97706;
+      --municipio-selected-fill: rgba(245, 158, 11, 0.18);
     }
 
     * { box-sizing: border-box; }
@@ -118,13 +123,13 @@
     #sources-panel {
       top: 12px;
       left: 12px;
-      width: 245px;
+      width: 250px;
     }
 
     #topright-panel {
       top: 12px;
       right: 12px;
-      width: 420px;
+      width: 430px;
       max-width: calc(100% - 24px);
       border-left: 6px solid var(--orange);
     }
@@ -220,7 +225,7 @@
       left: 12px;
       right: 12px;
       bottom: 48px;
-      height: 225px;
+      height: 230px;
       padding-bottom: 6px;
       transition: transform 0.25s ease, opacity 0.25s ease;
       transform: translateY(0);
@@ -228,7 +233,7 @@
     }
 
     #bottom-panel.collapsed {
-      transform: translateY(260px);
+      transform: translateY(265px);
       opacity: 0;
       pointer-events: none;
     }
@@ -258,7 +263,7 @@
 
     .tab-content {
       display: none;
-      height: 160px;
+      height: 165px;
       overflow: auto;
       padding-right: 3px;
     }
@@ -348,6 +353,24 @@
       height: 14px;
       border: 2px solid #7c3aed;
       background: rgba(167,139,250,0.2);
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+
+    .municipio-legend {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--municipio-line);
+      background: var(--municipio-fill);
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+
+    .municipio-selected-legend {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--municipio-selected-line);
+      background: var(--municipio-selected-fill);
       border-radius: 2px;
       flex: 0 0 auto;
     }
@@ -443,7 +466,7 @@
 
     @media (max-width: 980px) {
       #map-wrap {
-        height: 1500px;
+        height: 1520px;
       }
 
       #sources-panel,
@@ -455,24 +478,24 @@
       }
 
       #sources-panel { top: 12px; }
-      #topright-panel { top: 180px; }
+      #topright-panel { top: 185px; }
 
       #bottom-toggle {
         bottom: 12px;
       }
 
       #bottom-panel {
-        top: 520px;
+        top: 530px;
         bottom: auto;
-        height: 900px;
+        height: 920px;
       }
 
       #bottom-panel.collapsed {
-        transform: translateY(940px);
+        transform: translateY(955px);
       }
 
       .tab-content {
-        height: 820px;
+        height: 840px;
       }
 
       .legend-grid {
@@ -504,7 +527,8 @@
       <div><strong>IGN Canarias</strong> · sismicidad reciente</div>
       <div><strong>USGS</strong> · últimas 24h, filtrado Canarias desde backend</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
-      <div><strong>Territorio operativo</strong> · capa prototipo tipo PAIV / demo RiskLab</div>
+      <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
+      <div><strong>Territorio operativo</strong> · capa prototipo RiskLab</div>
       <div class="small-note">Índice RiskLab y señal territorial: uso experimental. No equivalen al semáforo volcánico oficial ni a cartografía oficial de emergencias.</div>
     </div>
 
@@ -547,6 +571,7 @@
       <div class="control-list">
         <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
         <label><input type="checkbox" id="toggle-volcanic-zones" checked> Zonas volcánicas</label>
+        <label><input type="checkbox" id="toggle-municipalities" checked> Municipios</label>
         <label><input type="checkbox" id="toggle-ign" checked> Sismos IGN</label>
         <label><input type="checkbox" id="toggle-usgs"> Sismos USGS</label>
         <label><input type="checkbox" id="toggle-swarms" checked> Enjambres</label>
@@ -624,6 +649,8 @@
           <div>
             <div class="legend-item"><div class="triangle-legend"></div><span>Volcán</span></div>
             <div class="legend-item"><div class="zone-legend"></div><span>Zona volcánica</span></div>
+            <div class="legend-item"><div class="municipio-legend"></div><span>Municipio</span></div>
+            <div class="legend-item"><div class="municipio-selected-legend"></div><span>Municipio seleccionado</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq1)"></div><span>Sismo IGN &lt; 1</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN 1–1.9</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq3)"></div><span>Sismo IGN 2–2.9</span></div>
@@ -641,7 +668,7 @@
           </div>
         </div>
         <div class="small-note" style="margin-top:8px;">
-          La capa territorial es prototipo RiskLab inspirada en lógica operativa PAIV/PEVOLCA. No sustituye cartografía oficial de protección civil.
+          La capa municipal y territorial es prototipo RiskLab para análisis visual. No sustituye cartografía oficial de protección civil.
         </div>
       </div>
     </div>
@@ -680,6 +707,7 @@
 
     const volcanoLayer = L.layerGroup().addTo(map);
     const volcanicZonesLayer = L.layerGroup().addTo(map);
+    const municipalitiesLayer = L.layerGroup().addTo(map);
     const ignLayer = L.layerGroup().addTo(map);
     const usgsLayer = L.layerGroup();
     const swarmLayer = L.layerGroup().addTo(map);
@@ -696,7 +724,7 @@
     let summary = {};
     let risklabIndex = null;
     let interpretation = null;
-    let depthProfile = null;
+    let depthProfileData = null;
     let compareData = null;
     let infrastructures = [];
     let swarmCandidates = [];
@@ -708,43 +736,12 @@
     let municipalitySummary = null;
     let exposedInfra = [];
     let municipalitiesAvailable = [];
-    const MUNICIPALITIES_BY_ISLAND = {
-  "Tenerife": [
-    "Adeje", "Arafo", "Arico", "Arona", "Buenavista del Norte", "Candelaria",
-    "El Rosario", "El Sauzal", "El Tanque", "Fasnia", "Garachico",
-    "Granadilla de Abona", "Guía de Isora", "Güímar", "Icod de los Vinos",
-    "La Guancha", "La Matanza de Acentejo", "La Orotava", "La Victoria de Acentejo",
-    "Los Realejos", "Los Silos", "Puerto de la Cruz", "San Cristóbal de La Laguna",
-    "San Juan de la Rambla", "Santa Cruz de Tenerife", "Santa Úrsula",
-    "Santiago del Teide", "Tacoronte", "Tegueste", "Vilaflor de Chasna"
-  ],
-  "La Palma": [
-    "Breña Alta", "Breña Baja", "El Paso", "Fuencaliente", "Garafía",
-    "Los Llanos de Aridane", "Puntagorda", "Puntallana", "San Andrés y Sauces",
-    "Santa Cruz de La Palma", "Tazacorte", "Tijarafe", "Villa de Mazo"
-  ],
-  "El Hierro": [
-    "Frontera", "El Pinar", "Valverde"
-  ],
-  "Gran Canaria": [
-    "Las Palmas de Gran Canaria", "Telde", "Ingenio", "Agüimes", "Gáldar",
-    "Arucas", "Mogán", "San Bartolomé de Tirajana", "Santa Brígida", "Teror"
-  ],
-  "Lanzarote": [
-    "Arrecife", "San Bartolomé", "Tías", "Tinajo", "Teguise", "Yaiza", "Haría"
-  ],
-  "Fuerteventura": [
-    "Puerto del Rosario", "La Oliva", "Pájara", "Antigua", "Tuineje", "Betancuria"
-  ],
-  "La Gomera": [
-    "San Sebastián de La Gomera", "Vallehermoso", "Alajeró", "Hermigua", "Agulo", "Valle Gran Rey"
-  ],
-  "Atlántico-Canarias": [
-    "Atlántico-Canarias"
-  ]
-};
 
     let currentMode = "citizens";
+
+    let municipalitiesGeoJSON = null;
+    let municipalityLayersIndex = new Map();
+    let selectedMunicipalityLayer = null;
 
     const VOLCANOES = [
       { name:"Teide", island:"Tenerife", lat:28.2724, lon:-16.6425, status:"Activo", type:"Estratovolcán" },
@@ -848,6 +845,14 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
+    function normalizeText(s) {
+      return String(s || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+    }
+
     function formatDate(ev) {
       if (ev.datetime_iso) {
         const d = new Date(ev.datetime_iso);
@@ -929,6 +934,165 @@
       const res = await fetch(url);
       if (!res.ok) throw new Error("Error en " + url);
       return await res.json();
+    }
+
+    function getMunicipalityName(feature) {
+      const p = feature?.properties || {};
+      return (
+        p.etiqueta ||
+        p.nombre ||
+        p.NAMEUNIT ||
+        p.NOMBRE ||
+        p.MUNICIPIO ||
+        p.municipio ||
+        p.nom_muni ||
+        p.denominacion ||
+        ""
+      );
+    }
+
+    function getMunicipalityIsland(feature) {
+      const p = feature?.properties || {};
+      const allValues = Object.values(p).map(v => String(v || ""));
+      const joined = allValues.join(" | ");
+
+      const islands = [
+        "Tenerife",
+        "La Palma",
+        "El Hierro",
+        "Gran Canaria",
+        "Lanzarote",
+        "Fuerteventura",
+        "La Gomera"
+      ];
+
+      for (const island of islands) {
+        if (joined.toLowerCase().includes(island.toLowerCase())) return island;
+      }
+
+      if (p.isla) return p.isla;
+      if (p.ISLA) return p.ISLA;
+
+      return "Atlántico-Canarias";
+    }
+
+    function municipalityBaseStyle() {
+      return {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-line').trim(),
+        weight: 1,
+        fillColor: getComputedStyle(document.documentElement).getPropertyValue('--municipio-fill').trim(),
+        fillOpacity: 0.18
+      };
+    }
+
+    function municipalitySelectedStyle() {
+      return {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-selected-line').trim(),
+        weight: 2.4,
+        fillColor: getComputedStyle(document.documentElement).getPropertyValue('--municipio-selected-fill').trim(),
+        fillOpacity: 0.45
+      };
+    }
+
+    async function loadMunicipalitiesGeoJSON() {
+      try {
+        municipalitiesGeoJSON = await fetchJson("./municipios_canarias.geojson");
+      } catch (e) {
+        console.error("No se pudo cargar municipios_canarias.geojson", e);
+        municipalitiesGeoJSON = null;
+      }
+    }
+
+    function buildMunicipalitiesLayer() {
+      municipalitiesLayer.clearLayers();
+      municipalityLayersIndex.clear();
+      selectedMunicipalityLayer = null;
+
+      if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features) return;
+
+      const island = selectedIsland();
+      const muni = selectedMunicipality();
+      const islandNorm = normalizeText(island);
+      const muniNorm = normalizeText(muni);
+
+      const geo = L.geoJSON(municipalitiesGeoJSON, {
+        filter: feature => {
+          const featureIsland = getMunicipalityIsland(feature);
+          const featureMuni = getMunicipalityName(feature);
+
+          if (island !== "Todas" && normalizeText(featureIsland) !== islandNorm) return false;
+          if (muni !== "Todos" && normalizeText(featureMuni) !== muniNorm) return false;
+
+          return true;
+        },
+        style: () => municipalityBaseStyle(),
+        onEachFeature: (feature, layer) => {
+          const name = getMunicipalityName(feature);
+          const featureIsland = getMunicipalityIsland(feature);
+
+          const key = `${normalizeText(featureIsland)}__${normalizeText(name)}`;
+          municipalityLayersIndex.set(key, layer);
+
+          layer.bindPopup(`
+            <div class="popup-title">${name || "Municipio"}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${featureIsland}</div>
+          `);
+
+          if (muni !== "Todos" && normalizeText(name) === muniNorm) {
+            layer.setStyle(municipalitySelectedStyle());
+            selectedMunicipalityLayer = layer;
+          }
+        }
+      });
+
+      municipalitiesLayer.addLayer(geo);
+    }
+
+    function zoomToSelectedMunicipality() {
+      if (selectedMunicipalityLayer) {
+        map.fitBounds(selectedMunicipalityLayer.getBounds(), { padding: [24, 24], maxZoom: 11 });
+      }
+    }
+
+    function populateMunicipalityFilterFromGeoJSON() {
+      const select = document.getElementById("municipality-filter");
+      const current = select.value || "Todos";
+      const island = selectedIsland();
+
+      select.innerHTML = `<option value="Todos">Todos</option>`;
+      municipalitiesAvailable = [];
+
+      if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features || island === "Todas") {
+        select.value = "Todos";
+        return;
+      }
+
+      const unique = new Set();
+
+      municipalitiesGeoJSON.features.forEach(feature => {
+        const fIsland = getMunicipalityIsland(feature);
+        const fName = getMunicipalityName(feature);
+
+        if (!fName) return;
+        if (normalizeText(fIsland) !== normalizeText(island)) return;
+
+        unique.add(fName);
+      });
+
+      municipalitiesAvailable = Array.from(unique).sort((a, b) => a.localeCompare(b, "es"));
+
+      municipalitiesAvailable.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = m;
+        select.appendChild(opt);
+      });
+
+      if (municipalitiesAvailable.includes(current)) {
+        select.value = current;
+      } else {
+        select.value = "Todos";
+      }
     }
 
     function drawVolcanoes() {
@@ -1256,8 +1420,8 @@
     function buildDepthChart() {
       if (depthChart) depthChart.destroy();
 
-      const labels = Object.keys(depthProfile || {});
-      const values = Object.values(depthProfile || {});
+      const labels = Object.keys(depthProfileData || {});
+      const values = Object.values(depthProfileData || {});
 
       depthChart = new Chart(document.getElementById("depthChart"), {
         type: "bar",
@@ -1597,6 +1761,7 @@
     function syncLayers() {
       toggleLayer("toggle-volcanoes", volcanoLayer);
       toggleLayer("toggle-volcanic-zones", volcanicZonesLayer);
+      toggleLayer("toggle-municipalities", municipalitiesLayer);
       toggleLayer("toggle-ign", ignLayer);
       toggleLayer("toggle-usgs", usgsLayer);
       toggleLayer("toggle-swarms", swarmLayer);
@@ -1643,36 +1808,11 @@
         bottomToggle.textContent = "Ocultar análisis";
         document.getElementById("toggle-infra").checked = true;
         document.getElementById("toggle-exposed").checked = true;
+        document.getElementById("toggle-municipalities").checked = true;
       }
 
       syncLayers();
     }
-
-    function populateMunicipalityFilter() {
-  const select = document.getElementById("municipality-filter");
-  const current = select.value || "Todos";
-  const island = selectedIsland();
-
-  let options = [];
-  if (island !== "Todas") {
-    options = MUNICIPALITIES_BY_ISLAND[island] || [];
-  }
-
-  select.innerHTML = `<option value="Todos">Todos</option>`;
-
-  options.forEach(m => {
-    const opt = document.createElement("option");
-    opt.value = m;
-    opt.textContent = m;
-    select.appendChild(opt);
-  });
-
-  if (options.includes(current)) {
-    select.value = current;
-  } else {
-    select.value = "Todos";
-  }
-}
 
     const baseMaps = {
       "OpenStreetMap": osm,
@@ -1683,6 +1823,7 @@
     const overlayMaps = {
       "Volcanes": volcanoLayer,
       "Zonas volcánicas": volcanicZonesLayer,
+      "Municipios": municipalitiesLayer,
       "Sismos IGN": ignLayer,
       "Sismos USGS": usgsLayer,
       "Enjambres": swarmLayer,
@@ -1703,7 +1844,7 @@
         summary = bundle.summary || {};
         risklabIndex = bundle.risklab_index || null;
         interpretation = bundle.interpretation || null;
-        depthProfile = bundle.depth_profile || {};
+        depthProfileData = bundle.depth_profile || {};
         compareData = {
           compare: bundle.compare || {},
           acceleration: bundle.acceleration || {},
@@ -1718,7 +1859,6 @@
         territorialData = bundle.territorial || null;
         municipalitySummary = bundle.municipio_resumen || null;
         exposedInfra = bundle.infra_expuestas || [];
-        municipalitiesAvailable = bundle.municipios_disponibles || [];
       } catch (e) {
         console.error(e);
       }
@@ -1733,11 +1873,11 @@
         usgsEvents = [];
       }
 
-      populateMunicipalityFilter();
       redrawAll();
     }
 
     function redrawAll() {
+      buildMunicipalitiesLayer();
       drawVolcanoes();
       drawVolcanicZones();
       drawIgn();
@@ -1760,11 +1900,17 @@
       buildTerritorialMunicipalCard();
       buildInfraContent();
       syncLayers();
+
+      if (selectedMunicipality() !== "Todos") {
+        setTimeout(() => zoomToSelectedMunicipality(), 80);
+      }
+
       applyMode();
     }
 
     document.querySelectorAll("#topright-panel input").forEach(el => {
       el.addEventListener("change", () => {
+        buildMunicipalitiesLayer();
         drawInfrastructures();
         drawExposedInfra();
         buildInfraContent();
@@ -1774,9 +1920,9 @@
     });
 
     document.getElementById("island-filter").addEventListener("change", async () => {
-  populateMunicipalityFilter();
-  await loadAll();
-});
+      populateMunicipalityFilterFromGeoJSON();
+      await loadAll();
+    });
 
     document.getElementById("municipality-filter").addEventListener("change", loadAll);
 
@@ -1818,8 +1964,13 @@
         panel.classList.contains("collapsed") ? "Mostrar análisis" : "Ocultar análisis";
     });
 
-    populateMunicipalityFilter();
-loadAll();
+    async function init() {
+      await loadMunicipalitiesGeoJSON();
+      populateMunicipalityFilterFromGeoJSON();
+      await loadAll();
+    }
+
+    init();
   </script>
 </body>
 </html>

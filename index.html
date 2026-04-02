@@ -44,7 +44,6 @@
       --municipio-selected-fill: rgba(245, 158, 11, 0.18);
 
       --right-panel-width: 430px;
-      --gutter: 12px;
     }
 
     * { box-sizing: border-box; }
@@ -498,6 +497,7 @@
       }
 
       #sources-panel { top: 12px; }
+
       #topright-panel {
         top: 185px;
         max-height: none;
@@ -734,10 +734,9 @@
     let migrationData = null;
     let anomalyData = null;
     let territorialData = null;
-
-    let currentMode = "citizens";
     let municipalitiesGeoJSON = null;
     let selectedMunicipalityLayer = null;
+    let currentMode = "citizens";
 
     const MUNICIPALITIES_BY_ISLAND = {
       "Tenerife": [
@@ -818,6 +817,38 @@
       return Number.isFinite(n) ? n : fallback;
     }
 
+    function normalizeText(s) {
+      return String(s || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function canonicalMunicipalityName(name) {
+      const n = normalizeText(name);
+
+      for (const list of Object.values(MUNICIPALITIES_BY_ISLAND)) {
+        for (const item of list) {
+          if (normalizeText(item) === n) return item;
+        }
+      }
+
+      if (n === "fuencaliente de la palma") return "Fuencaliente";
+      if (n === "el pinar de el hierro") return "El Pinar";
+      if (n === "san cristobal de la laguna" || n === "la laguna") return "San Cristóbal de La Laguna";
+
+      return name || "";
+    }
+
+    function detectIslandForMunicipality(muniName) {
+      const target = normalizeText(muniName);
+      for (const [island, list] of Object.entries(MUNICIPALITIES_BY_ISLAND)) {
+        if (list.some(x => normalizeText(x) === target)) return island;
+      }
+      return "Canarias";
+    }
+
     function formatDate(ev) {
       if (ev.datetime_iso) {
         const d = new Date(ev.datetime_iso);
@@ -877,28 +908,6 @@
         iconSize: [14, 14],
         iconAnchor: [7, 7]
       });
-    }
-
-    function normalizeText(s) {
-      return String(s || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim()
-        .toLowerCase();
-    }
-
-    function canonicalMunicipalityName(name) {
-      const n = normalizeText(name);
-
-      for (const list of Object.values(MUNICIPALITIES_BY_ISLAND)) {
-        for (const item of list) {
-          if (normalizeText(item) === n) return item;
-        }
-      }
-
-      if (n === "fuencaliente de la palma") return "Fuencaliente";
-      if (n === "el pinar de el hierro") return "El Pinar";
-      return name || "";
     }
 
     async function fetchJson(url) {
@@ -996,10 +1005,11 @@
         style: () => municipalityBaseStyle(),
         onEachFeature: (feature, layer) => {
           const name = getMunicipalityName(feature);
+          const islaReal = detectIslandForMunicipality(name);
 
           layer.bindPopup(`
             <div class="popup-title">${name || "Municipio"}</div>
-            <div class="popup-row"><strong>Isla:</strong> ${selectedIsland() === "Todas" ? "Canarias" : selectedIsland()}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${islaReal}</div>
           `);
 
           if (muni !== "Todos" && normalizeText(name) === normalizeText(muni)) {
@@ -1167,7 +1177,7 @@
 
     function drawInfrastructures() {
       infraLayer.clearLayers();
-      infrastructures.forEach(x => {
+      (infrastructures || []).forEach(x => {
         const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, false) });
         infraLayer.addLayer(marker);
       });
@@ -1175,7 +1185,7 @@
 
     function drawExposedInfra() {
       exposedInfraLayer.clearLayers();
-      (exposedInfra || []).forEach(x => {
+      (territorialData?.infra_expuestas || []).forEach(x => {
         const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, true) });
         exposedInfraLayer.addLayer(marker);
       });
@@ -1187,7 +1197,7 @@
 
       if (!summary || Object.keys(summary).length === 0) {
         target.innerHTML = "Sin datos.";
-        note.textContent = "";
+        note.textContent = "No se pudo cargar el resumen principal.";
         return;
       }
 
@@ -1237,6 +1247,8 @@
 
       if (!risklabIndex) {
         title.textContent = "Índice RiskLab: sin datos";
+        note.textContent = "No se pudo cargar el índice principal.";
+        panel.style.borderLeftColor = "#94a3b8";
         return;
       }
 
@@ -1362,9 +1374,8 @@
 
     function buildInterpretation() {
       const target = document.getElementById("interpretContent");
-
       if (!interpretation) {
-        target.innerHTML = "Sin interpretación disponible.";
+        target.innerHTML = `<div class="insight-card">No se pudo cargar la interpretación automática.</div>`;
         return;
       }
 
@@ -1450,7 +1461,7 @@
     function buildTerritorialCard() {
       const target = document.getElementById("territorialContent");
       if (!territorialData) {
-        target.innerHTML = `<div class="insight-card">Selecciona una isla para ver la lectura territorial operativa.</div>`;
+        target.innerHTML = `<div class="insight-card">No se pudo cargar la lectura territorial.</div>`;
         return;
       }
 
@@ -1561,37 +1572,131 @@
 
     L.control.layers(baseMaps, overlayMaps, { collapsed: true }).addTo(map);
 
+    function resetDataContainers() {
+      ignEvents = [];
+      usgsEvents = [];
+      summary = {};
+      risklabIndex = null;
+      interpretation = null;
+      depthProfile = {};
+      compareData = { compare: {}, acceleration: {}, baseline: {} };
+      infrastructures = [];
+      swarmCandidates = [];
+      seriesData = { labels: [], counts: [], mmax: [] };
+      regimeData = null;
+      migrationData = null;
+      anomalyData = null;
+      territorialData = null;
+    }
+
+    async function loadBundle(island, municipio) {
+      const bundle = await fetchJson(`/api/risklab-bundle?island=${encodeURIComponent(island)}&municipio=${encodeURIComponent(municipio)}`);
+
+      ignEvents = bundle.ign_eventos || [];
+      summary = bundle.summary || {};
+      risklabIndex = bundle.risklab_index || null;
+      interpretation = bundle.interpretation || null;
+      depthProfile = bundle.depth_profile || {};
+      compareData = {
+        compare: bundle.compare || {},
+        acceleration: bundle.acceleration || {},
+        baseline: bundle.baseline || {}
+      };
+      infrastructures = bundle.infraestructuras || [];
+      swarmCandidates = bundle.candidatos_enjambre || [];
+      seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
+      regimeData = bundle.regime || null;
+      migrationData = bundle.migration || null;
+      anomalyData = bundle.anomaly || null;
+      territorialData = bundle.territorial || null;
+    }
+
+    async function loadFallback(island) {
+      const islandQs = island === "Todas" ? "" : `?island=${encodeURIComponent(island)}`;
+
+      const [
+        ignRes,
+        summaryRes,
+        indexRes,
+        interpRes,
+        depthRes,
+        compareRes,
+        regimeRes,
+        migrationRes
+      ] = await Promise.allSettled([
+        fetchJson("/api/ign-canarias"),
+        fetchJson("/api/risklab-summary"),
+        fetchJson("/api/risklab-index" + islandQs),
+        fetchJson("/api/risklab-interpretation" + islandQs),
+        fetchJson("/api/risklab-depth" + islandQs),
+        fetchJson("/api/risklab-compare" + islandQs),
+        fetchJson("/api/risklab-regime" + islandQs),
+        fetchJson("/api/risklab-migration" + islandQs)
+      ]);
+
+      if (ignRes.status === "fulfilled") {
+        ignEvents = (ignRes.value.eventos || []).filter(ev => island === "Todas" || ev.isla === island);
+      }
+
+      if (summaryRes.status === "fulfilled") {
+        summary = summaryRes.value.summary || {};
+      }
+
+      if (indexRes.status === "fulfilled") {
+        risklabIndex = indexRes.value.risklab_index || null;
+      }
+
+      if (interpRes.status === "fulfilled") {
+        interpretation = interpRes.value.interpretation || null;
+      }
+
+      if (depthRes.status === "fulfilled") {
+        depthProfile = depthRes.value.depth_profile || {};
+      }
+
+      if (compareRes.status === "fulfilled") {
+        compareData = {
+          compare: compareRes.value.compare || {},
+          acceleration: compareRes.value.acceleration || {},
+          baseline: compareRes.value.baseline || {}
+        };
+      }
+
+      if (regimeRes.status === "fulfilled") {
+        regimeData = regimeRes.value.regime || null;
+      }
+
+      if (migrationRes.status === "fulfilled") {
+        migrationData = migrationRes.value.migration || null;
+      }
+    }
+
     async function loadAll() {
-      const island = encodeURIComponent(selectedIsland());
-      const municipio = encodeURIComponent(selectedMunicipality());
+      const island = selectedIsland();
+      const municipio = selectedMunicipality();
+
+      resetDataContainers();
+
+      let bundleLoaded = false;
 
       try {
-        const bundle = await fetchJson(`/api/risklab-bundle?island=${island}&municipio=${municipio}`);
-
-        ignEvents = bundle.ign_eventos || [];
-        summary = bundle.summary || {};
-        risklabIndex = bundle.risklab_index || null;
-        interpretation = bundle.interpretation || null;
-        depthProfile = bundle.depth_profile || {};
-        compareData = {
-          compare: bundle.compare || {},
-          acceleration: bundle.acceleration || {},
-          baseline: bundle.baseline || {}
-        };
-        infrastructures = bundle.infraestructuras || [];
-        swarmCandidates = bundle.candidatos_enjambre || [];
-        seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
-        regimeData = bundle.regime || null;
-        migrationData = bundle.migration || null;
-        anomalyData = bundle.anomaly || null;
-        territorialData = bundle.territorial || null;
+        await loadBundle(island, municipio);
+        bundleLoaded = true;
       } catch (e) {
-        console.error(e);
+        console.error("Falló /api/risklab-bundle. Cargo fallback.", e);
+      }
+
+      if (!bundleLoaded) {
+        try {
+          await loadFallback(island);
+        } catch (e) {
+          console.error("Falló también el fallback.", e);
+        }
       }
 
       try {
         const usgsJson = await fetchJson("/api/usgs-canarias");
-        usgsEvents = (usgsJson.eventos || []).filter(ev => selectedIsland() === "Todas" || ev.isla === selectedIsland());
+        usgsEvents = (usgsJson.eventos || []).filter(ev => island === "Todas" || ev.isla === island);
       } catch (e) {
         usgsEvents = [];
       }
@@ -1600,26 +1705,28 @@
     }
 
     function redrawAll() {
-      buildMunicipalitiesLayer();
-      drawVolcanoes();
-      drawVolcanicZones();
-      drawIgn();
-      drawUSGS();
-      drawHeatmap();
-      drawSwarms();
-      drawInfrastructures();
-      drawExposedInfra();
-      drawSummary();
-      updateStatus();
-      buildSeriesChart();
-      buildDepthChart();
-      buildCompareChart();
-      buildInterpretation();
-      buildRegimeCard();
-      buildMigrationCard();
-      buildAnomalyCard();
-      buildTerritorialCard();
-      buildInfraContent();
+      try { buildMunicipalitiesLayer(); } catch (e) { console.error("buildMunicipalitiesLayer", e); }
+      try { drawVolcanoes(); } catch (e) { console.error("drawVolcanoes", e); }
+      try { drawVolcanicZones(); } catch (e) { console.error("drawVolcanicZones", e); }
+      try { drawIgn(); } catch (e) { console.error("drawIgn", e); }
+      try { drawUSGS(); } catch (e) { console.error("drawUSGS", e); }
+      try { drawHeatmap(); } catch (e) { console.error("drawHeatmap", e); }
+      try { drawSwarms(); } catch (e) { console.error("drawSwarms", e); }
+      try { drawInfrastructures(); } catch (e) { console.error("drawInfrastructures", e); }
+      try { drawExposedInfra(); } catch (e) { console.error("drawExposedInfra", e); }
+
+      try { drawSummary(); } catch (e) { console.error("drawSummary", e); }
+      try { updateStatus(); } catch (e) { console.error("updateStatus", e); }
+      try { buildSeriesChart(); } catch (e) { console.error("buildSeriesChart", e); }
+      try { buildDepthChart(); } catch (e) { console.error("buildDepthChart", e); }
+      try { buildCompareChart(); } catch (e) { console.error("buildCompareChart", e); }
+      try { buildInterpretation(); } catch (e) { console.error("buildInterpretation", e); }
+      try { buildRegimeCard(); } catch (e) { console.error("buildRegimeCard", e); }
+      try { buildMigrationCard(); } catch (e) { console.error("buildMigrationCard", e); }
+      try { buildAnomalyCard(); } catch (e) { console.error("buildAnomalyCard", e); }
+      try { buildTerritorialCard(); } catch (e) { console.error("buildTerritorialCard", e); }
+      try { buildInfraContent(); } catch (e) { console.error("buildInfraContent", e); }
+
       syncLayers();
 
       if (selectedMunicipality() !== "Todos") {

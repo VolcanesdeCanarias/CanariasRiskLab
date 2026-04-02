@@ -496,6 +496,7 @@
       </div>
 
       <div class="control-list">
+        <label><input type="checkbox" id="toggle-volcanic-zones" checked> Zonas volcánicas</label>
         <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
         <label><input type="checkbox" id="toggle-ign" checked> Sismos IGN</label>
         <label><input type="checkbox" id="toggle-usgs"> Sismos USGS</label>
@@ -516,6 +517,7 @@
         <button class="tab-btn" data-tab="tab-interpret">Interpretación</button>
         <button class="tab-btn" data-tab="tab-infra">Infraestructuras</button>
         <button class="tab-btn" data-tab="tab-legend">Leyenda</button>
+        <div class="legend-item"><div style="width:14px;height:14px;border:2px solid #7c3aed;background:#a78bfa33;"></div><span>Zona volcánica</span></div>
       </div>
 
       <div id="tab-summary" class="tab-content active">
@@ -579,12 +581,31 @@
       [30.4, -11.8]
     ]);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 18,
-      attribution: "&copy; OpenStreetMap contributors"
-    }).addTo(map);
+    const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap contributors"
+});
+
+const esriSatellite = L.tileLayer(
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  {
+    maxZoom: 19,
+    attribution: "Tiles &copy; Esri"
+  }
+);
+
+const openTopo = L.tileLayer(
+  "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 17,
+    attribution: "Map data: &copy; OpenStreetMap contributors, style: &copy; OpenTopoMap"
+  }
+);
+
+osm.addTo(map);
 
     const volcanoLayer = L.layerGroup().addTo(map);
+    const volcanicZonesLayer = L.layerGroup().addTo(map);
     const ignLayer = L.layerGroup().addTo(map);
     const usgsLayer = L.layerGroup();
     const swarmLayer = L.layerGroup().addTo(map);
@@ -627,6 +648,26 @@
       { name:"Timanfaya", island:"Lanzarote", lat:29.0167, lon:-13.7500, status:"Histórico", type:"Campo volcánico" },
       { name:"La Corona", island:"Lanzarote", lat:29.2316, lon:-13.4706, status:"Inactivo", type:"Cono volcánico" }
     ];
+      island: "El Hierro",
+    description: "Rift y sistema volcánico insular de El Hierro",
+    coords: [
+      [27.83, -18.18],
+      [27.83, -17.88],
+      [27.63, -17.86],
+      [27.60, -18.18]
+    ]
+  
+  {
+    name: "Timanfaya - Mancha Blanca",
+    island: "Lanzarote",
+    description: "Campo volcánico histórico de Lanzarote",
+    coords: [
+      [29.10, -13.92],
+      [29.10, -13.63],
+      [28.95, -13.63],
+      [28.95, -13.92]
+    ]
+  }
 
     function selectedIsland() {
       return document.getElementById("island-filter").value;
@@ -690,6 +731,28 @@
 
     function drawVolcanoes() {
       volcanoLayer.clearLayers();
+      function drawVolcanicZones() {
+  volcanicZonesLayer.clearLayers();
+
+  VOLCANIC_ZONES
+    .filter(z => selectedIsland() === "Todas" || z.island === selectedIsland())
+    .forEach(z => {
+      const polygon = L.polygon(z.coords, {
+        color: "#7c3aed",
+        weight: 2,
+        fillColor: "#a78bfa",
+        fillOpacity: 0.10
+      });
+
+      polygon.bindPopup(`
+        <div class="popup-title">${z.name}</div>
+        <div class="popup-row"><strong>Isla:</strong> ${z.island}</div>
+        <div class="popup-row"><strong>Descripción:</strong> ${z.description}</div>
+      `);
+
+      volcanicZonesLayer.addLayer(polygon);
+    });
+}
 
       VOLCANOES
         .filter(v => selectedIsland() === "Todas" || v.island === selectedIsland())
@@ -1220,6 +1283,7 @@
 
     function syncLayers() {
       toggleLayer("toggle-volcanoes", volcanoLayer);
+      toggleLayer("toggle-volcanic-zones", volcanicZonesLayer);
       toggleLayer("toggle-ign", ignLayer);
       toggleLayer("toggle-usgs", usgsLayer);
       toggleLayer("toggle-swarms", swarmLayer);
@@ -1261,7 +1325,22 @@
 
       syncLayers();
     }
+const baseMaps = {
+  "OpenStreetMap": osm,
+  "Satélite": esriSatellite,
+  "Topográfico": openTopo
+};
 
+const overlayMaps = {
+  "Volcanes": volcanoLayer,
+  "Zonas volcánicas": volcanicZonesLayer,
+  "Sismos IGN": ignLayer,
+  "Sismos USGS": usgsLayer,
+  "Enjambres": swarmLayer,
+  "Infraestructuras": infraLayer
+};
+
+L.control.layers(baseMaps, overlayMaps, { collapsed: true }).addTo(map);
     async function loadAll() {
       const island = encodeURIComponent(selectedIsland());
 
@@ -1301,26 +1380,27 @@
     }
 
     function redrawAll() {
-      drawVolcanoes();
-      drawIgn();
-      drawUSGS();
-      drawHeatmap();
-      drawSwarms();
-      drawInfrastructures();
-      drawSummary();
-      updateStatus();
-      buildSeriesChart();
-      buildDepthChart();
-      buildCompareChart();
-      buildInterpretation();
-      buildRegimeCard();
-      buildMigrationCard();
-      buildAnomalyCard();
-      buildTerritorialCard();
-      buildInfraContent();
-      syncLayers();
-      applyMode();
-    }
+  drawVolcanoes();
+  drawVolcanicZones();
+  drawIgn();
+  drawUSGS();
+  drawHeatmap();
+  drawSwarms();
+  drawInfrastructures();
+  drawSummary();
+  updateStatus();
+  buildSeriesChart();
+  buildDepthChart();
+  buildCompareChart();
+  buildInterpretation();
+  buildRegimeCard();
+  buildMigrationCard();
+  buildAnomalyCard();
+  buildTerritorialCard();
+  buildInfraContent();
+  syncLayers();
+  applyMode();
+}
 
     document.querySelectorAll("#topright-panel input").forEach(el => {
       el.addEventListener("change", syncLayers);

@@ -344,7 +344,7 @@ def parse_kmz_description(desc_html):
 
     data = {}
     for k, v in pairs:
-        key = clean_text(BeautifulSoup(k, "html.parser").get_text(" ", strip=True)).upper()
+        key = clean_text(BeautifulSoup(str(k), "html.parser").get_text(" ", strip=True)).upper()
         val = clean_text(BeautifulSoup(v, "html.parser").get_text(" ", strip=True))
         data[key] = val
 

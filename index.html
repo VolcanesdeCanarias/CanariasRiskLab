@@ -528,6 +528,7 @@
       <div><strong>USGS</strong> · últimas 24h, filtrado Canarias desde backend</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
+      <div><strong>Islas</strong> · GeoJSON local de Canarias</div>
       <div><strong>Territorio operativo</strong> · capa prototipo RiskLab</div>
       <div class="small-note">Índice RiskLab y señal territorial: uso experimental. No equivalen al semáforo volcánico oficial ni a cartografía oficial de emergencias.</div>
     </div>
@@ -735,13 +736,13 @@
     let territorialData = null;
     let municipalitySummary = null;
     let exposedInfra = [];
-    let municipalitiesAvailable = [];
 
     let currentMode = "citizens";
 
     let municipalitiesGeoJSON = null;
-    let municipalityLayersIndex = new Map();
+    let islandsGeoJSON = null;
     let selectedMunicipalityLayer = null;
+    let municipalitiesAvailable = [];
 
     const VOLCANOES = [
       { name:"Teide", island:"Tenerife", lat:28.2724, lon:-16.6425, status:"Activo", type:"Estratovolcán" },
@@ -951,29 +952,17 @@
       );
     }
 
-    function getMunicipalityIsland(feature) {
+    function getIslandFeatureName(feature) {
       const p = feature?.properties || {};
-      const allValues = Object.values(p).map(v => String(v || ""));
-      const joined = allValues.join(" | ");
-
-      const islands = [
-        "Tenerife",
-        "La Palma",
-        "El Hierro",
-        "Gran Canaria",
-        "Lanzarote",
-        "Fuerteventura",
-        "La Gomera"
-      ];
-
-      for (const island of islands) {
-        if (joined.toLowerCase().includes(island.toLowerCase())) return island;
-      }
-
-      if (p.isla) return p.isla;
-      if (p.ISLA) return p.ISLA;
-
-      return "Atlántico-Canarias";
+      return (
+        p.etiqueta ||
+        p.nombre ||
+        p.NAMEUNIT ||
+        p.NOMBRE ||
+        p.ISLA ||
+        p.isla ||
+        ""
+      );
     }
 
     function municipalityBaseStyle() {
@@ -1003,42 +992,85 @@
       }
     }
 
+    async function loadIslandsGeoJSON() {
+      try {
+        islandsGeoJSON = await fetchJson("./islas_20170101.json");
+      } catch (e) {
+        console.error("No se pudo cargar islas_20170101.json", e);
+        islandsGeoJSON = null;
+      }
+    }
+
+    function getFeatureCenterLatLng(feature) {
+      const temp = L.geoJSON(feature);
+      return temp.getBounds().getCenter();
+    }
+
+    function detectIslandForMunicipality(feature) {
+      if (!islandsGeoJSON || !islandsGeoJSON.features) return "Atlántico-Canarias";
+
+      const center = getFeatureCenterLatLng(feature);
+      const latlng = L.latLng(center.lat, center.lng);
+
+      for (const islandFeature of islandsGeoJSON.features) {
+        const layer = L.geoJSON(islandFeature);
+        let inside = false;
+
+        layer.eachLayer(l => {
+          if (typeof l.getBounds === "function" && l.getBounds().contains(latlng)) {
+            inside = true;
+          }
+        });
+
+        if (inside) {
+          const rawName = getIslandFeatureName(islandFeature);
+          const n = normalizeText(rawName);
+
+          if (n.includes("tenerife")) return "Tenerife";
+          if (n.includes("palma")) return "La Palma";
+          if (n.includes("hierro")) return "El Hierro";
+          if (n.includes("gran canaria")) return "Gran Canaria";
+          if (n.includes("lanzarote")) return "Lanzarote";
+          if (n.includes("fuerteventura")) return "Fuerteventura";
+          if (n.includes("gomera")) return "La Gomera";
+
+          return rawName || "Atlántico-Canarias";
+        }
+      }
+
+      return "Atlántico-Canarias";
+    }
+
     function buildMunicipalitiesLayer() {
       municipalitiesLayer.clearLayers();
-      municipalityLayersIndex.clear();
       selectedMunicipalityLayer = null;
 
       if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features) return;
 
       const island = selectedIsland();
       const muni = selectedMunicipality();
-      const islandNorm = normalizeText(island);
-      const muniNorm = normalizeText(muni);
 
       const geo = L.geoJSON(municipalitiesGeoJSON, {
         filter: feature => {
-          const featureIsland = getMunicipalityIsland(feature);
+          const featureIsland = detectIslandForMunicipality(feature);
           const featureMuni = getMunicipalityName(feature);
 
-          if (island !== "Todas" && normalizeText(featureIsland) !== islandNorm) return false;
-          if (muni !== "Todos" && normalizeText(featureMuni) !== muniNorm) return false;
+          if (island !== "Todas" && normalizeText(featureIsland) !== normalizeText(island)) return false;
+          if (muni !== "Todos" && normalizeText(featureMuni) !== normalizeText(muni)) return false;
 
           return true;
         },
         style: () => municipalityBaseStyle(),
         onEachFeature: (feature, layer) => {
           const name = getMunicipalityName(feature);
-          const featureIsland = getMunicipalityIsland(feature);
-
-          const key = `${normalizeText(featureIsland)}__${normalizeText(name)}`;
-          municipalityLayersIndex.set(key, layer);
+          const featureIsland = detectIslandForMunicipality(feature);
 
           layer.bindPopup(`
             <div class="popup-title">${name || "Municipio"}</div>
             <div class="popup-row"><strong>Isla:</strong> ${featureIsland}</div>
           `);
 
-          if (muni !== "Todos" && normalizeText(name) === muniNorm) {
+          if (muni !== "Todos" && normalizeText(name) === normalizeText(muni)) {
             layer.setStyle(municipalitySelectedStyle());
             selectedMunicipalityLayer = layer;
           }
@@ -1070,7 +1102,7 @@
       const unique = new Set();
 
       municipalitiesGeoJSON.features.forEach(feature => {
-        const fIsland = getMunicipalityIsland(feature);
+        const fIsland = detectIslandForMunicipality(feature);
         const fName = getMunicipalityName(feature);
 
         if (!fName) return;
@@ -1966,6 +1998,7 @@
 
     async function init() {
       await loadMunicipalitiesGeoJSON();
+      await loadIslandsGeoJSON();
       populateMunicipalityFilterFromGeoJSON();
       await loadAll();
     }

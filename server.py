@@ -14,7 +14,6 @@ app = Flask(__name__, static_folder='.')
 IGN_URL = "https://www.ign.es/web/vlc-ultimo-terremoto/-/terremotos-canarias/get10dias"
 KMZ_PATH = os.path.join(os.path.dirname(__file__), "catalogo.kmz")
 
-# Histórico operativo desde 2011
 CATALOG_START_DATE = datetime(2011, 1, 1, tzinfo=timezone.utc)
 
 HISTORICAL_CACHE = {
@@ -299,6 +298,44 @@ def parse_ign_canarias():
 
 
 # =========================
+# USGS backend
+# =========================
+def fetch_usgs_canarias():
+    url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+    data = requests.get(url, timeout=20).json()
+
+    eventos = []
+
+    for feature in data.get("features", []):
+        coords = feature.get("geometry", {}).get("coordinates", [])
+        props = feature.get("properties", {})
+
+        if len(coords) < 3:
+            continue
+
+        lon, lat, depth = coords[:3]
+
+        if not (26 <= lat <= 31 and -19 <= lon <= -12):
+            continue
+
+        timestamp_ms = props.get("time", 0) or 0
+
+        eventos.append({
+            "id": feature.get("id"),
+            "lat": lat,
+            "lon": lon,
+            "profundidad_km": depth,
+            "magnitud": props.get("mag", 0) or 0,
+            "localizacion": props.get("place", "Canarias"),
+            "datetime_iso": datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc).isoformat(),
+            "source": "USGS",
+            "isla": classify_island(lat, lon)
+        })
+
+    return eventos
+
+
+# =========================
 # KMZ histórico
 # =========================
 def parse_kmz_description(desc_html):
@@ -479,34 +516,49 @@ def serie_temporal(eventos):
 
 def detect_swarm_candidates(eventos):
     recientes = events_in_days(eventos, 3)
-
     buckets = {}
+
     for e in recientes:
-        key = (round(e["lat"], 1), round(e["lon"], 1))
+        key = (round(e["lat"], 2), round(e["lon"], 2))
         buckets.setdefault(key, []).append(e)
 
     resultados = []
     for _, grupo in buckets.items():
-        if len(grupo) < 5:
+        n = len(grupo)
+        if n < 4:
             continue
 
-        lat_c = sum(x["lat"] for x in grupo) / len(grupo)
-        lon_c = sum(x["lon"] for x in grupo) / len(grupo)
+        lat_c = sum(x["lat"] for x in grupo) / n
+        lon_c = sum(x["lon"] for x in grupo) / n
         mag_max = max(x["magnitud"] for x in grupo)
-        profundidad_media = round(sum(x["profundidad_km"] for x in grupo) / len(grupo), 1)
+        mag_media = round(sum(x["magnitud"] for x in grupo) / n, 2)
+        profundidad_media = round(sum(x["profundidad_km"] for x in grupo) / n, 1)
         isla = classify_island(lat_c, lon_c)
+
+        if n >= 12:
+            nivel = "alto"
+            color = "red"
+        elif n >= 7:
+            nivel = "medio"
+            color = "orange"
+        else:
+            nivel = "bajo"
+            color = "green"
 
         resultados.append({
             "lat": round(lat_c, 4),
             "lon": round(lon_c, 4),
-            "count": len(grupo),
+            "count": n,
             "magnitud_max": mag_max,
+            "magnitud_media": mag_media,
             "profundidad_media_km": profundidad_media,
             "isla": isla,
-            "label": f"Posible enjambre ({len(grupo)} eventos / 3 días)"
+            "nivel": nivel,
+            "color": color,
+            "label": f"Posible enjambre {nivel} ({n} eventos / 3 días)"
         })
 
-    resultados.sort(key=lambda x: x["count"], reverse=True)
+    resultados.sort(key=lambda x: (x["count"], x["magnitud_max"]), reverse=True)
     return resultados
 
 
@@ -847,7 +899,6 @@ def compute_anomaly_signal(recent, historical, island=None):
 
     last_24h = events_in_hours(merged, 24)
     last_7d = events_in_days(merged, 7)
-    last_30d = events_in_days(merged, 30)
 
     baseline = compute_baseline(recent, historical, island)
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
@@ -1115,6 +1166,24 @@ def static_proxy(path):
 def api_ign_canarias():
     try:
         eventos = parse_ign_canarias()
+        return jsonify({
+            "ok": True,
+            "count": len(eventos),
+            "eventos": eventos
+        })
+    except Exception as e:
+        return jsonify({
+            "ok": False,
+            "error": str(e),
+            "count": 0,
+            "eventos": []
+        }), 500
+
+
+@app.route("/api/usgs-canarias")
+def api_usgs_canarias():
+    try:
+        eventos = fetch_usgs_canarias()
         return jsonify({
             "ok": True,
             "count": len(eventos),
@@ -1468,4 +1537,3 @@ def api_ign_debug():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     app.run(host="0.0.0.0", port=port, debug=False)
-    

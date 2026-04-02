@@ -113,7 +113,7 @@
     #topright-panel {
       top: 12px;
       right: 12px;
-      width: 365px;
+      width: 375px;
       max-width: calc(100% - 24px);
       border-left: 6px solid var(--orange);
     }
@@ -465,8 +465,8 @@
     <div id="sources-panel" class="panel">
       <h3>Fuentes</h3>
       <div><strong>IGN Canarias</strong> · reciente + histórico operativo desde 2011</div>
-      <div><strong>USGS</strong> · últimas 24h</div>
-      <div class="small-note">Índice RiskLab experimental. No equivale al semáforo volcánico oficial.</div>
+      <div><strong>USGS</strong> · últimas 24h, filtrado Canarias desde backend</div>
+      <div class="small-note">Índice RiskLab y señal de anomalía: uso experimental, no equivalen al semáforo volcánico oficial.</div>
     </div>
 
     <div id="topright-panel" class="panel">
@@ -747,7 +747,8 @@
           <div class="popup-row"><strong>Magnitud:</strong> ${safeNumber(ev.magnitud).toFixed(1)}</div>
           <div class="popup-row"><strong>Profundidad:</strong> ${safeNumber(ev.profundidad_km).toFixed(1)} km</div>
           <div class="popup-row"><strong>Fecha:</strong> ${formatDate(ev)}</div>
-          <div class="popup-row"><strong>Zona:</strong> ${ev.area || "—"}</div>
+          <div class="popup-row"><strong>Zona:</strong> ${ev.localizacion || "—"}</div>
+          <div class="popup-row"><strong>Isla:</strong> ${ev.isla || "—"}</div>
         `);
 
         usgsLayer.addLayer(marker);
@@ -786,18 +787,23 @@
       swarmLayer.clearLayers();
 
       swarmCandidates.forEach(c => {
+        const lineColor = c.color === "red" ? "#dc2626" : c.color === "orange" ? "#dd6b20" : "#22c55e";
+        const fillColor = c.color === "red" ? "#fecaca" : c.color === "orange" ? "#fed7aa" : "#bbf7d0";
+
         const circle = L.circle([c.lat, c.lon], {
           radius: Math.min(26000, 5000 + c.count * 800),
-          color: "#22c55e",
+          color: lineColor,
           weight: 1.7,
-          fillColor: "#86efac",
-          fillOpacity: 0.08
+          fillColor: fillColor,
+          fillOpacity: 0.10
         });
 
         circle.bindPopup(`
           <div class="popup-title">Posible enjambre experimental</div>
+          <div class="popup-row"><strong>Nivel:</strong> ${c.nivel}</div>
           <div class="popup-row"><strong>Eventos:</strong> ${c.count}</div>
           <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(c.magnitud_max).toFixed(1)}</div>
+          <div class="popup-row"><strong>Mmedia:</strong> ${safeNumber(c.magnitud_media).toFixed(2)}</div>
           <div class="popup-row"><strong>Profundidad media:</strong> ${safeNumber(c.profundidad_media_km).toFixed(1)} km</div>
           <div class="popup-row"><strong>Zona:</strong> ${c.isla || "—"}</div>
         `);
@@ -1285,28 +1291,8 @@
       }
 
       try {
-        const usgsJson = await fetchJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson");
-        usgsEvents = (usgsJson.features || [])
-          .map(feature => ({
-            lat: Number(feature.geometry?.coordinates?.[1]),
-            lon: Number(feature.geometry?.coordinates?.[0]),
-            magnitud: Number(feature.properties?.mag ?? 0),
-            profundidad_km: Number(feature.geometry?.coordinates?.[2] ?? 0),
-            datetime_iso: new Date(feature.properties?.time).toISOString(),
-            area: feature.properties?.place || "",
-            isla: (() => {
-              const txt = String(feature.properties?.place || "").toLowerCase();
-              if (txt.includes("tenerife")) return "Tenerife";
-              if (txt.includes("palma")) return "La Palma";
-              if (txt.includes("hierro")) return "El Hierro";
-              if (txt.includes("gran canaria")) return "Gran Canaria";
-              if (txt.includes("lanzarote")) return "Lanzarote";
-              if (txt.includes("fuerteventura")) return "Fuerteventura";
-              if (txt.includes("gomera")) return "La Gomera";
-              return "Atlántico-Canarias";
-            })()
-          }))
-          .filter(ev => selectedIsland() === "Todas" || ev.isla === selectedIsland());
+        const usgsJson = await fetchJson("/api/usgs-canarias");
+        usgsEvents = (usgsJson.eventos || []).filter(ev => selectedIsland() === "Todas" || ev.isla === selectedIsland());
       } catch (e) {
         usgsEvents = [];
       }

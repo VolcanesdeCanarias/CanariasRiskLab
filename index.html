@@ -708,6 +708,41 @@
     let municipalitySummary = null;
     let exposedInfra = [];
     let municipalitiesAvailable = [];
+    const MUNICIPALITIES_BY_ISLAND = {
+  "Tenerife": [
+    "Adeje", "Arafo", "Arico", "Arona", "Buenavista del Norte", "Candelaria",
+    "El Rosario", "El Sauzal", "El Tanque", "Fasnia", "Garachico",
+    "Granadilla de Abona", "Guía de Isora", "Güímar", "Icod de los Vinos",
+    "La Guancha", "La Matanza de Acentejo", "La Orotava", "La Victoria de Acentejo",
+    "Los Realejos", "Los Silos", "Puerto de la Cruz", "San Cristóbal de La Laguna",
+    "San Juan de la Rambla", "Santa Cruz de Tenerife", "Santa Úrsula",
+    "Santiago del Teide", "Tacoronte", "Tegueste", "Vilaflor de Chasna"
+  ],
+  "La Palma": [
+    "Breña Alta", "Breña Baja", "El Paso", "Fuencaliente", "Garafía",
+    "Los Llanos de Aridane", "Puntagorda", "Puntallana", "San Andrés y Sauces",
+    "Santa Cruz de La Palma", "Tazacorte", "Tijarafe", "Villa de Mazo"
+  ],
+  "El Hierro": [
+    "Frontera", "El Pinar", "Valverde"
+  ],
+  "Gran Canaria": [
+    "Las Palmas de Gran Canaria", "Telde", "Ingenio", "Agüimes", "Gáldar",
+    "Arucas", "Mogán", "San Bartolomé de Tirajana", "Santa Brígida", "Teror"
+  ],
+  "Lanzarote": [
+    "Arrecife", "San Bartolomé", "Tías", "Tinajo", "Teguise", "Yaiza", "Haría"
+  ],
+  "Fuerteventura": [
+    "Puerto del Rosario", "La Oliva", "Pájara", "Antigua", "Tuineje", "Betancuria"
+  ],
+  "La Gomera": [
+    "San Sebastián de La Gomera", "Vallehermoso", "Alajeró", "Hermigua", "Agulo", "Valle Gran Rey"
+  ],
+  "Atlántico-Canarias": [
+    "Atlántico-Canarias"
+  ]
+};
 
     let currentMode = "citizens";
 
@@ -1614,23 +1649,30 @@
     }
 
     function populateMunicipalityFilter() {
-      const select = document.getElementById("municipality-filter");
-      const current = select.value || "Todos";
-      select.innerHTML = `<option value="Todos">Todos</option>`;
+  const select = document.getElementById("municipality-filter");
+  const current = select.value || "Todos";
+  const island = selectedIsland();
 
-      (municipalitiesAvailable || []).forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m;
-        opt.textContent = m;
-        select.appendChild(opt);
-      });
+  let options = [];
+  if (island !== "Todas") {
+    options = MUNICIPALITIES_BY_ISLAND[island] || [];
+  }
 
-      if (municipalitiesAvailable.includes(current)) {
-        select.value = current;
-      } else {
-        select.value = "Todos";
-      }
-    }
+  select.innerHTML = `<option value="Todos">Todos</option>`;
+
+  options.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = m;
+    select.appendChild(opt);
+  });
+
+  if (options.includes(current)) {
+    select.value = current;
+  } else {
+    select.value = "Todos";
+  }
+}
 
     const baseMaps = {
       "OpenStreetMap": osm,
@@ -1732,9 +1774,9 @@
     });
 
     document.getElementById("island-filter").addEventListener("change", async () => {
-      document.getElementById("municipality-filter").innerHTML = `<option value="Todos">Todos</option>`;
-      await loadAll();
-    });
+  populateMunicipalityFilter();
+  await loadAll();
+});
 
     document.getElementById("municipality-filter").addEventListener("change", loadAll);
 
@@ -1776,7 +1818,8 @@
         panel.classList.contains("collapsed") ? "Mostrar análisis" : "Ocultar análisis";
     });
 
-    loadAll();
+    populateMunicipalityFilter();
+loadAll();
   </script>
 </body>
 </html>

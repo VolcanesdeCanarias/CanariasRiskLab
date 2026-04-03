@@ -21,32 +21,22 @@
       --green: #2f9e44;
       --orange: #dd6b20;
       --red: #dc2626;
+      --yellow: #eab308;
 
       --eq1: #c7d2fe;
       --eq2: #93c5fd;
       --eq3: #60a5fa;
       --eq4: #3b82f6;
 
-      --hospital: #dc2626;
-      --aeropuerto: #7c3aed;
-      --puerto: #475569;
-      --albergue: #0891b2;
-      --deporte: #16a34a;
-      --telecom: #f59e0b;
-      --energia: #ef4444;
-      --agua: #0ea5e9;
-      --carretera: #64748b;
-      --emergencias: #111827;
-
       --municipio-0: #e2e8f0;
-      --municipio-1: #bbf7d0;
-      --municipio-2: #fde68a;
-      --municipio-3: #fdba74;
-      --municipio-4: #fca5a5;
+      --municipio-1: #dbeafe;
+      --municipio-2: #60a5fa;
+      --municipio-3: #8b5cf6;
+      --municipio-4: #d946ef;
 
       --municipio-line: #475569;
-      --municipio-selected-line: #1d4ed8;
-      --municipio-selected-fill: rgba(29, 78, 216, 0.22);
+      --municipio-selected-line: #111827;
+      --municipio-selected-fill: rgba(17, 24, 39, 0.16);
 
       --right-panel-width: 430px;
     }
@@ -234,7 +224,7 @@
       left: 12px;
       right: calc(var(--right-panel-width) + 24px);
       bottom: 56px;
-      height: 240px;
+      height: 250px;
       padding-bottom: 6px;
       transition: transform 0.25s ease, opacity 0.25s ease;
       transform: translateY(0);
@@ -242,7 +232,7 @@
     }
 
     #bottom-panel.collapsed {
-      transform: translateY(275px);
+      transform: translateY(285px);
       opacity: 0;
       pointer-events: none;
     }
@@ -277,7 +267,7 @@
 
     .tab-content {
       display: none;
-      height: 184px;
+      height: 194px;
       overflow: auto;
       padding-right: 3px;
     }
@@ -312,7 +302,7 @@
 
     .badge {
       display: inline-block;
-      min-width: 70px;
+      min-width: 74px;
       text-align: center;
       color: white;
       font-weight: 700;
@@ -324,6 +314,12 @@
     .green { background: var(--green); }
     .orange { background: var(--orange); }
     .red { background: var(--red); }
+    .yellow { background: var(--yellow); color: #111827; }
+    .gray { background: #6b7280; }
+    .blue1 { background: #93c5fd; color: #111827; }
+    .blue2 { background: #3b82f6; }
+    .violet { background: #8b5cf6; }
+    .magenta { background: #d946ef; }
 
     .legend-grid {
       display: grid;
@@ -352,14 +348,6 @@
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
       border-bottom: 16px solid #0f4c81;
-    }
-
-    .square-legend {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-      border: 1px solid rgba(0,0,0,0.18);
-      flex: 0 0 auto;
     }
 
     .zone-legend {
@@ -458,27 +446,6 @@
       margin-bottom: 6px;
     }
 
-    .infra-pill {
-      display: inline-block;
-      background: #edf2f7;
-      border: 1px solid #e2e8f0;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      margin-right: 5px;
-      margin-bottom: 4px;
-    }
-
-    .type-chip {
-      display: inline-block;
-      color: #fff;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      margin-right: 6px;
-      margin-bottom: 4px;
-    }
-
     .municipality-rank {
       display: flex;
       justify-content: space-between;
@@ -498,71 +465,39 @@
       white-space: nowrap;
     }
 
-    .leaflet-control-attribution {
-      font-size: 11px;
-    }
-
     @media (max-width: 1180px) {
-      #bottom-panel {
-        right: 12px;
-      }
-
-      #bottom-toggle {
-        left: 50%;
-      }
+      #bottom-panel { right: 12px; }
+      #bottom-toggle { left: 50%; }
     }
 
     @media (max-width: 980px) {
-      #map-wrap {
-        height: 1520px;
-      }
-
-      #sources-panel,
-      #topright-panel,
-      #bottom-panel {
+      #map-wrap { height: 1520px; }
+      #sources-panel, #topright-panel, #bottom-panel {
         left: 12px;
         right: 12px;
         width: auto;
       }
-
       #sources-panel { top: 12px; }
-
       #topright-panel {
         top: 185px;
         max-height: none;
       }
-
       #bottom-toggle {
         bottom: 12px;
         left: 50%;
       }
-
       #bottom-panel {
         top: 560px;
         bottom: auto;
         height: 900px;
       }
-
       #bottom-panel.collapsed {
         transform: translateY(940px);
       }
-
-      .tab-content {
-        height: 815px;
-      }
-
-      .legend-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .control-list,
-      .two-col {
-        grid-template-columns: 1fr;
-      }
+      .tab-content { height: 815px; }
+      .legend-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .control-list, .two-col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -578,11 +513,11 @@
     <div id="sources-panel" class="panel">
       <h3>Fuentes</h3>
       <div><strong>IGN Canarias</strong> · sismicidad reciente</div>
-      <div><strong>USGS</strong> · últimas 24h, filtrado Canarias desde backend</div>
+      <div><strong>USGS</strong> · últimas 24h, filtrado Canarias</div>
+      <div><strong>Gobierno de Canarias / PEVOLCA</strong> · semáforo volcánico oficial</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
-      <div><strong>Territorio operativo</strong> · capa prototipo RiskLab</div>
-      <div class="small-note">Índice RiskLab y señal territorial: uso experimental. No equivalen al semáforo volcánico oficial ni a cartografía oficial de emergencias.</div>
+      <div class="small-note">RiskLab es analítico y experimental. El semáforo oficial se muestra separado y etiquetado como PEVOLCA.</div>
     </div>
 
     <div id="topright-panel" class="panel">
@@ -622,15 +557,14 @@
       </div>
 
       <div class="control-list">
+        <label><input type="checkbox" id="toggle-official-status" checked> Semáforo oficial</label>
         <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
         <label><input type="checkbox" id="toggle-volcanic-zones" checked> Zonas volcánicas</label>
-        <label><input type="checkbox" id="toggle-municipalities" checked> Municipios</label>
+        <label><input type="checkbox" id="toggle-municipalities" checked> Actividad municipal</label>
         <label><input type="checkbox" id="toggle-ign" checked> Sismos IGN</label>
         <label><input type="checkbox" id="toggle-usgs"> Sismos USGS</label>
         <label><input type="checkbox" id="toggle-swarms" checked> Enjambres</label>
         <label><input type="checkbox" id="toggle-heatmap"> Heatmap</label>
-        <label><input type="checkbox" id="toggle-infra" checked> Infraestructuras</label>
-        <label><input type="checkbox" id="toggle-exposed" checked> Infra expuestas</label>
       </div>
     </div>
 
@@ -644,7 +578,6 @@
         <button class="tab-btn" data-tab="tab-compare">Comparación</button>
         <button class="tab-btn" data-tab="tab-interpret">Interpretación</button>
         <button class="tab-btn" data-tab="tab-territory">Territorio</button>
-        <button class="tab-btn" data-tab="tab-infra">Infraestructuras</button>
         <button class="tab-btn" data-tab="tab-legend">Leyenda</button>
       </div>
 
@@ -674,11 +607,9 @@
 
       <div id="tab-territory" class="tab-content">
         <div id="territorialContent"></div>
+        <div id="officialStatusContent"></div>
+        <div id="selectedMunicipalityContent"></div>
         <div id="territorialRankingContent"></div>
-      </div>
-
-      <div id="tab-infra" class="tab-content">
-        <div id="infraContent"></div>
       </div>
 
       <div id="tab-legend" class="tab-content">
@@ -686,26 +617,26 @@
           <div>
             <div class="legend-item"><div class="triangle-legend"></div><span>Volcán</span></div>
             <div class="legend-item"><div class="zone-legend"></div><span>Zona volcánica</span></div>
-            <div class="legend-item"><div class="muni-legend-0"></div><span>Municipio sin actividad</span></div>
-            <div class="legend-item"><div class="muni-legend-1"></div><span>Actividad municipal baja</span></div>
-            <div class="legend-item"><div class="muni-legend-2"></div><span>Actividad municipal ligera</span></div>
-            <div class="legend-item"><div class="muni-legend-3"></div><span>Actividad municipal moderada</span></div>
-            <div class="legend-item"><div class="muni-legend-4"></div><span>Actividad municipal alta</span></div>
+            <div class="legend-item"><div class="muni-legend-0"></div><span>RiskLab sin actividad</span></div>
+            <div class="legend-item"><div class="muni-legend-1"></div><span>RiskLab baja</span></div>
+            <div class="legend-item"><div class="muni-legend-2"></div><span>RiskLab ligera</span></div>
+            <div class="legend-item"><div class="muni-legend-3"></div><span>RiskLab moderada</span></div>
+            <div class="legend-item"><div class="muni-legend-4"></div><span>RiskLab alta</span></div>
             <div class="legend-item"><div class="municipio-selected-legend"></div><span>Municipio seleccionado</span></div>
           </div>
           <div>
+            <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>Semáforo oficial verde</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--yellow)"></div><span>Semáforo oficial amarillo</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--orange)"></div><span>Semáforo oficial naranja</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--red)"></div><span>Semáforo oficial rojo</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq1)"></div><span>Sismo IGN &lt; 1</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN 1–1.9</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq3)"></div><span>Sismo IGN 2–2.9</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq4)"></div><span>Sismo IGN ≥ 3</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:var(--hospital)"></div><span>Hospital</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:var(--aeropuerto)"></div><span>Aeropuerto</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:var(--puerto)"></div><span>Puerto</span></div>
-            <div class="legend-item"><div class="square-legend" style="background:#111827;border:2px solid #f59e0b"></div><span>Infra expuesta</span></div>
           </div>
         </div>
         <div class="small-note" style="margin-top:8px;">
-          El color municipal es un indicador experimental RiskLab construido con eventos recientes visibles en el visor.
+          El semáforo oficial y la actividad municipal RiskLab son capas distintas.
         </div>
       </div>
     </div>
@@ -726,30 +657,23 @@
 
     const esriSatellite = L.tileLayer(
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      {
-        maxZoom: 19,
-        attribution: "Tiles &copy; Esri"
-      }
+      { maxZoom: 19, attribution: "Tiles &copy; Esri" }
     );
 
     const openTopo = L.tileLayer(
-      "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 17,
-        attribution: "Map data: &copy; OpenStreetMap contributors, style: &copy; OpenTopoMap"
-      }
+      "https://{s}.tile.opentopomap.org/{z}/{y}/{x}.png",
+      { maxZoom: 17, attribution: "Map data: &copy; OpenStreetMap contributors, style: &copy; OpenTopoMap" }
     );
 
     osm.addTo(map);
 
+    const officialStatusLayer = L.layerGroup().addTo(map);
     const volcanoLayer = L.layerGroup().addTo(map);
     const volcanicZonesLayer = L.layerGroup().addTo(map);
     const municipalitiesLayer = L.layerGroup().addTo(map);
     const ignLayer = L.layerGroup().addTo(map);
     const usgsLayer = L.layerGroup();
     const swarmLayer = L.layerGroup().addTo(map);
-    const infraLayer = L.layerGroup().addTo(map);
-    const exposedInfraLayer = L.layerGroup().addTo(map);
 
     let heatLayer = null;
     let seriesChart = null;
@@ -763,7 +687,6 @@
     let interpretation = null;
     let depthProfile = {};
     let compareData = { compare: {}, acceleration: {}, baseline: {} };
-    let infrastructures = [];
     let swarmCandidates = [];
     let seriesData = { labels: [], counts: [], mmax: [] };
     let regimeData = null;
@@ -772,8 +695,12 @@
     let territorialData = null;
     let municipalitiesGeoJSON = null;
     let selectedMunicipalityLayer = null;
-    let currentMode = "citizens";
     let municipalityStats = {};
+    let officialStatus = [];
+    let officialStatusPoints = [];
+    let municipalRanking = [];
+    let selectedMunicipalityData = null;
+    let currentMode = "citizens";
 
     const MUNICIPALITIES_BY_ISLAND = {
       "Tenerife": [
@@ -908,42 +835,29 @@
       return Math.max(4, 4 + m * 2.7);
     }
 
+    function officialColor(color) {
+      if (color === "green") return "var(--green)";
+      if (color === "yellow") return "var(--yellow)";
+      if (color === "orange") return "var(--orange)";
+      return "var(--red)";
+    }
+
+    function officialMarker(item) {
+      return L.circleMarker([item.lat, item.lon], {
+        radius: 14,
+        color: "#111827",
+        weight: 1.4,
+        fillColor: officialColor(item.color),
+        fillOpacity: 0.92
+      });
+    }
+
     function volcanoIcon() {
       return L.divIcon({
         className: "",
         html: '<div class="tri-volcano"></div>',
         iconSize: [24, 24],
         iconAnchor: [12, 20]
-      });
-    }
-
-    function infraColor(tipo) {
-      const css = getComputedStyle(document.documentElement);
-      const mapColors = {
-        hospital: css.getPropertyValue('--hospital').trim(),
-        aeropuerto: css.getPropertyValue('--aeropuerto').trim(),
-        puerto: css.getPropertyValue('--puerto').trim(),
-        albergue: css.getPropertyValue('--albergue').trim(),
-        polideportivo: css.getPropertyValue('--deporte').trim(),
-        telecom: css.getPropertyValue('--telecom').trim(),
-        subestacion: css.getPropertyValue('--energia').trim(),
-        agua: css.getPropertyValue('--agua').trim(),
-        carretera: css.getPropertyValue('--carretera').trim(),
-        emergencias: css.getPropertyValue('--emergencias').trim()
-      };
-      return mapColors[tipo] || "#94a3b8";
-    }
-
-    function infraIcon(tipo, exposed = false) {
-      const color = infraColor(tipo);
-      const border = exposed ? "#f59e0b" : "rgba(0,0,0,0.2)";
-      const borderWidth = exposed ? 2 : 1;
-
-      return L.divIcon({
-        className: "",
-        html: `<div style="width:14px;height:14px;border-radius:3px;background:${color};border:${borderWidth}px solid ${border};box-shadow:${exposed ? '0 0 0 3px rgba(245,158,11,0.18)' : 'none'}"></div>`,
-        iconSize: [14, 14],
-        iconAnchor: [7, 7]
       });
     }
 
@@ -977,48 +891,14 @@
       );
     }
 
-    function municipalityLevel(score, count7d) {
-      if (count7d === 0) return "sin actividad";
-      if (score < 20) return "baja";
-      if (score < 45) return "ligera";
-      if (score < 80) return "moderada";
-      return "alta";
-    }
-
-    function computeMunicipalityStats() {
-      const stats = {};
-
-      Object.values(MUNICIPALITIES_BY_ISLAND).flat().forEach(m => {
-        stats[m] = { count7d: 0, mmax: 0, score: 0, level: "sin actividad", island: detectIslandForMunicipality(m) };
-      });
-
-      ignEvents.forEach(ev => {
-        const muni = canonicalMunicipalityName(ev.municipio || "");
-        if (!muni) return;
-        if (!stats[muni]) {
-          stats[muni] = { count7d: 0, mmax: 0, score: 0, level: "sin actividad", island: detectIslandForMunicipality(muni) };
-        }
-        stats[muni].count7d += 1;
-        stats[muni].mmax = Math.max(stats[muni].mmax, safeNumber(ev.magnitud));
-      });
-
-      Object.keys(stats).forEach(m => {
-        const item = stats[m];
-        item.score = item.count7d * 8 + item.mmax * 10;
-        item.level = municipalityLevel(item.score, item.count7d);
-      });
-
-      municipalityStats = stats;
-    }
-
-    function municipalityFillColor(muni) {
+    function municipalityColor(muni) {
       const stat = municipalityStats[muni];
       const css = getComputedStyle(document.documentElement);
 
-      if (!stat || stat.count7d === 0) return css.getPropertyValue('--municipio-0').trim();
-      if (stat.level === "baja") return css.getPropertyValue('--municipio-1').trim();
-      if (stat.level === "ligera") return css.getPropertyValue('--municipio-2').trim();
-      if (stat.level === "moderada") return css.getPropertyValue('--municipio-3').trim();
+      if (!stat || stat.nivel === "sin actividad") return css.getPropertyValue('--municipio-0').trim();
+      if (stat.nivel === "baja") return css.getPropertyValue('--municipio-1').trim();
+      if (stat.nivel === "ligera") return css.getPropertyValue('--municipio-2').trim();
+      if (stat.nivel === "moderada") return css.getPropertyValue('--municipio-3').trim();
       return css.getPropertyValue('--municipio-4').trim();
     }
 
@@ -1026,7 +906,7 @@
       return {
         color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-line').trim(),
         weight: 1,
-        fillColor: municipalityFillColor(muni),
+        fillColor: municipalityColor(muni),
         fillOpacity: 0.60
       };
     }
@@ -1034,9 +914,9 @@
     function municipalitySelectedStyle(muni) {
       return {
         color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-selected-line').trim(),
-        weight: 2.4,
-        fillColor: municipalityFillColor(muni),
-        fillOpacity: 0.86
+        weight: 2.6,
+        fillColor: municipalityColor(muni),
+        fillOpacity: 0.88
       };
     }
 
@@ -1062,13 +942,31 @@
       select.value = (MUNICIPALITIES_BY_ISLAND[island] || []).includes(current) ? current : "Todos";
     }
 
+    function drawOfficialStatus() {
+      officialStatusLayer.clearLayers();
+
+      officialStatusPoints
+        .filter(x => selectedIsland() === "Todas" || x.isla === selectedIsland())
+        .forEach(item => {
+          const marker = officialMarker(item);
+          marker.bindPopup(`
+            <div class="popup-title">Semáforo volcánico oficial</div>
+            <div class="popup-row"><strong>Isla:</strong> ${item.isla}</div>
+            <div class="popup-row"><strong>Nivel:</strong> ${item.nivel}</div>
+            <div class="popup-row"><strong>Ámbito:</strong> ${item.scope}</div>
+            <div class="popup-row"><strong>Fuente:</strong> ${item.fuente}</div>
+            <div class="popup-row"><strong>Verificado:</strong> ${item.last_verified}</div>
+            <div class="popup-row"><strong>Nota:</strong> ${item.nota}</div>
+          `);
+          officialStatusLayer.addLayer(marker);
+        });
+    }
+
     function buildMunicipalitiesLayer() {
       municipalitiesLayer.clearLayers();
       selectedMunicipalityLayer = null;
 
       if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features) return;
-
-      computeMunicipalityStats();
 
       const island = selectedIsland();
       const muni = selectedMunicipality();
@@ -1096,14 +994,27 @@
         onEachFeature: (feature, layer) => {
           const muniName = getMunicipalityName(feature);
           const islaReal = detectIslandForMunicipality(muniName);
-          const stat = municipalityStats[muniName] || { count7d: 0, mmax: 0, level: "sin actividad", score: 0 };
+          const stat = municipalityStats[muniName] || {
+            eventos_24h: 0,
+            eventos_7d: 0,
+            eventos_30d: 0,
+            magnitud_max_30d: 0,
+            profundidad_media_km: 0,
+            aceleracion_ratio: 0,
+            score: 0,
+            nivel: "sin actividad"
+          };
 
           layer.bindPopup(`
             <div class="popup-title">${muniName || "Municipio"}</div>
             <div class="popup-row"><strong>Isla:</strong> ${islaReal}</div>
-            <div class="popup-row"><strong>Eventos 7d:</strong> ${stat.count7d}</div>
-            <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(stat.mmax).toFixed(1)}</div>
-            <div class="popup-row"><strong>Nivel municipal:</strong> ${stat.level}</div>
+            <div class="popup-row"><strong>Eventos 24h:</strong> ${stat.eventos_24h}</div>
+            <div class="popup-row"><strong>Eventos 7d:</strong> ${stat.eventos_7d}</div>
+            <div class="popup-row"><strong>Eventos 30d:</strong> ${stat.eventos_30d}</div>
+            <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(stat.magnitud_max_30d).toFixed(1)}</div>
+            <div class="popup-row"><strong>Prof. media:</strong> ${safeNumber(stat.profundidad_media_km).toFixed(1)} km</div>
+            <div class="popup-row"><strong>Score RiskLab:</strong> ${safeNumber(stat.score).toFixed(1)}</div>
+            <div class="popup-row"><strong>Nivel municipal:</strong> ${stat.nivel}</div>
           `);
 
           if (muni !== "Todos" && normalizeText(muniName) === normalizeText(muni)) {
@@ -1123,7 +1034,6 @@
 
     function drawVolcanoes() {
       volcanoLayer.clearLayers();
-
       VOLCANOES
         .filter(v => selectedIsland() === "Todas" || v.island === selectedIsland())
         .forEach(v => {
@@ -1140,7 +1050,6 @@
 
     function drawVolcanicZones() {
       volcanicZonesLayer.clearLayers();
-
       VOLCANIC_ZONES
         .filter(z => selectedIsland() === "Todas" || z.island === selectedIsland())
         .forEach(z => {
@@ -1163,7 +1072,6 @@
 
     function drawIgn() {
       ignLayer.clearLayers();
-
       ignEvents.forEach(ev => {
         const marker = L.circleMarker([ev.lat, ev.lon], {
           radius: magRadius(ev.magnitud),
@@ -1189,7 +1097,6 @@
 
     function drawUSGS() {
       usgsLayer.clearLayers();
-
       usgsEvents.forEach(ev => {
         const marker = L.circleMarker([ev.lat, ev.lon], {
           radius: Math.max(4, magRadius(ev.magnitud) - 1),
@@ -1242,7 +1149,6 @@
 
     function drawSwarms() {
       swarmLayer.clearLayers();
-
       swarmCandidates.forEach(c => {
         const lineColor = c.color === "red" ? "#dc2626" : c.color === "orange" ? "#dd6b20" : "#22c55e";
         const fillColor = c.color === "red" ? "#fecaca" : c.color === "orange" ? "#fed7aa" : "#bbf7d0";
@@ -1265,22 +1171,6 @@
         `);
 
         swarmLayer.addLayer(circle);
-      });
-    }
-
-    function drawInfrastructures() {
-      infraLayer.clearLayers();
-      (infrastructures || []).forEach(x => {
-        const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, false) });
-        infraLayer.addLayer(marker);
-      });
-    }
-
-    function drawExposedInfra() {
-      exposedInfraLayer.clearLayers();
-      (territorialData?.infra_expuestas || []).forEach(x => {
-        const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo, true) });
-        exposedInfraLayer.addLayer(marker);
       });
     }
 
@@ -1330,7 +1220,7 @@
 
       html += `</tbody></table>`;
       target.innerHTML = html;
-      note.innerHTML = `<strong>Índice RiskLab:</strong> señal analítica experimental. <strong>Semáforo oficial:</strong> independiente.`;
+      note.innerHTML = `<strong>Índice RiskLab:</strong> experimental. <strong>Semáforo oficial:</strong> capa separada PEVOLCA.`;
     }
 
     function updateStatus() {
@@ -1426,9 +1316,7 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } }
-          }
+          scales: { y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } } }
         }
       });
     }
@@ -1458,9 +1346,7 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } }
-          }
+          scales: { y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } } }
         }
       });
     }
@@ -1562,42 +1448,88 @@
         <div class="insight-card">
           <strong>Lectura territorial operativa</strong><br>
           Isla: ${territorialData.isla}<br>
-          Nivel de anomalía: ${territorialData.nivel_anomalia}<br>
+          Nivel de anomalía RiskLab: ${territorialData.nivel_anomalia}<br>
           Infraestructuras demo: ${territorialData.infraestructuras}<br>
           Lectura: ${territorialData.lectura}
         </div>
       `;
     }
 
+    function buildOfficialStatusCards() {
+      const target = document.getElementById("officialStatusContent");
+      const items = officialStatus.filter(x => selectedIsland() === "Todas" || x.isla === selectedIsland());
+
+      if (!items.length) {
+        target.innerHTML = `<div class="insight-card">Sin estado oficial cargado.</div>`;
+        return;
+      }
+
+      let html = `<div class="insight-card"><strong>Semáforo volcánico oficial (PEVOLCA)</strong><br>`;
+      items.forEach(item => {
+        const cls = item.color === "yellow" ? "yellow" : item.color;
+        html += `
+          <div style="margin-top:6px;">
+            <span class="badge ${cls}">${item.nivel}</span>
+            <strong style="margin-left:8px;">${item.isla}</strong><br>
+            <span class="small-note">${item.scope} · verificado ${item.last_verified}</span>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      target.innerHTML = html;
+    }
+
+    function buildSelectedMunicipalityCard() {
+      const target = document.getElementById("selectedMunicipalityContent");
+
+      if (!selectedMunicipalityData) {
+        target.innerHTML = `<div class="insight-card">Selecciona un municipio para ver su ficha analítica local.</div>`;
+        return;
+      }
+
+      let levelClass = "gray";
+      if (selectedMunicipalityData.color === "blue1") levelClass = "blue1";
+      else if (selectedMunicipalityData.color === "blue2") levelClass = "blue2";
+      else if (selectedMunicipalityData.color === "violet") levelClass = "violet";
+      else if (selectedMunicipalityData.color === "magenta") levelClass = "magenta";
+
+      target.innerHTML = `
+        <div class="insight-card">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+            <strong>${selectedMunicipalityData.municipio}</strong>
+            <span class="badge ${levelClass}">${selectedMunicipalityData.nivel}</span>
+          </div>
+          Isla: ${selectedMunicipalityData.isla}<br>
+          Eventos 24h: ${selectedMunicipalityData.eventos_24h}<br>
+          Eventos 7d: ${selectedMunicipalityData.eventos_7d}<br>
+          Eventos 30d: ${selectedMunicipalityData.eventos_30d}<br>
+          Mmax 30d: ${safeNumber(selectedMunicipalityData.magnitud_max_30d).toFixed(1)}<br>
+          Prof. media: ${safeNumber(selectedMunicipalityData.profundidad_media_km).toFixed(1)} km<br>
+          Aceleración: ${safeNumber(selectedMunicipalityData.aceleracion_ratio).toFixed(2)}<br>
+          Score RiskLab municipal: ${safeNumber(selectedMunicipalityData.score).toFixed(1)}
+        </div>
+      `;
+    }
+
     function buildTerritorialRanking() {
       const target = document.getElementById("territorialRankingContent");
-      const island = selectedIsland();
 
-      let items = Object.entries(municipalityStats)
-        .filter(([name, stat]) => island === "Todas" || stat.island === island)
-        .sort((a, b) => {
-          if (b[1].score !== a[1].score) return b[1].score - a[1].score;
-          return b[1].mmax - a[1].mmax;
-        });
-
-      const top = items.filter(([_, stat]) => stat.count7d > 0).slice(0, 8);
-
-      if (!top.length) {
+      if (!municipalRanking || municipalRanking.length === 0) {
         target.innerHTML = `<div class="insight-card">No hay municipios con actividad reciente visible para este filtro.</div>`;
         return;
       }
 
-      let html = `<div class="insight-card"><strong>Ranking municipal de actividad reciente</strong><br>`;
-      top.forEach(([name, stat], idx) => {
+      let html = `<div class="insight-card"><strong>Ranking municipal de actividad RiskLab</strong><br>`;
+      municipalRanking.forEach((item, idx) => {
         html += `
           <div class="municipality-rank">
             <div class="rank-left">
-              <strong>${idx + 1}. ${name}</strong>
-              <span class="small-note">${stat.island} · ${stat.level}</span>
+              <strong>${idx + 1}. ${item.municipio}</strong>
+              <span class="small-note">${item.isla} · ${item.nivel}</span>
             </div>
             <div class="rank-right">
-              <strong>${stat.count7d} ev</strong><br>
-              <span class="small-note">Mmax ${safeNumber(stat.mmax).toFixed(1)}</span>
+              <strong>${item.eventos_7d} ev</strong><br>
+              <span class="small-note">Mmax ${safeNumber(item.magnitud_max_30d).toFixed(1)}</span>
             </div>
           </div>
         `;
@@ -1606,36 +1538,14 @@
       target.innerHTML = html;
     }
 
-    function buildInfraContent() {
-      const target = document.getElementById("infraContent");
-      if (!infrastructures || infrastructures.length === 0) {
-        target.innerHTML = `<div class="insight-card">No hay infraestructuras cargadas para este filtro.</div>`;
-        return;
-      }
-
-      let html = "";
-      infrastructures.slice(0, 20).forEach(x => {
-        html += `
-          <div class="insight-card">
-            <strong>${x.nombre}</strong><br>
-            Tipo: ${x.tipo}<br>
-            Municipio: ${x.municipio}<br>
-            Isla: ${x.isla}
-          </div>
-        `;
-      });
-      target.innerHTML = html;
-    }
-
     function syncLayers() {
+      toggleLayer("toggle-official-status", officialStatusLayer);
       toggleLayer("toggle-volcanoes", volcanoLayer);
       toggleLayer("toggle-volcanic-zones", volcanicZonesLayer);
       toggleLayer("toggle-municipalities", municipalitiesLayer);
       toggleLayer("toggle-ign", ignLayer);
       toggleLayer("toggle-usgs", usgsLayer);
       toggleLayer("toggle-swarms", swarmLayer);
-      toggleLayer("toggle-infra", infraLayer);
-      toggleLayer("toggle-exposed", exposedInfraLayer);
 
       if (document.getElementById("toggle-heatmap").checked) {
         if (heatLayer && !map.hasLayer(heatLayer)) heatLayer.addTo(map);
@@ -1675,8 +1585,7 @@
         territoryTab.click();
         bottomPanel.classList.remove("collapsed");
         bottomToggle.textContent = "Ocultar análisis";
-        document.getElementById("toggle-infra").checked = true;
-        document.getElementById("toggle-exposed").checked = true;
+        document.getElementById("toggle-official-status").checked = true;
         document.getElementById("toggle-municipalities").checked = true;
       }
 
@@ -1690,37 +1599,21 @@
     };
 
     const overlayMaps = {
+      "Semáforo oficial": officialStatusLayer,
       "Volcanes": volcanoLayer,
       "Zonas volcánicas": volcanicZonesLayer,
-      "Municipios": municipalitiesLayer,
+      "Actividad municipal": municipalitiesLayer,
       "Sismos IGN": ignLayer,
       "Sismos USGS": usgsLayer,
-      "Enjambres": swarmLayer,
-      "Infraestructuras": infraLayer,
-      "Infra expuestas": exposedInfraLayer
+      "Enjambres": swarmLayer
     };
 
     L.control.layers(baseMaps, overlayMaps, { collapsed: true }).addTo(map);
 
-    function resetDataContainers() {
-      ignEvents = [];
-      usgsEvents = [];
-      summary = {};
-      risklabIndex = null;
-      interpretation = null;
-      depthProfile = {};
-      compareData = { compare: {}, acceleration: {}, baseline: {} };
-      infrastructures = [];
-      swarmCandidates = [];
-      seriesData = { labels: [], counts: [], mmax: [] };
-      regimeData = null;
-      migrationData = null;
-      anomalyData = null;
-      territorialData = null;
-      municipalityStats = {};
-    }
+    async function loadAll() {
+      const island = selectedIsland();
+      const municipio = selectedMunicipality();
 
-    async function loadBundle(island, municipio) {
       const bundle = await fetchJson(`/api/risklab-bundle?island=${encodeURIComponent(island)}&municipio=${encodeURIComponent(municipio)}`);
 
       ignEvents = (bundle.ign_eventos || []).map(ev => ({
@@ -1736,99 +1629,17 @@
         acceleration: bundle.acceleration || {},
         baseline: bundle.baseline || {}
       };
-      infrastructures = bundle.infraestructuras || [];
       swarmCandidates = bundle.candidatos_enjambre || [];
       seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
       regimeData = bundle.regime || null;
       migrationData = bundle.migration || null;
       anomalyData = bundle.anomaly || null;
       territorialData = bundle.territorial || null;
-    }
-
-    async function loadFallback(island) {
-      const islandQs = island === "Todas" ? "" : `?island=${encodeURIComponent(island)}`;
-
-      const [
-        ignRes,
-        summaryRes,
-        indexRes,
-        interpRes,
-        depthRes,
-        compareRes,
-        regimeRes,
-        migrationRes
-      ] = await Promise.allSettled([
-        fetchJson("/api/ign-canarias"),
-        fetchJson("/api/risklab-summary"),
-        fetchJson("/api/risklab-index" + islandQs),
-        fetchJson("/api/risklab-interpretation" + islandQs),
-        fetchJson("/api/risklab-depth" + islandQs),
-        fetchJson("/api/risklab-compare" + islandQs),
-        fetchJson("/api/risklab-regime" + islandQs),
-        fetchJson("/api/risklab-migration" + islandQs)
-      ]);
-
-      if (ignRes.status === "fulfilled") {
-        ignEvents = (ignRes.value.eventos || [])
-          .filter(ev => island === "Todas" || ev.isla === island)
-          .map(ev => ({ ...ev, municipio: canonicalMunicipalityName(ev.municipio || "") }));
-      }
-
-      if (summaryRes.status === "fulfilled") {
-        summary = summaryRes.value.summary || {};
-      }
-
-      if (indexRes.status === "fulfilled") {
-        risklabIndex = indexRes.value.risklab_index || null;
-      }
-
-      if (interpRes.status === "fulfilled") {
-        interpretation = interpRes.value.interpretation || null;
-      }
-
-      if (depthRes.status === "fulfilled") {
-        depthProfile = depthRes.value.depth_profile || {};
-      }
-
-      if (compareRes.status === "fulfilled") {
-        compareData = {
-          compare: compareRes.value.compare || {},
-          acceleration: compareRes.value.acceleration || {},
-          baseline: compareRes.value.baseline || {}
-        };
-      }
-
-      if (regimeRes.status === "fulfilled") {
-        regimeData = compareRes.status === "fulfilled" ? regimeRes.value.regime || null : null;
-      }
-
-      if (migrationRes.status === "fulfilled") {
-        migrationData = migrationRes.value.migration || null;
-      }
-    }
-
-    async function loadAll() {
-      const island = selectedIsland();
-      const municipio = selectedMunicipality();
-
-      resetDataContainers();
-
-      let bundleLoaded = false;
-
-      try {
-        await loadBundle(island, municipio);
-        bundleLoaded = true;
-      } catch (e) {
-        console.error("Falló /api/risklab-bundle. Cargo fallback.", e);
-      }
-
-      if (!bundleLoaded) {
-        try {
-          await loadFallback(island);
-        } catch (e) {
-          console.error("Falló también el fallback.", e);
-        }
-      }
+      officialStatus = bundle.official_status || [];
+      officialStatusPoints = bundle.official_status_points || [];
+      municipalityStats = bundle.municipal_stats || {};
+      municipalRanking = bundle.municipal_ranking || [];
+      selectedMunicipalityData = bundle.selected_municipality || null;
 
       try {
         const usgsJson = await fetchJson("/api/usgs-canarias");
@@ -1841,29 +1652,28 @@
     }
 
     function redrawAll() {
-      try { buildMunicipalitiesLayer(); } catch (e) { console.error("buildMunicipalitiesLayer", e); }
-      try { drawVolcanoes(); } catch (e) { console.error("drawVolcanoes", e); }
-      try { drawVolcanicZones(); } catch (e) { console.error("drawVolcanicZones", e); }
-      try { drawIgn(); } catch (e) { console.error("drawIgn", e); }
-      try { drawUSGS(); } catch (e) { console.error("drawUSGS", e); }
-      try { drawHeatmap(); } catch (e) { console.error("drawHeatmap", e); }
-      try { drawSwarms(); } catch (e) { console.error("drawSwarms", e); }
-      try { drawInfrastructures(); } catch (e) { console.error("drawInfrastructures", e); }
-      try { drawExposedInfra(); } catch (e) { console.error("drawExposedInfra", e); }
+      buildMunicipalitiesLayer();
+      drawOfficialStatus();
+      drawVolcanoes();
+      drawVolcanicZones();
+      drawIgn();
+      drawUSGS();
+      drawHeatmap();
+      drawSwarms();
 
-      try { drawSummary(); } catch (e) { console.error("drawSummary", e); }
-      try { updateStatus(); } catch (e) { console.error("updateStatus", e); }
-      try { buildSeriesChart(); } catch (e) { console.error("buildSeriesChart", e); }
-      try { buildDepthChart(); } catch (e) { console.error("buildDepthChart", e); }
-      try { buildCompareChart(); } catch (e) { console.error("buildCompareChart", e); }
-      try { buildInterpretation(); } catch (e) { console.error("buildInterpretation", e); }
-      try { buildRegimeCard(); } catch (e) { console.error("buildRegimeCard", e); }
-      try { buildMigrationCard(); } catch (e) { console.error("buildMigrationCard", e); }
-      try { buildAnomalyCard(); } catch (e) { console.error("buildAnomalyCard", e); }
-      try { buildTerritorialCard(); } catch (e) { console.error("buildTerritorialCard", e); }
-      try { buildTerritorialRanking(); } catch (e) { console.error("buildTerritorialRanking", e); }
-      try { buildInfraContent(); } catch (e) { console.error("buildInfraContent", e); }
-
+      drawSummary();
+      updateStatus();
+      buildSeriesChart();
+      buildDepthChart();
+      buildCompareChart();
+      buildInterpretation();
+      buildRegimeCard();
+      buildMigrationCard();
+      buildAnomalyCard();
+      buildTerritorialCard();
+      buildOfficialStatusCards();
+      buildSelectedMunicipalityCard();
+      buildTerritorialRanking();
       syncLayers();
 
       if (selectedMunicipality() !== "Todos") {
@@ -1876,6 +1686,7 @@
     document.querySelectorAll("#topright-panel input").forEach(el => {
       el.addEventListener("change", () => {
         buildMunicipalitiesLayer();
+        drawOfficialStatus();
         syncLayers();
       });
     });

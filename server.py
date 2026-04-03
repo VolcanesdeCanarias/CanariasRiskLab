@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import re
 from datetime import datetime, timedelta, timezone
 from collections import defaultdict
-import math
 import os
 
 app = Flask(__name__, static_folder='.')
@@ -13,8 +12,93 @@ IGN_URL = "https://www.ign.es/web/vlc-ultimo-terremoto/-/terremotos-canarias/get
 
 
 # =========================
-# Catálogos base
+# Configuración oficial
 # =========================
+# Verificado manualmente a fecha 2026-04-03 para uso informativo en frontend.
+# La capa oficial queda separada de los indicadores analíticos RiskLab.
+OFFICIAL_VOLCANIC_STATUS = [
+    {
+        "isla": "Tenerife",
+        "nivel": "Verde",
+        "color": "green",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Sin cambios oficiales públicos verificados. Estado insular mostrado como verde."
+    },
+    {
+        "isla": "La Palma",
+        "nivel": "Amarillo",
+        "color": "yellow",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Estado oficial insular mostrado en amarillo por riesgos post-eruptivos. La estructura queda preparada para futura zonificación oficial verificable."
+    },
+    {
+        "isla": "El Hierro",
+        "nivel": "Verde",
+        "color": "green",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Sin cambios oficiales públicos verificados. Estado insular mostrado como verde."
+    },
+    {
+        "isla": "Gran Canaria",
+        "nivel": "Verde",
+        "color": "green",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Sin cambios oficiales públicos verificados. Estado insular mostrado como verde."
+    },
+    {
+        "isla": "Lanzarote",
+        "nivel": "Verde",
+        "color": "green",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Sin cambios oficiales públicos verificados. Estado insular mostrado como verde."
+    },
+    {
+        "isla": "Fuerteventura",
+        "nivel": "Verde",
+        "color": "green",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Sin cambios oficiales públicos verificados. Estado insular mostrado como verde."
+    },
+    {
+        "isla": "La Gomera",
+        "nivel": "Verde",
+        "color": "green",
+        "scope": "isla",
+        "oficial": True,
+        "fuente": "Gobierno de Canarias / PEVOLCA",
+        "last_verified": "2026-04-03",
+        "nota": "Sin cambios oficiales públicos verificados. Estado insular mostrado como verde."
+    }
+]
+
+ISLAND_CENTERS = {
+    "Tenerife": {"lat": 28.2916, "lon": -16.6291},
+    "La Palma": {"lat": 28.6837, "lon": -17.7649},
+    "El Hierro": {"lat": 27.7255, "lon": -18.0243},
+    "Gran Canaria": {"lat": 28.1235, "lon": -15.4363},
+    "Lanzarote": {"lat": 29.0469, "lon": -13.5899},
+    "Fuerteventura": {"lat": 28.3587, "lon": -14.0537},
+    "La Gomera": {"lat": 28.1165, "lon": -17.2461},
+}
+
 MUNICIPALITIES_BY_ISLAND = {
     "Tenerife": [
         "Adeje", "Arafo", "Arico", "Arona", "Buenavista del Norte", "Candelaria",
@@ -30,442 +114,39 @@ MUNICIPALITIES_BY_ISLAND = {
         "Los Llanos de Aridane", "Puntagorda", "Puntallana", "San Andrés y Sauces",
         "Santa Cruz de La Palma", "Tazacorte", "Tijarafe", "Villa de Mazo"
     ],
-    "El Hierro": [
-        "Frontera", "El Pinar", "Valverde"
-    ],
+    "El Hierro": ["Frontera", "El Pinar", "Valverde"],
     "Gran Canaria": [
-        "Las Palmas de Gran Canaria", "Telde", "Ingenio", "Agüimes", "Gáldar",
-        "Arucas", "Mogán", "San Bartolomé de Tirajana", "Santa Brígida", "Teror"
+        "Agaete", "Agüimes", "Artenara", "Arucas", "Firgas", "Gáldar", "Ingenio",
+        "La Aldea de San Nicolás", "Las Palmas de Gran Canaria", "Mogán", "Moya",
+        "San Bartolomé de Tirajana", "Santa Brígida", "Santa Lucía de Tirajana",
+        "Telde", "Teror", "Valsequillo de Gran Canaria", "Vega de San Mateo"
     ],
-    "Lanzarote": [
-        "Arrecife", "San Bartolomé", "Tías", "Tinajo", "Teguise", "Yaiza", "Haría"
-    ],
-    "Fuerteventura": [
-        "Puerto del Rosario", "La Oliva", "Pájara", "Antigua", "Tuineje", "Betancuria"
-    ],
-    "La Gomera": [
-        "San Sebastián de La Gomera", "Vallehermoso", "Alajeró", "Hermigua", "Agulo", "Valle Gran Rey"
-    ],
-    "Atlántico-Canarias": [
-        "Atlántico-Canarias"
-    ]
+    "Lanzarote": ["Arrecife", "Haría", "San Bartolomé", "Teguise", "Tías", "Tinajo", "Yaiza"],
+    "Fuerteventura": ["Antigua", "Betancuria", "La Oliva", "Pájara", "Puerto del Rosario", "Tuineje"],
+    "La Gomera": ["Agulo", "Alajeró", "Hermigua", "San Sebastián de La Gomera", "Valle Gran Rey", "Vallehermoso"],
+    "Atlántico-Canarias": ["Atlántico-Canarias"]
 }
 
-
-MUNICIPALITY_CENTROIDS = {
-    # Tenerife
-    ("Tenerife", "Adeje"): (28.1220, -16.7260),
-    ("Tenerife", "Arafo"): (28.3400, -16.4150),
-    ("Tenerife", "Arico"): (28.1770, -16.4790),
-    ("Tenerife", "Arona"): (28.1000, -16.6800),
-    ("Tenerife", "Buenavista del Norte"): (28.3700, -16.8500),
-    ("Tenerife", "Candelaria"): (28.3540, -16.3710),
-    ("Tenerife", "El Rosario"): (28.4300, -16.3600),
-    ("Tenerife", "El Sauzal"): (28.4800, -16.4300),
-    ("Tenerife", "El Tanque"): (28.3700, -16.7800),
-    ("Tenerife", "Fasnia"): (28.2390, -16.4410),
-    ("Tenerife", "Garachico"): (28.3720, -16.7650),
-    ("Tenerife", "Granadilla de Abona"): (28.1180, -16.5760),
-    ("Tenerife", "Guía de Isora"): (28.2100, -16.7800),
-    ("Tenerife", "Güímar"): (28.3150, -16.4120),
-    ("Tenerife", "Icod de los Vinos"): (28.3660, -16.7110),
-    ("Tenerife", "La Guancha"): (28.3730, -16.6510),
-    ("Tenerife", "La Matanza de Acentejo"): (28.4520, -16.4470),
-    ("Tenerife", "La Orotava"): (28.3900, -16.5230),
-    ("Tenerife", "La Victoria de Acentejo"): (28.4330, -16.4660),
-    ("Tenerife", "Los Realejos"): (28.3850, -16.5820),
-    ("Tenerife", "Los Silos"): (28.3670, -16.8170),
-    ("Tenerife", "Puerto de la Cruz"): (28.4130, -16.5480),
-    ("Tenerife", "San Cristóbal de La Laguna"): (28.4880, -16.3150),
-    ("Tenerife", "San Juan de la Rambla"): (28.3910, -16.6500),
-    ("Tenerife", "Santa Cruz de Tenerife"): (28.4630, -16.2510),
-    ("Tenerife", "Santa Úrsula"): (28.4260, -16.4900),
-    ("Tenerife", "Santiago del Teide"): (28.2950, -16.8150),
-    ("Tenerife", "Tacoronte"): (28.4800, -16.4120),
-    ("Tenerife", "Tegueste"): (28.5230, -16.3400),
-    ("Tenerife", "Vilaflor de Chasna"): (28.1570, -16.6350),
-
-    # La Palma
-    ("La Palma", "Breña Alta"): (28.6500, -17.7900),
-    ("La Palma", "Breña Baja"): (28.6300, -17.7600),
-    ("La Palma", "El Paso"): (28.6500, -17.8800),
-    ("La Palma", "Fuencaliente"): (28.4870, -17.8520),
-    ("La Palma", "Garafía"): (28.8300, -17.9200),
-    ("La Palma", "Los Llanos de Aridane"): (28.6580, -17.9180),
-    ("La Palma", "Puntagorda"): (28.7700, -17.9800),
-    ("La Palma", "Puntallana"): (28.7400, -17.7500),
-    ("La Palma", "San Andrés y Sauces"): (28.8000, -17.7660),
-    ("La Palma", "Santa Cruz de La Palma"): (28.6830, -17.7650),
-    ("La Palma", "Tazacorte"): (28.6450, -17.9320),
-    ("La Palma", "Tijarafe"): (28.7100, -17.9600),
-    ("La Palma", "Villa de Mazo"): (28.6090, -17.7770),
-
-    # El Hierro
-    ("El Hierro", "Frontera"): (27.7530, -18.0050),
-    ("El Hierro", "El Pinar"): (27.7110, -17.9810),
-    ("El Hierro", "Valverde"): (27.8080, -17.9150),
-
-    # Gran Canaria
-    ("Gran Canaria", "Las Palmas de Gran Canaria"): (28.1230, -15.4360),
-    ("Gran Canaria", "Telde"): (27.9960, -15.4180),
-    ("Gran Canaria", "Ingenio"): (27.9190, -15.4350),
-    ("Gran Canaria", "Agüimes"): (27.9050, -15.4460),
-    ("Gran Canaria", "Gáldar"): (28.1400, -15.6500),
-    ("Gran Canaria", "Arucas"): (28.1180, -15.5270),
-    ("Gran Canaria", "Mogán"): (27.8830, -15.7230),
-    ("Gran Canaria", "San Bartolomé de Tirajana"): (27.9240, -15.5730),
-    ("Gran Canaria", "Santa Brígida"): (28.0320, -15.4910),
-    ("Gran Canaria", "Teror"): (28.0590, -15.5490),
-
-    # Lanzarote
-    ("Lanzarote", "Arrecife"): (28.9630, -13.5480),
-    ("Lanzarote", "San Bartolomé"): (28.9980, -13.6110),
-    ("Lanzarote", "Tías"): (28.9530, -13.6500),
-    ("Lanzarote", "Tinajo"): (29.0670, -13.6760),
-    ("Lanzarote", "Teguise"): (29.0600, -13.5600),
-    ("Lanzarote", "Yaiza"): (28.9530, -13.7650),
-    ("Lanzarote", "Haría"): (29.1450, -13.4990),
-
-    # Fuerteventura
-    ("Fuerteventura", "Puerto del Rosario"): (28.5000, -13.8620),
-    ("Fuerteventura", "La Oliva"): (28.6100, -13.9280),
-    ("Fuerteventura", "Pájara"): (28.3500, -14.1070),
-    ("Fuerteventura", "Antigua"): (28.4230, -14.0120),
-    ("Fuerteventura", "Tuineje"): (28.3230, -14.0500),
-    ("Fuerteventura", "Betancuria"): (28.4250, -14.0560),
-
-    # La Gomera
-    ("La Gomera", "San Sebastián de La Gomera"): (28.0910, -17.1100),
-    ("La Gomera", "Vallehermoso"): (28.1800, -17.2650),
-    ("La Gomera", "Alajeró"): (28.0640, -17.2400),
-    ("La Gomera", "Hermigua"): (28.1660, -17.1940),
-    ("La Gomera", "Agulo"): (28.1870, -17.1940),
-    ("La Gomera", "Valle Gran Rey"): (28.1110, -17.3350),
-
-    # Atlántico
-    ("Atlántico-Canarias", "Atlántico-Canarias"): (28.3000, -16.5000),
+MUNICIPALITY_ALIASES = {
+    "San Cristóbal de La Laguna": ["san cristobal de la laguna", "la laguna"],
+    "Fuencaliente": ["fuencaliente", "fuencaliente de la palma"],
+    "El Pinar": ["el pinar", "el pinar de el hierro"],
+    "Guía de Isora": ["guia de isora", "guía de isora"],
+    "Güímar": ["guimar", "güímar"],
+    "Agüimes": ["aguimes", "agüimes"],
+    "Gáldar": ["galdar", "gáldar"],
+    "Mogán": ["mogan", "mogán"],
+    "San Bartolomé": ["san bartolome", "san bartolomé"],
+    "Tías": ["tias", "tías"],
+    "Pájara": ["pajara", "pájara"],
+    "Haría": ["haria", "haría"],
+    "Alajeró": ["alajero", "alajeró"],
+    "Breña Alta": ["brena alta", "breña alta"],
+    "Breña Baja": ["brena baja", "breña baja"],
+    "Garafía": ["garafia", "garafía"],
+    "San Andrés y Sauces": ["san andres y sauces", "san andrés y sauces"],
+    "Santa Úrsula": ["santa ursula", "santa úrsula"],
 }
-
-
-CRITICALITY_WEIGHT = {
-    "hospital": 5,
-    "aeropuerto": 5,
-    "puerto": 4,
-    "emergencias": 4,
-    "telecom": 4,
-    "subestacion": 4,
-    "agua": 4,
-    "albergue": 3,
-    "polideportivo": 3,
-    "carretera": 3
-}
-
-
-EMERGENCY_INFRASTRUCTURES = [
-    # TENERIFE
-    {
-        "nombre": "Hospital Universitario de Canarias",
-        "tipo": "hospital",
-        "lat": 28.4526,
-        "lon": -16.2922,
-        "municipio": "San Cristóbal de La Laguna",
-        "isla": "Tenerife",
-        "criticidad": "muy alta",
-        "note": "Hospital de referencia"
-    },
-    {
-        "nombre": "Hospital Universitario Nuestra Señora de Candelaria",
-        "tipo": "hospital",
-        "lat": 28.4417,
-        "lon": -16.2806,
-        "municipio": "Santa Cruz de Tenerife",
-        "isla": "Tenerife",
-        "criticidad": "muy alta",
-        "note": "Hospital de referencia"
-    },
-    {
-        "nombre": "Aeropuerto Tenerife Norte",
-        "tipo": "aeropuerto",
-        "lat": 28.4827,
-        "lon": -16.3415,
-        "municipio": "San Cristóbal de La Laguna",
-        "isla": "Tenerife",
-        "criticidad": "muy alta"
-    },
-    {
-        "nombre": "Aeropuerto Tenerife Sur",
-        "tipo": "aeropuerto",
-        "lat": 28.0445,
-        "lon": -16.5725,
-        "municipio": "Granadilla de Abona",
-        "isla": "Tenerife",
-        "criticidad": "muy alta"
-    },
-    {
-        "nombre": "Puerto de Santa Cruz de Tenerife",
-        "tipo": "puerto",
-        "lat": 28.4705,
-        "lon": -16.2365,
-        "municipio": "Santa Cruz de Tenerife",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Pabellón Roberto Estrello",
-        "tipo": "polideportivo",
-        "lat": 28.4917,
-        "lon": -16.3150,
-        "municipio": "Santa Cruz de Tenerife",
-        "isla": "Tenerife",
-        "criticidad": "media"
-    },
-    {
-        "nombre": "Centro Coordinador Insular Tenerife",
-        "tipo": "emergencias",
-        "lat": 28.4630,
-        "lon": -16.2510,
-        "municipio": "Santa Cruz de Tenerife",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Subestación Granadilla",
-        "tipo": "subestacion",
-        "lat": 28.0840,
-        "lon": -16.5760,
-        "municipio": "Granadilla de Abona",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Nodo telecom Izaña",
-        "tipo": "telecom",
-        "lat": 28.3000,
-        "lon": -16.5110,
-        "municipio": "La Orotava",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Depósito estratégico de agua norte Tenerife",
-        "tipo": "agua",
-        "lat": 28.4040,
-        "lon": -16.5600,
-        "municipio": "La Orotava",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Polideportivo de Icod",
-        "tipo": "albergue",
-        "lat": 28.3675,
-        "lon": -16.7140,
-        "municipio": "Icod de los Vinos",
-        "isla": "Tenerife",
-        "criticidad": "media"
-    },
-    {
-        "nombre": "Enlace TF-1 Candelaria",
-        "tipo": "carretera",
-        "lat": 28.3540,
-        "lon": -16.3690,
-        "municipio": "Candelaria",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Enlace TF-5 La Orotava",
-        "tipo": "carretera",
-        "lat": 28.3910,
-        "lon": -16.5400,
-        "municipio": "La Orotava",
-        "isla": "Tenerife",
-        "criticidad": "alta"
-    },
-
-    # LA PALMA
-    {
-        "nombre": "Hospital General de La Palma",
-        "tipo": "hospital",
-        "lat": 28.6510,
-        "lon": -17.7830,
-        "municipio": "Breña Alta",
-        "isla": "La Palma",
-        "criticidad": "muy alta"
-    },
-    {
-        "nombre": "Aeropuerto de La Palma",
-        "tipo": "aeropuerto",
-        "lat": 28.6265,
-        "lon": -17.7556,
-        "municipio": "Villa de Mazo",
-        "isla": "La Palma",
-        "criticidad": "muy alta"
-    },
-    {
-        "nombre": "Puerto de Santa Cruz de La Palma",
-        "tipo": "puerto",
-        "lat": 28.6819,
-        "lon": -17.7648,
-        "municipio": "Santa Cruz de La Palma",
-        "isla": "La Palma",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Polideportivo Municipal de Los Llanos",
-        "tipo": "polideportivo",
-        "lat": 28.6562,
-        "lon": -17.9116,
-        "municipio": "Los Llanos de Aridane",
-        "isla": "La Palma",
-        "criticidad": "media"
-    },
-    {
-        "nombre": "Campo de Fútbol de El Paso",
-        "tipo": "albergue",
-        "lat": 28.6514,
-        "lon": -17.8797,
-        "municipio": "El Paso",
-        "isla": "La Palma",
-        "criticidad": "media"
-    },
-    {
-        "nombre": "Subestación Los Guinchos",
-        "tipo": "subestacion",
-        "lat": 28.6470,
-        "lon": -17.7600,
-        "municipio": "Breña Alta",
-        "isla": "La Palma",
-        "criticidad": "alta"
-    },
-
-    # EL HIERRO
-    {
-        "nombre": "Hospital Insular Nuestra Señora de los Reyes",
-        "tipo": "hospital",
-        "lat": 27.8060,
-        "lon": -17.9150,
-        "municipio": "Valverde",
-        "isla": "El Hierro",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Puerto de La Estaca",
-        "tipo": "puerto",
-        "lat": 27.7720,
-        "lon": -17.9030,
-        "municipio": "Valverde",
-        "isla": "El Hierro",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Aeropuerto de El Hierro",
-        "tipo": "aeropuerto",
-        "lat": 27.8148,
-        "lon": -17.8871,
-        "municipio": "Valverde",
-        "isla": "El Hierro",
-        "criticidad": "alta"
-    },
-
-    # GRAN CANARIA
-    {
-        "nombre": "Hospital Universitario de Gran Canaria Dr. Negrín",
-        "tipo": "hospital",
-        "lat": 28.1270,
-        "lon": -15.4450,
-        "municipio": "Las Palmas de Gran Canaria",
-        "isla": "Gran Canaria",
-        "criticidad": "muy alta"
-    },
-    {
-        "nombre": "Aeropuerto de Gran Canaria",
-        "tipo": "aeropuerto",
-        "lat": 27.9319,
-        "lon": -15.3866,
-        "municipio": "Ingenio",
-        "isla": "Gran Canaria",
-        "criticidad": "muy alta"
-    },
-    {
-        "nombre": "Puerto de La Luz",
-        "tipo": "puerto",
-        "lat": 28.1410,
-        "lon": -15.4170,
-        "municipio": "Las Palmas de Gran Canaria",
-        "isla": "Gran Canaria",
-        "criticidad": "muy alta"
-    },
-
-    # LANZAROTE
-    {
-        "nombre": "Hospital Universitario Doctor José Molina Orosa",
-        "tipo": "hospital",
-        "lat": 28.9670,
-        "lon": -13.5660,
-        "municipio": "Arrecife",
-        "isla": "Lanzarote",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Aeropuerto César Manrique-Lanzarote",
-        "tipo": "aeropuerto",
-        "lat": 28.9455,
-        "lon": -13.6052,
-        "municipio": "San Bartolomé",
-        "isla": "Lanzarote",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Puerto de Arrecife",
-        "tipo": "puerto",
-        "lat": 28.9600,
-        "lon": -13.5500,
-        "municipio": "Arrecife",
-        "isla": "Lanzarote",
-        "criticidad": "alta"
-    },
-
-    # FUERTEVENTURA
-    {
-        "nombre": "Hospital General de Fuerteventura",
-        "tipo": "hospital",
-        "lat": 28.4980,
-        "lon": -13.8670,
-        "municipio": "Puerto del Rosario",
-        "isla": "Fuerteventura",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Aeropuerto de Fuerteventura",
-        "tipo": "aeropuerto",
-        "lat": 28.4527,
-        "lon": -13.8638,
-        "municipio": "Puerto del Rosario",
-        "isla": "Fuerteventura",
-        "criticidad": "alta"
-    },
-
-    # LA GOMERA
-    {
-        "nombre": "Hospital Nuestra Señora de Guadalupe",
-        "tipo": "hospital",
-        "lat": 28.0910,
-        "lon": -17.1120,
-        "municipio": "San Sebastián de La Gomera",
-        "isla": "La Gomera",
-        "criticidad": "alta"
-    },
-    {
-        "nombre": "Puerto de San Sebastián de La Gomera",
-        "tipo": "puerto",
-        "lat": 28.0915,
-        "lon": -17.1110,
-        "municipio": "San Sebastián de La Gomera",
-        "isla": "La Gomera",
-        "criticidad": "alta"
-    }
-]
 
 
 # =========================
@@ -482,6 +163,63 @@ def parse_float(value):
 
 def now_utc():
     return datetime.now(timezone.utc)
+
+
+def normalize_text(value):
+    value = str(value or "").strip().lower()
+    repl = {
+        "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u", "ü": "u", "ñ": "n"
+    }
+    for a, b in repl.items():
+        value = value.replace(a, b)
+    return re.sub(r"\s+", " ", value)
+
+
+def canonical_municipality_name(name):
+    n = normalize_text(name)
+    if not n:
+        return ""
+
+    for island, items in MUNICIPALITIES_BY_ISLAND.items():
+        for item in items:
+            if normalize_text(item) == n:
+                return item
+
+    for canonical, aliases in MUNICIPALITY_ALIASES.items():
+        if n == normalize_text(canonical):
+            return canonical
+        for alias in aliases:
+            if n == normalize_text(alias):
+                return canonical
+
+    return name
+
+
+def infer_municipality(localizacion, island):
+    loc = normalize_text(localizacion)
+
+    # Primero aliases explícitos
+    for canonical, aliases in MUNICIPALITY_ALIASES.items():
+        all_names = [canonical] + aliases
+        for candidate in all_names:
+            if normalize_text(candidate) in loc:
+                return canonical
+
+    # Después lista municipal por isla
+    for candidate in MUNICIPALITIES_BY_ISLAND.get(island, []):
+        if normalize_text(candidate) in loc:
+            return candidate
+
+    return ""
+
+
+def municipality_to_island(municipio):
+    m = normalize_text(municipio)
+    for island, items in MUNICIPALITIES_BY_ISLAND.items():
+        for item in items:
+            if normalize_text(item) == m:
+                return island
+    return "Atlántico-Canarias"
 
 
 def parse_event_datetime(event):
@@ -505,17 +243,6 @@ def parse_event_datetime(event):
     return None
 
 
-def haversine_km(lat1, lon1, lat2, lon2):
-    r = 6371.0
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-    dphi = math.radians(lat2 - lat1)
-    dlambda = math.radians(lon2 - lon1)
-
-    a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
-    return 2 * r * math.asin(math.sqrt(a))
-
-
 def classify_island(lat, lon):
     if 28.00 <= lat <= 28.70 and -16.95 <= lon <= -16.05:
         return "Tenerife"
@@ -532,26 +259,6 @@ def classify_island(lat, lon):
     if 28.00 <= lat <= 28.30 and -17.45 <= lon <= -16.90:
         return "La Gomera"
     return "Atlántico-Canarias"
-
-
-def classify_municipality(lat, lon, island):
-    candidates = MUNICIPALITIES_BY_ISLAND.get(island, [])
-    if not candidates:
-        return None
-
-    best_name = None
-    best_dist = None
-
-    for muni in candidates:
-        centroid = MUNICIPALITY_CENTROIDS.get((island, muni))
-        if not centroid:
-            continue
-        d = haversine_km(lat, lon, centroid[0], centroid[1])
-        if best_dist is None or d < best_dist:
-            best_dist = d
-            best_name = muni
-
-    return best_name
 
 
 def events_in_hours(eventos, hours):
@@ -638,8 +345,8 @@ def parse_ign_canarias():
                     evento_id = c
                     break
 
-            island = classify_island(lat, lon)
-            municipio = classify_municipality(lat, lon, island)
+            isla = classify_island(lat, lon)
+            municipio = infer_municipality(localizacion, isla)
 
             eventos.append({
                 "id": evento_id,
@@ -652,70 +359,8 @@ def parse_ign_canarias():
                 "magnitud": mag,
                 "tipo_magnitud": tipo_mag,
                 "localizacion": localizacion or "Canarias",
-                "isla": island,
-                "municipio": municipio,
-                "source": "IGN_live"
-            })
-        except Exception:
-            pass
-
-    if eventos:
-        return eventos
-
-    text = soup.get_text("\n", strip=True)
-    lines = [clean_text(line) for line in text.splitlines() if clean_text(line)]
-
-    pattern = re.compile(
-        r'^(es\d+[a-z0-9]+)?\s*'
-        r'(\d{2}/\d{2}/\d{4})\s+'
-        r'(\d{2}:\d{2}:\d{2})\s+'
-        r'(-?\d+[.,]\d+)\s+'
-        r'(-?\d+[.,]\d+)\s+'
-        r'(\d+[.,]\d+)\s+'
-        r'(?:\S+\s+)?'
-        r'(\d+[.,]\d+)\s+'
-        r'([A-Za-z]+)\s+'
-        r'(.+)$'
-    )
-
-    eventos = []
-    for line in lines:
-        m = pattern.match(line)
-        if not m:
-            continue
-
-        try:
-            evento_id = m.group(1) or ""
-            fecha = m.group(2)
-            hora = m.group(3)
-            lat = parse_float(m.group(4))
-            lon = parse_float(m.group(5))
-            profundidad = parse_float(m.group(6))
-            magnitud = parse_float(m.group(7))
-            tipo_mag = m.group(8)
-            localizacion = m.group(9).strip()
-
-            try:
-                dt = datetime.strptime(f"{fecha} {hora}", "%d/%m/%Y %H:%M:%S").replace(tzinfo=timezone.utc)
-            except ValueError:
-                dt = None
-
-            island = classify_island(lat, lon)
-            municipio = classify_municipality(lat, lon, island)
-
-            eventos.append({
-                "id": evento_id,
-                "fecha": fecha,
-                "hora_utc": hora,
-                "datetime_iso": dt.isoformat() if dt else None,
-                "lat": lat,
-                "lon": lon,
-                "profundidad_km": profundidad,
-                "magnitud": magnitud,
-                "tipo_magnitud": tipo_mag,
-                "localizacion": localizacion,
-                "isla": island,
-                "municipio": municipio,
+                "isla": isla,
+                "municipio": canonical_municipality_name(municipio),
                 "source": "IGN_live"
             })
         except Exception:
@@ -746,7 +391,6 @@ def fetch_usgs_canarias():
             continue
 
         timestamp_ms = props.get("time", 0) or 0
-        island = classify_island(lat, lon)
 
         eventos.append({
             "id": feature.get("id"),
@@ -757,14 +401,14 @@ def fetch_usgs_canarias():
             "localizacion": props.get("place", "Canarias"),
             "datetime_iso": datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc).isoformat(),
             "source": "USGS",
-            "isla": island
+            "isla": classify_island(lat, lon)
         })
 
     return eventos
 
 
 # =========================
-# Analítica
+# Analítica general
 # =========================
 def depth_profile(eventos):
     bins = {
@@ -862,14 +506,11 @@ def detect_swarm_candidates(eventos):
     return resultados
 
 
-def compute_baseline(events_recent, island_name=None, municipio=None):
+def compute_baseline(events_recent, island_name=None):
     eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
         eventos = [e for e in eventos if e["isla"] == island_name]
-
-    if municipio and municipio != "Todos":
-        eventos = [e for e in eventos if e.get("municipio") == municipio]
 
     ventana = events_in_days(eventos, 10)
 
@@ -926,14 +567,11 @@ def compute_acceleration(events_recent):
     }
 
 
-def detect_depth_migration(events_recent, island_name=None, municipio=None):
+def detect_depth_migration(events_recent, island_name=None):
     eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
         eventos = [e for e in eventos if e["isla"] == island_name]
-
-    if municipio and municipio != "Todos":
-        eventos = [e for e in eventos if e.get("municipio") == municipio]
 
     last_7d = events_in_days(eventos, 7)
     last_72h = events_in_hours(eventos, 72)
@@ -987,22 +625,19 @@ def detect_depth_migration(events_recent, island_name=None, municipio=None):
     }
 
 
-def detect_regime_change(events_recent, island_name=None, municipio=None):
+def detect_regime_change(events_recent, island_name=None):
     eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
         eventos = [e for e in eventos if e["isla"] == island_name]
 
-    if municipio and municipio != "Todos":
-        eventos = [e for e in eventos if e.get("municipio") == municipio]
-
     last_24h = events_in_hours(eventos, 24)
     last_7d = events_in_days(eventos, 7)
     last_30d = events_in_days(eventos, 30)
 
-    baseline = compute_baseline(events_recent, island_name, municipio)
+    baseline = compute_baseline(events_recent, island_name)
     acceleration = compute_acceleration(eventos)
-    migration = detect_depth_migration(eventos, island_name, municipio)
+    migration = detect_depth_migration(eventos, island_name)
 
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
     deviation_7d = len(last_7d) / baseline_7d
@@ -1085,14 +720,11 @@ def detect_regime_change(events_recent, island_name=None, municipio=None):
     }
 
 
-def compute_risklab_index(events_recent, island_name=None, municipio=None):
+def compute_risklab_index(events_recent, island_name=None):
     eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
         eventos = [e for e in eventos if e["isla"] == island_name]
-
-    if municipio and municipio != "Todos":
-        eventos = [e for e in eventos if e.get("municipio") == municipio]
 
     e24 = len(events_in_hours(eventos, 24))
     e7d = len(events_in_days(eventos, 7))
@@ -1102,8 +734,8 @@ def compute_risklab_index(events_recent, island_name=None, municipio=None):
     pmedia_30d = round(sum(e["profundidad_km"] for e in e30d) / len(e30d), 2) if e30d else 0
 
     accel = compute_acceleration(eventos)["ratio"]
-    baseline = compute_baseline(events_recent, island_name, municipio)
-    migration = detect_depth_migration(eventos, island_name, municipio)
+    baseline = compute_baseline(events_recent, island_name)
+    migration = detect_depth_migration(eventos, island_name)
 
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
     deviation_ratio_7d = round(e7d / baseline_7d, 2)
@@ -1152,19 +784,16 @@ def compute_risklab_index(events_recent, island_name=None, municipio=None):
     }
 
 
-def compute_anomaly_signal(recent, island=None, municipio=None):
+def compute_anomaly_signal(recent, island=None):
     eventos = list(recent)
 
     if island and island != "Todas":
         eventos = [e for e in eventos if e["isla"] == island]
 
-    if municipio and municipio != "Todos":
-        eventos = [e for e in eventos if e.get("municipio") == municipio]
-
     last_24h = events_in_hours(eventos, 24)
     last_7d = events_in_days(eventos, 7)
 
-    baseline = compute_baseline(recent, island, municipio)
+    baseline = compute_baseline(recent, island)
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
 
     deviation_score = min((len(last_7d) / baseline_7d) * 20, 30)
@@ -1182,7 +811,7 @@ def compute_anomaly_signal(recent, island=None, municipio=None):
     elif len(last_24h) >= 5:
         swarm_score = 8
 
-    migration = detect_depth_migration(eventos, island, municipio)
+    migration = detect_depth_migration(eventos, island)
     migration_score = min(migration.get("score", 0) * 6, 20)
 
     anomaly = deviation_score + accel_score + mag_score + swarm_score + migration_score
@@ -1222,14 +851,33 @@ def compute_anomaly_signal(recent, island=None, municipio=None):
     }
 
 
-def auto_interpretation(events_recent, island_name="Canarias", municipio=None):
+def territorial_summary(island, anomaly, infrastructures):
+    infra_isla = [i for i in infrastructures if i["isla"] == island]
+    tipos = sorted(list(set(i["tipo"] for i in infra_isla)))
+
+    lectura = "actividad dentro de parámetros habituales"
+    if anomaly["nivel"] == "moderada":
+        lectura = "actividad ligeramente superior al baseline reciente"
+    if anomaly["nivel"] == "marcada":
+        lectura = "actividad anómala que merece seguimiento"
+
+    status = next((x for x in OFFICIAL_VOLCANIC_STATUS if x["isla"] == island), None)
+
+    return {
+        "isla": island,
+        "infraestructuras": len(infra_isla),
+        "tipos": tipos,
+        "nivel_anomalia": anomaly["nivel"],
+        "lectura": lectura,
+        "estado_oficial": status
+    }
+
+
+def auto_interpretation(events_recent, island_name="Canarias"):
     eventos = list(events_recent)
 
     if island_name and island_name != "Canarias":
         eventos = [e for e in eventos if e["isla"] == island_name]
-
-    if municipio and municipio != "Todos":
-        eventos = [e for e in eventos if e.get("municipio") == municipio]
 
     e24 = events_in_hours(eventos, 24)
     e72 = events_in_hours(eventos, 72)
@@ -1244,11 +892,11 @@ def auto_interpretation(events_recent, island_name="Canarias", municipio=None):
     pmedia = round(sum(e["profundidad_km"] for e in e30d) / len(e30d), 1) if e30d else 0
 
     acceleration = compute_acceleration(eventos)
-    baseline = compute_baseline(eventos, island_name if island_name != "Canarias" else None, municipio)
+    baseline = compute_baseline(eventos, island_name if island_name != "Canarias" else None)
     baseline_7d = baseline["media_7d"] if baseline["media_7d"] > 0 else 1.0
     deviation_ratio = round(n7d / baseline_7d, 2)
-    regime = detect_regime_change(eventos, island_name if island_name != "Canarias" else None, municipio)
-    migration = detect_depth_migration(eventos, island_name if island_name != "Canarias" else None, municipio)
+    regime = detect_regime_change(eventos, island_name if island_name != "Canarias" else None)
+    migration = detect_depth_migration(eventos, island_name if island_name != "Canarias" else None)
 
     swarm = detect_swarm_candidates(eventos)
     swarm_text = ""
@@ -1256,15 +904,13 @@ def auto_interpretation(events_recent, island_name="Canarias", municipio=None):
         top_swarm = swarm[0]
         swarm_text = f" Se detecta además un posible enjambre experimental con {top_swarm['count']} eventos."
 
-    scope_label = municipio if municipio and municipio != "Todos" else island_name
-
     fragments = []
 
     if n24 == 0 and n7d == 0:
-        fragments.append(f"No se observan señales destacadas en la ventana reciente para {scope_label}.")
+        fragments.append(f"No se observan señales destacadas en la ventana reciente para {island_name}.")
     else:
         fragments.append(
-            f"En {scope_label} se registran {n24} eventos en 24 horas, {n7d} en 7 días y una magnitud máxima reciente de {mmax:.1f}."
+            f"En {island_name} se registran {n24} eventos en 24 horas, {n7d} en 7 días y una magnitud máxima reciente de {mmax:.1f}."
         )
 
     if deviation_ratio >= 2:
@@ -1354,108 +1000,141 @@ def grouped_summary_by_island(events_recent):
     return summary
 
 
-def filter_infrastructures(island_name=None, municipio=None):
-    data = EMERGENCY_INFRASTRUCTURES[:]
+# =========================
+# Analítica municipal
+# =========================
+def municipal_events(events_recent, island_name=None, municipio=None):
+    eventos = list(events_recent)
 
     if island_name and island_name != "Todas":
-        data = [x for x in data if x["isla"] == island_name]
+        eventos = [e for e in eventos if e["isla"] == island_name]
 
-    if municipio and municipio != "Todos":
-        data = [x for x in data if x["municipio"] == municipio]
+    if municipio and municipio not in ("Todos", ""):
+        muni = canonical_municipality_name(municipio)
+        eventos = [e for e in eventos if canonical_municipality_name(e.get("municipio", "")) == muni]
 
-    return data
+    return eventos
 
 
-def recent_event_centroid(events_recent):
-    recent = events_in_days(events_recent, 7)
-    if not recent:
-        return None
+def municipality_score(events):
+    e24 = len(events_in_hours(events, 24))
+    e7d = len(events_in_days(events, 7))
+    e30d = len(events_in_days(events, 30))
+    mmax = max((e["magnitud"] for e in events), default=0)
+    pmedia = round(sum(e["profundidad_km"] for e in events) / len(events), 2) if events else 0
+    accel = compute_acceleration(events)["ratio"] if events else 0
 
-    lat = sum(e["lat"] for e in recent) / len(recent)
-    lon = sum(e["lon"] for e in recent) / len(recent)
+    depth_component = max(0, 20 - pmedia)
+    score = (e24 * 10) + (e7d * 4) + (mmax * 12) + (accel * 8) + (depth_component * 0.4)
+    score = round(min(100, max(0, score)), 1)
+
+    if e7d == 0:
+        nivel = "sin actividad"
+        color = "gray"
+    elif score < 20:
+        nivel = "baja"
+        color = "blue1"
+    elif score < 45:
+        nivel = "ligera"
+        color = "blue2"
+    elif score < 80:
+        nivel = "moderada"
+        color = "violet"
+    else:
+        nivel = "alta"
+        color = "magenta"
 
     return {
-        "lat": round(lat, 5),
-        "lon": round(lon, 5),
-        "count": len(recent)
+        "score": score,
+        "nivel": nivel,
+        "color": color,
+        "eventos_24h": e24,
+        "eventos_7d": e7d,
+        "eventos_30d": e30d,
+        "magnitud_max_30d": round(mmax, 1),
+        "profundidad_media_km": round(pmedia, 1) if events else 0,
+        "aceleracion_ratio": round(accel, 2)
     }
 
 
-def nearest_infrastructure_to_centroid(events_recent, infrastructures):
-    centroid = recent_event_centroid(events_recent)
-    if not centroid or not infrastructures:
-        return None
+def build_municipality_stats(events_recent, island_name=None):
+    municipios = MUNICIPALITIES_BY_ISLAND.get(island_name, [])
+    if island_name in (None, "Todas"):
+        municipios = []
+        for items in MUNICIPALITIES_BY_ISLAND.values():
+            municipios.extend(items)
 
-    best = None
-    best_dist = None
-
-    for infra in infrastructures:
-        d = haversine_km(centroid["lat"], centroid["lon"], infra["lat"], infra["lon"])
-        if best_dist is None or d < best_dist:
-            best_dist = d
-            best = dict(infra)
-            best["distancia_km"] = round(d, 2)
-
-    return best
-
-
-def exposed_infrastructures(events_recent, infrastructures, radius_km=15):
-    centroid = recent_event_centroid(events_recent)
-    if not centroid:
-        return []
-
-    exposed = []
-    for infra in infrastructures:
-        d = haversine_km(centroid["lat"], centroid["lon"], infra["lat"], infra["lon"])
-        if d <= radius_km:
-            item = dict(infra)
-            item["distancia_km"] = round(d, 2)
-            exposed.append(item)
-
-    exposed.sort(key=lambda x: (x["distancia_km"], -CRITICALITY_WEIGHT.get(x["tipo"], 1)))
-    return exposed
+    out = {}
+    for muni in municipios:
+        evs = [e for e in events_recent if canonical_municipality_name(e.get("municipio", "")) == muni]
+        out[muni] = {
+            "municipio": muni,
+            "isla": municipality_to_island(muni),
+            **municipality_score(evs)
+        }
+    return out
 
 
-def territorial_summary(island, anomaly, infrastructures, events_recent):
-    infra_isla = [i for i in infrastructures if i["isla"] == island]
-    tipos = sorted(list(set(i["tipo"] for i in infra_isla)))
-    expuestas = exposed_infrastructures(events_recent, infra_isla, radius_km=18)
-    nearest = nearest_infrastructure_to_centroid(events_recent, infra_isla)
+def municipality_ranking(events_recent, island_name=None, limit=8):
+    stats = build_municipality_stats(events_recent, island_name)
+    items = list(stats.values())
+    items.sort(key=lambda x: (x["score"], x["magnitud_max_30d"], x["eventos_7d"]), reverse=True)
+    items = [x for x in items if x["eventos_7d"] > 0]
+    return items[:limit]
 
-    lectura = "actividad dentro de parámetros habituales"
-    if anomaly["nivel"] == "moderada":
-        lectura = "actividad ligeramente superior al baseline reciente con revisión territorial recomendada"
-    if anomaly["nivel"] == "marcada":
-        lectura = "actividad anómala que merece seguimiento reforzado sobre infraestructuras y soporte logístico"
 
+def municipality_summary(events_recent, municipio):
+    muni = canonical_municipality_name(municipio)
+    evs = [e for e in events_recent if canonical_municipality_name(e.get("municipio", "")) == muni]
+    data = municipality_score(evs)
     return {
-        "isla": island,
-        "infraestructuras": len(infra_isla),
-        "tipos": tipos,
-        "nivel_anomalia": anomaly["nivel"],
-        "lectura": lectura,
-        "expuestas_7d": len(expuestas),
-        "infra_mas_cercana": nearest
-    }
-
-
-def municipality_operational_summary(events_recent, infrastructures, island_name, municipio):
-    eventos = [e for e in events_recent if e["isla"] == island_name and e.get("municipio") == municipio]
-    infra = [x for x in infrastructures if x["isla"] == island_name and x["municipio"] == municipio]
-
-    return {
-        "municipio": municipio,
-        "isla": island_name,
-        "eventos_7d": len(events_in_days(eventos, 7)),
-        "eventos_30d": len(events_in_days(eventos, 30)),
-        "magnitud_max_30d": round(max((e["magnitud"] for e in eventos), default=0), 1),
-        "infraestructuras_criticas": len(infra),
-        "tipos": sorted(list(set(x["tipo"] for x in infra)))
+        "municipio": muni,
+        "isla": municipality_to_island(muni),
+        **data
     }
 
 
 # =========================
-# Rutas
+# Infraestructuras demo
+# =========================
+EMERGENCY_INFRASTRUCTURES = [
+    {
+        "nombre": "Polideportivo Municipal de Los Llanos",
+        "tipo": "polideportivo",
+        "lat": 28.6562,
+        "lon": -17.9116,
+        "municipio": "Los Llanos de Aridane",
+        "isla": "La Palma"
+    },
+    {
+        "nombre": "Pabellón Roberto Estrello",
+        "tipo": "polideportivo",
+        "lat": 28.4917,
+        "lon": -16.3150,
+        "municipio": "Santa Cruz de Tenerife",
+        "isla": "Tenerife"
+    },
+    {
+        "nombre": "Puerto de Santa Cruz de La Palma",
+        "tipo": "puerto",
+        "lat": 28.6819,
+        "lon": -17.7648,
+        "municipio": "Santa Cruz de La Palma",
+        "isla": "La Palma"
+    },
+    {
+        "nombre": "Campo de Fútbol de El Paso",
+        "tipo": "campo_futbol",
+        "lat": 28.6514,
+        "lon": -17.8797,
+        "municipio": "El Paso",
+        "isla": "La Palma"
+    }
+]
+
+
+# =========================
+# Rutas estáticas
 # =========================
 @app.route("/")
 def root():
@@ -1467,6 +1146,9 @@ def static_proxy(path):
     return send_from_directory(".", path)
 
 
+# =========================
+# API
+# =========================
 @app.route("/api/ign-canarias")
 def api_ign_canarias():
     try:
@@ -1503,6 +1185,14 @@ def api_usgs_canarias():
         }), 500
 
 
+@app.route("/api/official-volcanic-status")
+def api_official_volcanic_status():
+    return jsonify({
+        "ok": True,
+        "official_status": OFFICIAL_VOLCANIC_STATUS
+    })
+
+
 @app.route("/api/risklab-summary")
 def api_risklab_summary():
     try:
@@ -1519,19 +1209,146 @@ def api_risklab_summary():
         }), 500
 
 
+@app.route("/api/risklab-index")
+def api_risklab_index():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+        data = compute_risklab_index(recent, island_name if island_name != "Todas" else None)
+        return jsonify({"ok": True, "risklab_index": data})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "risklab_index": {}}), 500
+
+
+@app.route("/api/risklab-interpretation")
+def api_risklab_interpretation():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+        label = "Canarias"
+        if island_name and island_name != "Todas":
+            label = island_name
+        interp = auto_interpretation(recent, label)
+        return jsonify({"ok": True, "interpretation": interp})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "interpretation": {}}), 500
+
+
+@app.route("/api/risklab-depth")
+def api_risklab_depth():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+        merged = list(recent)
+        if island_name and island_name != "Todas":
+            merged = [e for e in merged if e["isla"] == island_name]
+        return jsonify({
+            "ok": True,
+            "depth_profile": depth_profile(events_in_days(merged, 30))
+        })
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "depth_profile": {}}), 500
+
+
+@app.route("/api/risklab-compare")
+def api_risklab_compare():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+
+        if island_name and island_name != "Todas":
+            recent = [e for e in recent if e["isla"] == island_name]
+
+        return jsonify({
+            "ok": True,
+            "compare": compare_windows(recent),
+            "acceleration": compute_acceleration(recent),
+            "baseline": compute_baseline(recent, island_name if island_name != "Todas" else None)
+        })
+    except Exception as e:
+        return jsonify({
+            "ok": False,
+            "error": str(e),
+            "compare": {},
+            "acceleration": {},
+            "baseline": {}
+        }), 500
+
+
+@app.route("/api/risklab-regime")
+def api_risklab_regime():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+        data = detect_regime_change(recent, island_name if island_name != "Todas" else None)
+        return jsonify({"ok": True, "regime": data})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "regime": {}}), 500
+
+
+@app.route("/api/risklab-migration")
+def api_risklab_migration():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+        data = detect_depth_migration(recent, island_name if island_name != "Todas" else None)
+        return jsonify({"ok": True, "migration": data})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "migration": {}}), 500
+
+
+@app.route("/api/risklab-municipal")
+def api_risklab_municipal():
+    try:
+        recent = parse_ign_canarias()
+        island_name = request.args.get("island")
+        municipio = request.args.get("municipio")
+
+        if island_name and island_name != "Todas":
+            recent = [e for e in recent if e["isla"] == island_name]
+
+        stats = build_municipality_stats(recent, island_name if island_name != "Todas" else None)
+        ranking = municipality_ranking(recent, island_name if island_name != "Todas" else None)
+
+        selected = None
+        if municipio and municipio not in ("Todos", ""):
+            selected = municipality_summary(recent, municipio)
+
+        return jsonify({
+            "ok": True,
+            "municipal_stats": stats,
+            "municipal_ranking": ranking,
+            "selected_municipality": selected
+        })
+    except Exception as e:
+        return jsonify({
+            "ok": False,
+            "error": str(e),
+            "municipal_stats": {},
+            "municipal_ranking": [],
+            "selected_municipality": None
+        }), 500
+
+
 @app.route("/api/emergency-infrastructures")
 def api_emergency_infrastructures():
     try:
         island_name = request.args.get("island")
         municipio = request.args.get("municipio")
 
-        data = filter_infrastructures(island_name, municipio)
+        data = EMERGENCY_INFRASTRUCTURES[:]
+
+        if island_name and island_name != "Todas":
+            data = [x for x in data if x["isla"] == island_name]
+
+        if municipio and municipio not in ("Todos", ""):
+            data = [x for x in data if canonical_municipality_name(x["municipio"]) == canonical_municipality_name(municipio)]
 
         return jsonify({
             "ok": True,
             "count": len(data),
             "infraestructuras": data,
-            "note": "Inventario prototipo RiskLab inspirado en lógica operativa territorial."
+            "note": "Inventario de demostración. Pendiente de carga completa desde planes municipales/insulares."
         })
     except Exception as e:
         return jsonify({
@@ -1546,60 +1363,69 @@ def api_emergency_infrastructures():
 def api_risklab_bundle():
     try:
         island_name = request.args.get("island")
-        municipio = request.args.get("municipio", "Todos")
+        municipio = request.args.get("municipio")
 
-        if island_name == "Todas":
-            island_name = None
+        island_filter = None if island_name in (None, "Todas") else island_name
+        municipio_filter = None if municipio in (None, "Todos", "") else canonical_municipality_name(municipio)
 
         recent = parse_ign_canarias()
 
-        recent_filtered = recent[:]
-        if island_name:
-            recent_filtered = [e for e in recent_filtered if e["isla"] == island_name]
+        # Vista principal por isla
+        recent_island = recent
+        if island_filter:
+            recent_island = [e for e in recent if e["isla"] == island_filter]
 
-        municipios_disponibles = []
-        if island_name:
-            municipios_disponibles = MUNICIPALITIES_BY_ISLAND.get(island_name, [])
-        else:
-            municipios_disponibles = []
-
-        if municipio and municipio != "Todos":
-            recent_filtered = [e for e in recent_filtered if e.get("municipio") == municipio]
+        # Vista específica por municipio si está seleccionado
+        recent_selected = recent_island
+        if municipio_filter:
+            recent_selected = [e for e in recent_island if canonical_municipality_name(e.get("municipio", "")) == municipio_filter]
 
         summary = grouped_summary_by_island(recent)
-        if island_name:
-            summary = {island_name: summary.get(island_name, {})}
 
-        risklab_index = compute_risklab_index(recent_filtered, island_name, municipio)
-        interpretation = auto_interpretation(recent_filtered, island_name or "Canarias", municipio)
-        depth = depth_profile(events_in_days(recent_filtered, 30))
-        compare = compare_windows(recent_filtered)
-        acceleration = compute_acceleration(recent_filtered)
-        baseline = compute_baseline(recent_filtered, island_name, municipio)
-        regime = detect_regime_change(recent_filtered, island_name, municipio)
-        migration = detect_depth_migration(recent_filtered, island_name, municipio)
-        anomaly = compute_anomaly_signal(recent_filtered, island_name, municipio)
+        analytics_base = recent_selected if municipio_filter else recent_island
 
-        serie = serie_temporal(events_in_days(recent_filtered, 30))
+        risklab_index = compute_risklab_index(analytics_base, island_filter)
+        interpretation = auto_interpretation(analytics_base, municipio_filter or island_filter or "Canarias")
+        depth = depth_profile(events_in_days(analytics_base, 30))
+        compare = compare_windows(analytics_base)
+        acceleration = compute_acceleration(analytics_base)
+        baseline = compute_baseline(analytics_base, island_filter)
+        regime = detect_regime_change(analytics_base, island_filter)
+        migration = detect_depth_migration(analytics_base, island_filter)
+        anomaly = compute_anomaly_signal(analytics_base, island_filter)
+        serie = serie_temporal(events_in_days(analytics_base, 30))
 
-        enjambres = detect_swarm_candidates(recent)
-        if island_name:
-            enjambres = [c for c in enjambres if c["isla"] == island_name]
+        enjambres = detect_swarm_candidates(recent_island)
 
-        infra = filter_infrastructures(island_name, municipio)
-        infra_expuestas = exposed_infrastructures(recent_filtered, infra, radius_km=18)
+        infra = EMERGENCY_INFRASTRUCTURES[:]
+        if island_filter:
+            infra = [x for x in infra if x["isla"] == island_filter]
+        if municipio_filter:
+            infra = [x for x in infra if canonical_municipality_name(x["municipio"]) == municipio_filter]
 
         territorial = None
-        if island_name:
-            territorial = territorial_summary(island_name, anomaly, EMERGENCY_INFRASTRUCTURES, recent_filtered)
+        if island_filter:
+            territorial = territorial_summary(island_filter, anomaly, EMERGENCY_INFRASTRUCTURES)
 
-        municipio_resumen = None
-        if island_name and municipio and municipio != "Todos":
-            municipio_resumen = municipality_operational_summary(recent, EMERGENCY_INFRASTRUCTURES, island_name, municipio)
+        municipal_stats = build_municipality_stats(recent_island, island_filter)
+        municipal_ranking = municipality_ranking(recent_island, island_filter)
+        selected_municipality = municipality_summary(recent_island, municipio_filter) if municipio_filter else None
+
+        official_status = OFFICIAL_VOLCANIC_STATUS
+
+        official_status_points = []
+        for item in OFFICIAL_VOLCANIC_STATUS:
+            center = ISLAND_CENTERS.get(item["isla"])
+            if center:
+                official_status_points.append({
+                    **item,
+                    "lat": center["lat"],
+                    "lon": center["lon"]
+                })
 
         return jsonify({
             "ok": True,
-            "ign_eventos": recent_filtered,
+            "ign_eventos": analytics_base,
             "summary": summary,
             "risklab_index": risklab_index,
             "interpretation": interpretation,
@@ -1614,9 +1440,11 @@ def api_risklab_bundle():
             "serie": serie,
             "candidatos_enjambre": enjambres,
             "infraestructuras": infra,
-            "infra_expuestas": infra_expuestas,
-            "municipio_resumen": municipio_resumen,
-            "municipios_disponibles": municipios_disponibles
+            "official_status": official_status,
+            "official_status_points": official_status_points,
+            "municipal_stats": municipal_stats,
+            "municipal_ranking": municipal_ranking,
+            "selected_municipality": selected_municipality
         })
     except Exception as e:
         return jsonify({
@@ -1637,9 +1465,11 @@ def api_risklab_bundle():
             "serie": {"labels": [], "counts": [], "mmax": []},
             "candidatos_enjambre": [],
             "infraestructuras": [],
-            "infra_expuestas": [],
-            "municipio_resumen": None,
-            "municipios_disponibles": []
+            "official_status": [],
+            "official_status_points": [],
+            "municipal_stats": {},
+            "municipal_ranking": [],
+            "selected_municipality": None
         }), 500
 
 

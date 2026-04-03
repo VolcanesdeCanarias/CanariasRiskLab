@@ -36,7 +36,6 @@
 
       --municipio-line: #475569;
       --municipio-selected-line: #111827;
-
       --right-panel-width: 430px;
     }
 
@@ -119,7 +118,7 @@
     #sources-panel {
       top: 12px;
       left: 12px;
-      width: 255px;
+      width: 265px;
     }
 
     #topright-panel {
@@ -346,7 +345,20 @@
       height: 0;
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
-      border-bottom: 16px solid #0f4c81;
+      border-bottom: 16px solid #8b4513;
+      position: relative;
+    }
+
+    .triangle-legend::after {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: 7px;
+      width: 0;
+      height: 0;
+      border-left: 2px solid transparent;
+      border-right: 2px solid transparent;
+      border-bottom: 5px solid #f59e0b;
     }
 
     .zone-legend {
@@ -425,6 +437,35 @@
     .rank-right {
       text-align: right;
       white-space: nowrap;
+    }
+
+    .volcano-marker {
+      width: 22px;
+      height: 22px;
+      position: relative;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+    }
+
+    .volcano-marker .mountain {
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-bottom: 18px solid #8b4513;
+      position: absolute;
+      left: 0;
+      top: 2px;
+    }
+
+    .volcano-marker .crater {
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-bottom: 6px solid #f59e0b;
+      position: absolute;
+      left: 8px;
+      top: 8px;
     }
 
     @media (max-width: 1180px) {
@@ -787,9 +828,14 @@
     function volcanoIcon() {
       return L.divIcon({
         className: "",
-        html: '<div class="tri-volcano"></div>',
-        iconSize: [24, 24],
-        iconAnchor: [12, 20]
+        html: `
+          <div class="volcano-marker">
+            <div class="mountain"></div>
+            <div class="crater"></div>
+          </div>
+        `,
+        iconSize: [22, 22],
+        iconAnchor: [11, 18]
       });
     }
 

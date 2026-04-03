@@ -11,17 +11,16 @@ app = Flask(__name__, static_folder='.')
 
 IGN_URL = "https://www.ign.es/web/vlc-ultimo-terremoto/-/terremotos-canarias/get10dias"
 
+# =========================================================
+# CONFIGURACIÓN
+# =========================================================
 
-# =========================================================
-# CONFIG
-# =========================================================
 OFFICIAL_VOLCANIC_STATUS = [
     {
         "isla": "Tenerife",
         "nivel": "Verde",
         "color": "green",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en verde."
@@ -31,7 +30,6 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nivel": "Amarillo",
         "color": "yellow",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en amarillo por situación post-eruptiva."
@@ -41,7 +39,6 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nivel": "Verde",
         "color": "green",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en verde."
@@ -51,7 +48,6 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nivel": "Verde",
         "color": "green",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en verde."
@@ -61,7 +57,6 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nivel": "Verde",
         "color": "green",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en verde."
@@ -71,7 +66,6 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nivel": "Verde",
         "color": "green",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en verde."
@@ -81,22 +75,11 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nivel": "Verde",
         "color": "green",
         "scope": "isla",
-        "oficial": True,
         "fuente": "Gobierno de Canarias / PEVOLCA",
         "last_verified": "2026-04-03",
         "nota": "Estado oficial insular mostrado en verde."
     }
 ]
-
-ISLAND_CENTERS = {
-    "Tenerife": {"lat": 28.2916, "lon": -16.6291},
-    "La Palma": {"lat": 28.6837, "lon": -17.7649},
-    "El Hierro": {"lat": 27.7255, "lon": -18.0243},
-    "Gran Canaria": {"lat": 28.1235, "lon": -15.4363},
-    "Lanzarote": {"lat": 29.0469, "lon": -13.5899},
-    "Fuerteventura": {"lat": 28.3587, "lon": -14.0537},
-    "La Gomera": {"lat": 28.1165, "lon": -17.2461},
-}
 
 MUNICIPALITIES_BY_ISLAND = {
     "Tenerife": [
@@ -158,60 +141,49 @@ VOLCANO_REFERENCE = {
 }
 
 EMERGENCY_INFRASTRUCTURES = [
-    {
-        "nombre": "Polideportivo Municipal de Los Llanos",
-        "tipo": "polideportivo",
-        "lat": 28.6562,
-        "lon": -17.9116,
-        "municipio": "Los Llanos de Aridane",
-        "isla": "La Palma"
-    },
-    {
-        "nombre": "Pabellón Roberto Estrello",
-        "tipo": "polideportivo",
-        "lat": 28.4917,
-        "lon": -16.3150,
-        "municipio": "Santa Cruz de Tenerife",
-        "isla": "Tenerife"
-    },
-    {
-        "nombre": "Puerto de Santa Cruz de La Palma",
-        "tipo": "puerto",
-        "lat": 28.6819,
-        "lon": -17.7648,
-        "municipio": "Santa Cruz de La Palma",
-        "isla": "La Palma"
-    },
-    {
-        "nombre": "Campo de Fútbol de El Paso",
-        "tipo": "campo_futbol",
-        "lat": 28.6514,
-        "lon": -17.8797,
-        "municipio": "El Paso",
-        "isla": "La Palma"
-    },
-    {
-        "nombre": "Hospital Universitario de Canarias",
-        "tipo": "hospital",
-        "lat": 28.4511,
-        "lon": -16.2985,
-        "municipio": "San Cristóbal de La Laguna",
-        "isla": "Tenerife"
-    },
-    {
-        "nombre": "Hospital General de La Palma",
-        "tipo": "hospital",
-        "lat": 28.6671,
-        "lon": -17.7915,
-        "municipio": "Breña Alta",
-        "isla": "La Palma"
-    }
-]
+    # Tenerife
+    {"nombre": "Puerto de Granadilla", "tipo": "puerto", "lat": 28.0510, "lon": -16.5080, "municipio": "Granadilla de Abona", "isla": "Tenerife"},
+    {"nombre": "Puerto de Los Cristianos", "tipo": "puerto", "lat": 28.0450, "lon": -16.7200, "municipio": "Arona", "isla": "Tenerife"},
+    {"nombre": "Puerto de Santa Cruz de Tenerife", "tipo": "puerto", "lat": 28.4700, "lon": -16.2390, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
+    {"nombre": "Aeropuerto Tenerife Sur", "tipo": "aeropuerto", "lat": 28.0440, "lon": -16.5720, "municipio": "Granadilla de Abona", "isla": "Tenerife"},
+    {"nombre": "Aeropuerto Tenerife Norte", "tipo": "aeropuerto", "lat": 28.4820, "lon": -16.3410, "municipio": "San Cristóbal de La Laguna", "isla": "Tenerife"},
+    {"nombre": "Hospital Universitario de Canarias", "tipo": "hospital", "lat": 28.4511, "lon": -16.2985, "municipio": "San Cristóbal de La Laguna", "isla": "Tenerife"},
+    {"nombre": "Hospital Universitario Nuestra Señora de Candelaria", "tipo": "hospital", "lat": 28.4419, "lon": -16.2865, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
+    {"nombre": "Pabellón Roberto Estrello", "tipo": "polideportivo", "lat": 28.4917, "lon": -16.3150, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
 
+    # La Palma
+    {"nombre": "Puerto de Santa Cruz de La Palma", "tipo": "puerto", "lat": 28.6819, "lon": -17.7648, "municipio": "Santa Cruz de La Palma", "isla": "La Palma"},
+    {"nombre": "Aeropuerto de La Palma", "tipo": "aeropuerto", "lat": 28.6260, "lon": -17.7550, "municipio": "Villa de Mazo", "isla": "La Palma"},
+    {"nombre": "Hospital General de La Palma", "tipo": "hospital", "lat": 28.6671, "lon": -17.7915, "municipio": "Breña Alta", "isla": "La Palma"},
+    {"nombre": "Polideportivo Municipal de Los Llanos", "tipo": "polideportivo", "lat": 28.6562, "lon": -17.9116, "municipio": "Los Llanos de Aridane", "isla": "La Palma"},
+    {"nombre": "Campo de Fútbol de El Paso", "tipo": "campo_futbol", "lat": 28.6514, "lon": -17.8797, "municipio": "El Paso", "isla": "La Palma"},
+
+    # El Hierro
+    {"nombre": "Puerto de La Estaca", "tipo": "puerto", "lat": 27.7630, "lon": -17.9020, "municipio": "Valverde", "isla": "El Hierro"},
+    {"nombre": "Aeropuerto de El Hierro", "tipo": "aeropuerto", "lat": 27.8140, "lon": -17.8870, "municipio": "Valverde", "isla": "El Hierro"},
+
+    # Gran Canaria
+    {"nombre": "Puerto de Las Palmas", "tipo": "puerto", "lat": 28.1410, "lon": -15.4180, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
+    {"nombre": "Puerto de Arinaga", "tipo": "puerto", "lat": 27.8600, "lon": -15.3900, "municipio": "Agüimes", "isla": "Gran Canaria"},
+    {"nombre": "Aeropuerto de Gran Canaria", "tipo": "aeropuerto", "lat": 27.9319, "lon": -15.3866, "municipio": "Ingenio", "isla": "Gran Canaria"},
+
+    # Lanzarote
+    {"nombre": "Puerto de Arrecife", "tipo": "puerto", "lat": 28.9630, "lon": -13.5470, "municipio": "Arrecife", "isla": "Lanzarote"},
+    {"nombre": "Aeropuerto César Manrique-Lanzarote", "tipo": "aeropuerto", "lat": 28.9450, "lon": -13.6050, "municipio": "San Bartolomé", "isla": "Lanzarote"},
+
+    # Fuerteventura
+    {"nombre": "Puerto del Rosario", "tipo": "puerto", "lat": 28.4970, "lon": -13.8620, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
+    {"nombre": "Aeropuerto de Fuerteventura", "tipo": "aeropuerto", "lat": 28.4520, "lon": -13.8630, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
+
+    # La Gomera
+    {"nombre": "Puerto de San Sebastián de La Gomera", "tipo": "puerto", "lat": 28.0920, "lon": -17.1090, "municipio": "San Sebastián de La Gomera", "isla": "La Gomera"},
+    {"nombre": "Aeropuerto de La Gomera", "tipo": "aeropuerto", "lat": 28.0290, "lon": -17.2140, "municipio": "Alajeró", "isla": "La Gomera"}
+]
 
 # =========================================================
 # UTILIDADES
 # =========================================================
+
 def clean_text(value):
     return re.sub(r"\s+", " ", str(value)).strip()
 
@@ -238,7 +210,7 @@ def canonical_municipality_name(name):
     if not n:
         return ""
 
-    for island, items in MUNICIPALITIES_BY_ISLAND.items():
+    for items in MUNICIPALITIES_BY_ISLAND.values():
         for item in items:
             if normalize_text(item) == n:
                 return item
@@ -318,13 +290,13 @@ def classify_island(lat, lon):
 
 
 def haversine_km(lat1, lon1, lat2, lon2):
-    R = 6371.0
+    r = 6371.0
     p1 = math.radians(lat1)
     p2 = math.radians(lat2)
-    d1 = math.radians(lat2 - lat1)
-    d2 = math.radians(lon2 - lon1)
-    a = math.sin(d1 / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(d2 / 2) ** 2
-    return 2 * R * math.asin(math.sqrt(a))
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dlon / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(a))
 
 
 def events_in_hours(eventos, hours):
@@ -346,10 +318,10 @@ def events_in_days(eventos, days):
             out.append(e)
     return out
 
-
 # =========================================================
 # INGESTA IGN
 # =========================================================
+
 def fetch_ign_html():
     headers = {"User-Agent": "Mozilla/5.0 CanariasRiskLab/1.0"}
     response = requests.get(IGN_URL, headers=headers, timeout=25)
@@ -435,10 +407,10 @@ def parse_ign_canarias():
 
     return eventos
 
-
 # =========================================================
 # USGS
 # =========================================================
+
 def fetch_usgs_canarias():
     url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
     data = requests.get(url, timeout=20).json()
@@ -447,6 +419,7 @@ def fetch_usgs_canarias():
     for feature in data.get("features", []):
         coords = feature.get("geometry", {}).get("coordinates", [])
         props = feature.get("properties", {})
+
         if len(coords) < 3:
             continue
 
@@ -469,10 +442,10 @@ def fetch_usgs_canarias():
 
     return eventos
 
-
 # =========================================================
 # ANALÍTICA GENERAL
 # =========================================================
+
 def depth_profile(eventos):
     bins = {"< 5 km": 0, "5–10 km": 0, "10–15 km": 0, "15–20 km": 0, "> 20 km": 0}
     for e in eventos:
@@ -527,7 +500,7 @@ def compute_baseline(events_recent, island_name=None):
         "media_diaria": media_diaria,
         "media_7d": media_7d,
         "magnitud_media": magnitud_media,
-        "profundidad_media_km": profundidad_media,
+        "profundidad_media_km": profundidad_media
     }
 
 
@@ -879,10 +852,10 @@ def grouped_summary_by_island(events_recent):
         }
     return summary
 
-
 # =========================================================
 # ANALÍTICA MUNICIPAL
 # =========================================================
+
 def municipality_score(events):
     e24 = len(events_in_hours(events, 24))
     e7d = len(events_in_days(events, 7))
@@ -1010,10 +983,10 @@ def exposed_infrastructures(events_recent, island_name=None, municipio=None):
     out.sort(key=lambda x: (x["distancia_km"] is None, x["distancia_km"] if x["distancia_km"] is not None else 9999))
     return out
 
+# =========================================================
+# API
+# =========================================================
 
-# =========================================================
-# RUTAS
-# =========================================================
 @app.route("/")
 def root():
     return send_from_directory(".", "index.html")
@@ -1080,8 +1053,6 @@ def api_risklab_bundle():
         anomaly = compute_anomaly_signal(analytics_base, island_filter)
         serie = serie_temporal(events_in_days(analytics_base, 30))
 
-        official_status = OFFICIAL_VOLCANIC_STATUS
-
         municipal_stats = build_municipality_stats(recent_island, island_filter)
         municipal_ranking = municipality_ranking(recent_island, island_filter)
         selected_municipality = municipality_summary(recent_island, municipio_filter) if municipio_filter else None
@@ -1093,9 +1064,13 @@ def api_risklab_bundle():
             territorial = {
                 "isla": island_filter,
                 "nivel_anomalia": anomaly["nivel"],
-                "lectura": "actividad dentro de parámetros habituales" if anomaly["nivel"] == "baja" else
-                           "actividad ligeramente superior al baseline reciente" if anomaly["nivel"] == "moderada" else
-                           "actividad anómala que merece seguimiento",
+                "lectura": (
+                    "actividad dentro de parámetros habituales"
+                    if anomaly["nivel"] == "baja"
+                    else "actividad ligeramente superior al baseline reciente"
+                    if anomaly["nivel"] == "moderada"
+                    else "actividad anómala que merece seguimiento"
+                ),
                 "infraestructuras": len([x for x in EMERGENCY_INFRASTRUCTURES if x["isla"] == island_filter]),
                 "infra_expuestas": infra_expuestas
             }
@@ -1115,7 +1090,7 @@ def api_risklab_bundle():
             "anomaly": anomaly,
             "territorial": territorial,
             "serie": serie,
-            "official_status": official_status,
+            "official_status": OFFICIAL_VOLCANIC_STATUS,
             "municipal_stats": municipal_stats,
             "municipal_ranking": municipal_ranking,
             "selected_municipality": selected_municipality,

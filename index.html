@@ -36,13 +36,11 @@
 
       --municipio-line: #475569;
       --municipio-selected-line: #111827;
-      --municipio-selected-fill: rgba(17, 24, 39, 0.16);
 
       --right-panel-width: 430px;
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -373,50 +371,13 @@
     .muni-legend-3 { background: var(--municipio-3); }
     .muni-legend-4 { background: var(--municipio-4); }
 
-    .municipio-selected-legend {
-      width: 14px;
-      height: 14px;
-      border: 2px solid var(--municipio-selected-line);
-      background: var(--municipio-selected-fill);
-      border-radius: 2px;
-      flex: 0 0 auto;
-    }
-
-    .tri-volcano {
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 20px solid #0f4c81;
-      position: relative;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.28));
-    }
-
-    .tri-volcano::after {
-      content: "";
-      position: absolute;
-      left: -3px;
-      top: 8px;
-      width: 0;
-      height: 0;
-      border-left: 3px solid transparent;
-      border-right: 3px solid transparent;
-      border-bottom: 7px solid #f6ad55;
-    }
-
     .popup-title {
       font-weight: 800;
       margin-bottom: 5px;
       font-size: 0.95rem;
     }
 
-    .popup-row {
-      margin: 2px 0;
-    }
-
-    .leaflet-popup-content {
-      min-width: 220px;
-    }
+    .popup-row { margin: 2px 0; }
 
     .kpi-grid {
       display: grid;
@@ -514,10 +475,11 @@
       <h3>Fuentes</h3>
       <div><strong>IGN Canarias</strong> · sismicidad reciente</div>
       <div><strong>USGS</strong> · últimas 24h, filtrado Canarias</div>
-      <div><strong>Gobierno de Canarias / PEVOLCA</strong> · semáforo volcánico oficial</div>
+      <div><strong>PEVOLCA</strong> · semáforo volcánico oficial</div>
+      <div><strong>Cabildo de La Palma</strong> · zona de exclusión</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
-      <div class="small-note">RiskLab es analítico y experimental. El semáforo oficial se muestra separado y etiquetado como PEVOLCA.</div>
+      <div class="small-note">RiskLab es analítico y experimental. El semáforo oficial se muestra separado del análisis municipal.</div>
     </div>
 
     <div id="topright-panel" class="panel">
@@ -558,12 +520,13 @@
 
       <div class="control-list">
         <label><input type="checkbox" id="toggle-official-status" checked> Semáforo oficial</label>
+        <label><input type="checkbox" id="toggle-exclusion" checked> Exclusión La Palma</label>
         <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
         <label><input type="checkbox" id="toggle-volcanic-zones" checked> Zonas volcánicas</label>
         <label><input type="checkbox" id="toggle-municipalities" checked> Actividad municipal</label>
+        <label><input type="checkbox" id="toggle-clusters" checked> Clusters municipales</label>
         <label><input type="checkbox" id="toggle-ign" checked> Sismos IGN</label>
         <label><input type="checkbox" id="toggle-usgs"> Sismos USGS</label>
-        <label><input type="checkbox" id="toggle-swarms" checked> Enjambres</label>
         <label><input type="checkbox" id="toggle-heatmap"> Heatmap</label>
       </div>
     </div>
@@ -609,6 +572,8 @@
         <div id="territorialContent"></div>
         <div id="officialStatusContent"></div>
         <div id="selectedMunicipalityContent"></div>
+        <div id="clusterContent"></div>
+        <div id="infraExposureContent"></div>
         <div id="territorialRankingContent"></div>
       </div>
 
@@ -622,21 +587,15 @@
             <div class="legend-item"><div class="muni-legend-2"></div><span>RiskLab ligera</span></div>
             <div class="legend-item"><div class="muni-legend-3"></div><span>RiskLab moderada</span></div>
             <div class="legend-item"><div class="muni-legend-4"></div><span>RiskLab alta</span></div>
-            <div class="legend-item"><div class="municipio-selected-legend"></div><span>Municipio seleccionado</span></div>
           </div>
           <div>
             <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>Semáforo oficial verde</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--yellow)"></div><span>Semáforo oficial amarillo</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--orange)"></div><span>Semáforo oficial naranja</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--red)"></div><span>Semáforo oficial rojo</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--eq1)"></div><span>Sismo IGN &lt; 1</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN 1–1.9</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--eq3)"></div><span>Sismo IGN 2–2.9</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--eq4)"></div><span>Sismo IGN ≥ 3</span></div>
+            <div class="legend-item"><div class="dot" style="background:#60a5fa"></div><span>Cluster leve</span></div>
+            <div class="legend-item"><div class="dot" style="background:#8b5cf6"></div><span>Cluster activo</span></div>
+            <div class="legend-item"><div class="dot" style="background:#d946ef"></div><span>Cluster concentrado</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN</span></div>
           </div>
-        </div>
-        <div class="small-note" style="margin-top:8px;">
-          El semáforo oficial y la actividad municipal RiskLab son capas distintas.
         </div>
       </div>
     </div>
@@ -668,14 +627,15 @@
     osm.addTo(map);
 
     const officialStatusLayer = L.layerGroup().addTo(map);
+    const exclusionLayer = L.layerGroup().addTo(map);
     const volcanoLayer = L.layerGroup().addTo(map);
     const volcanicZonesLayer = L.layerGroup().addTo(map);
     const municipalitiesLayer = L.layerGroup().addTo(map);
+    const clusterLayer = L.layerGroup().addTo(map);
     const ignLayer = L.layerGroup().addTo(map);
     const usgsLayer = L.layerGroup();
-    const swarmLayer = L.layerGroup().addTo(map);
-
     let heatLayer = null;
+
     let seriesChart = null;
     let depthChart = null;
     let compareChart = null;
@@ -687,19 +647,19 @@
     let interpretation = null;
     let depthProfile = {};
     let compareData = { compare: {}, acceleration: {}, baseline: {} };
-    let swarmCandidates = [];
-    let seriesData = { labels: [], counts: [], mmax: [] };
     let regimeData = null;
     let migrationData = null;
     let anomalyData = null;
     let territorialData = null;
     let municipalitiesGeoJSON = null;
-    let selectedMunicipalityLayer = null;
+    let exclusionGeoJSON = null;
     let municipalityStats = {};
     let officialStatus = [];
-    let officialStatusPoints = [];
     let municipalRanking = [];
     let selectedMunicipalityData = null;
+    let municipalClusters = [];
+    let infraExpuestas = [];
+    let selectedMunicipalityLayer = null;
     let currentMode = "citizens";
 
     const MUNICIPALITIES_BY_ISLAND = {
@@ -736,9 +696,7 @@
       { name:"Chinyero", island:"Tenerife", lat:28.3128, lon:-16.7872, status:"Histórico", type:"Cono volcánico" },
       { name:"Cumbre Vieja", island:"La Palma", lat:28.5708, lon:-17.8353, status:"Activo", type:"Dorsal volcánica activa" },
       { name:"Tajogaite", island:"La Palma", lat:28.6128, lon:-17.8660, status:"Reciente", type:"Centro eruptivo 2021" },
-      { name:"Tagoro", island:"El Hierro", lat:27.6290, lon:-18.0200, status:"Reciente", type:"Erupción submarina 2011" },
-      { name:"Bandama", island:"Gran Canaria", lat:28.0085, lon:-15.4564, status:"Inactivo", type:"Caldera / cono" },
-      { name:"Timanfaya", island:"Lanzarote", lat:29.0167, lon:-13.7500, status:"Histórico", type:"Campo volcánico" }
+      { name:"Tagoro", island:"El Hierro", lat:27.6290, lon:-18.0200, status:"Reciente", type:"Erupción submarina 2011" }
     ];
 
     const VOLCANIC_ZONES = [
@@ -747,18 +705,6 @@
         island: "Tenerife",
         description: "Complejo central activo de Tenerife",
         coords: [[28.33, -16.74],[28.33, -16.55],[28.20, -16.55],[28.20, -16.74]]
-      },
-      {
-        name: "Dorsal Noroeste de Tenerife",
-        island: "Tenerife",
-        description: "Alineación estructural volcánica NW",
-        coords: [[28.43, -16.95],[28.39, -16.73],[28.25, -16.78],[28.28, -16.98]]
-      },
-      {
-        name: "Dorsal Nordeste de Tenerife",
-        island: "Tenerife",
-        description: "Alineación estructural volcánica NE",
-        coords: [[28.61, -16.33],[28.46, -16.19],[28.30, -16.45],[28.42, -16.56]]
       },
       {
         name: "Cumbre Vieja",
@@ -830,26 +776,11 @@
       return css.getPropertyValue('--eq4').trim();
     }
 
-    function magRadius(mag) {
-      const m = safeNumber(mag);
-      return Math.max(4, 4 + m * 2.7);
-    }
-
     function officialColor(color) {
-      if (color === "green") return "var(--green)";
-      if (color === "yellow") return "var(--yellow)";
-      if (color === "orange") return "var(--orange)";
-      return "var(--red)";
-    }
-
-    function officialMarker(item) {
-      return L.circleMarker([item.lat, item.lon], {
-        radius: 14,
-        color: "#111827",
-        weight: 1.4,
-        fillColor: officialColor(item.color),
-        fillOpacity: 0.92
-      });
+      if (color === "green") return "#2f9e44";
+      if (color === "yellow") return "#eab308";
+      if (color === "orange") return "#dd6b20";
+      return "#dc2626";
     }
 
     function volcanoIcon() {
@@ -868,26 +799,22 @@
     }
 
     async function loadMunicipalitiesGeoJSON() {
+      municipalitiesGeoJSON = await fetchJson("./municipios_canarias.geojson");
+    }
+
+    async function loadExclusionGeoJSON() {
       try {
-        municipalitiesGeoJSON = await fetchJson("./municipios_canarias.geojson");
+        exclusionGeoJSON = await fetchJson("./la_palma_exclusion15ene26.geojson");
       } catch (e) {
-        console.error("No se pudo cargar municipios_canarias.geojson", e);
-        municipalitiesGeoJSON = null;
+        console.warn("No se pudo cargar la exclusión de La Palma.", e);
+        exclusionGeoJSON = null;
       }
     }
 
     function getMunicipalityName(feature) {
       const p = feature?.properties || {};
       return canonicalMunicipalityName(
-        p.etiqueta ||
-        p.nombre ||
-        p.NAMEUNIT ||
-        p.NOMBRE ||
-        p.MUNICIPIO ||
-        p.municipio ||
-        p.nom_muni ||
-        p.denominacion ||
-        ""
+        p.etiqueta || p.nombre || p.NAMEUNIT || p.NOMBRE || p.MUNICIPIO || p.municipio || p.nom_muni || p.denominacion || ""
       );
     }
 
@@ -944,29 +871,75 @@
 
     function drawOfficialStatus() {
       officialStatusLayer.clearLayers();
+      if (!municipalitiesGeoJSON?.features) return;
 
-      officialStatusPoints
-        .filter(x => selectedIsland() === "Todas" || x.isla === selectedIsland())
-        .forEach(item => {
-          const marker = officialMarker(item);
-          marker.bindPopup(`
+      const statusByIsland = {};
+      officialStatus.forEach(s => { statusByIsland[s.isla] = s; });
+
+      const geo = L.geoJSON(municipalitiesGeoJSON, {
+        filter: feature => {
+          const muni = getMunicipalityName(feature);
+          const island = detectIslandForMunicipality(muni);
+          if (selectedIsland() !== "Todas" && island !== selectedIsland()) return false;
+          return !!statusByIsland[island];
+        },
+        style: feature => {
+          const muni = getMunicipalityName(feature);
+          const island = detectIslandForMunicipality(muni);
+          const st = statusByIsland[island];
+          return {
+            color: officialColor(st.color),
+            weight: 3.2,
+            fillOpacity: 0
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          const muni = getMunicipalityName(feature);
+          const island = detectIslandForMunicipality(muni);
+          const st = statusByIsland[island];
+          layer.bindPopup(`
             <div class="popup-title">Semáforo volcánico oficial</div>
-            <div class="popup-row"><strong>Isla:</strong> ${item.isla}</div>
-            <div class="popup-row"><strong>Nivel:</strong> ${item.nivel}</div>
-            <div class="popup-row"><strong>Ámbito:</strong> ${item.scope}</div>
-            <div class="popup-row"><strong>Fuente:</strong> ${item.fuente}</div>
-            <div class="popup-row"><strong>Verificado:</strong> ${item.last_verified}</div>
-            <div class="popup-row"><strong>Nota:</strong> ${item.nota}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${island}</div>
+            <div class="popup-row"><strong>Nivel:</strong> ${st.nivel}</div>
+            <div class="popup-row"><strong>Fuente:</strong> ${st.fuente}</div>
+            <div class="popup-row"><strong>Verificado:</strong> ${st.last_verified}</div>
+            <div class="popup-row"><strong>Nota:</strong> ${st.nota}</div>
           `);
-          officialStatusLayer.addLayer(marker);
-        });
+        }
+      });
+
+      officialStatusLayer.addLayer(geo);
+    }
+
+    function drawExclusion() {
+      exclusionLayer.clearLayers();
+      if (!exclusionGeoJSON) return;
+      if (selectedIsland() !== "Todas" && selectedIsland() !== "La Palma") return;
+
+      const geo = L.geoJSON(exclusionGeoJSON, {
+        style: {
+          color: "#d4a000",
+          weight: 2,
+          fillColor: "#ffd633",
+          fillOpacity: 0.30
+        },
+        onEachFeature: (feature, layer) => {
+          layer.bindPopup(`
+            <div class="popup-title">Zona de exclusión</div>
+            <div class="popup-row"><strong>Isla:</strong> La Palma</div>
+            <div class="popup-row"><strong>Archivo:</strong> la_palma_exclusion15ene26.geojson</div>
+            <div class="popup-row"><strong>Actualización:</strong> 15 enero 2026</div>
+          `);
+        }
+      });
+
+      exclusionLayer.addLayer(geo);
     }
 
     function buildMunicipalitiesLayer() {
       municipalitiesLayer.clearLayers();
       selectedMunicipalityLayer = null;
-
-      if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features) return;
+      if (!municipalitiesGeoJSON?.features) return;
 
       const island = selectedIsland();
       const muni = selectedMunicipality();
@@ -981,7 +954,6 @@
           }
 
           if (muni !== "Todos" && normalizeText(featureMuni) !== normalizeText(muni)) return false;
-
           return true;
         },
         style: feature => {
@@ -995,14 +967,9 @@
           const muniName = getMunicipalityName(feature);
           const islaReal = detectIslandForMunicipality(muniName);
           const stat = municipalityStats[muniName] || {
-            eventos_24h: 0,
-            eventos_7d: 0,
-            eventos_30d: 0,
-            magnitud_max_30d: 0,
-            profundidad_media_km: 0,
-            aceleracion_ratio: 0,
-            score: 0,
-            nivel: "sin actividad"
+            eventos_24h: 0, eventos_7d: 0, eventos_30d: 0,
+            magnitud_max_30d: 0, profundidad_media_km: 0,
+            aceleracion_ratio: 0, score: 0, nivel: "sin actividad"
           };
 
           layer.bindPopup(`
@@ -1024,6 +991,39 @@
       });
 
       municipalitiesLayer.addLayer(geo);
+    }
+
+    function drawClusters() {
+      clusterLayer.clearLayers();
+      (municipalClusters || [])
+        .filter(c => selectedIsland() === "Todas" || c.isla === selectedIsland())
+        .forEach(c => {
+          if (!c.ref_lat || !c.ref_lon) return;
+
+          let fill = "#60a5fa";
+          if (c.color === "violet") fill = "#8b5cf6";
+          if (c.color === "magenta") fill = "#d946ef";
+
+          const marker = L.circleMarker([c.ref_lat, c.ref_lon], {
+            radius: 9,
+            color: "#111827",
+            weight: 1,
+            fillColor: fill,
+            fillOpacity: 0.85
+          });
+
+          marker.bindPopup(`
+            <div class="popup-title">Cluster municipal</div>
+            <div class="popup-row"><strong>Municipio:</strong> ${c.municipio}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${c.isla}</div>
+            <div class="popup-row"><strong>Nivel:</strong> ${c.nivel}</div>
+            <div class="popup-row"><strong>Eventos 7d:</strong> ${c.eventos_7d}</div>
+            <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(c.magnitud_max_30d).toFixed(1)}</div>
+            <div class="popup-row"><strong>Score:</strong> ${safeNumber(c.score).toFixed(1)}</div>
+          `);
+
+          clusterLayer.addLayer(marker);
+        });
     }
 
     function zoomToSelectedMunicipality() {
@@ -1074,7 +1074,7 @@
       ignLayer.clearLayers();
       ignEvents.forEach(ev => {
         const marker = L.circleMarker([ev.lat, ev.lon], {
-          radius: magRadius(ev.magnitud),
+          radius: Math.max(4, 4 + safeNumber(ev.magnitud) * 2.7),
           color: "#1e293b",
           weight: 0.9,
           fillColor: magColor(ev.magnitud),
@@ -1099,7 +1099,7 @@
       usgsLayer.clearLayers();
       usgsEvents.forEach(ev => {
         const marker = L.circleMarker([ev.lat, ev.lon], {
-          radius: Math.max(4, magRadius(ev.magnitud) - 1),
+          radius: Math.max(4, 3 + safeNumber(ev.magnitud) * 2.5),
           color: "#000",
           weight: 1.0,
           fillColor: "#111",
@@ -1142,36 +1142,7 @@
         }
       });
 
-      if (document.getElementById("toggle-heatmap").checked) {
-        heatLayer.addTo(map);
-      }
-    }
-
-    function drawSwarms() {
-      swarmLayer.clearLayers();
-      swarmCandidates.forEach(c => {
-        const lineColor = c.color === "red" ? "#dc2626" : c.color === "orange" ? "#dd6b20" : "#22c55e";
-        const fillColor = c.color === "red" ? "#fecaca" : c.color === "orange" ? "#fed7aa" : "#bbf7d0";
-
-        const circle = L.circle([c.lat, c.lon], {
-          radius: Math.min(26000, 5000 + c.count * 800),
-          color: lineColor,
-          weight: 1.7,
-          fillColor: fillColor,
-          fillOpacity: 0.10
-        });
-
-        circle.bindPopup(`
-          <div class="popup-title">Posible enjambre experimental</div>
-          <div class="popup-row"><strong>Nivel:</strong> ${c.nivel}</div>
-          <div class="popup-row"><strong>Eventos:</strong> ${c.count}</div>
-          <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(c.magnitud_max).toFixed(1)}</div>
-          <div class="popup-row"><strong>Mmedia:</strong> ${safeNumber(c.magnitud_media).toFixed(2)}</div>
-          <div class="popup-row"><strong>Profundidad media:</strong> ${safeNumber(c.profundidad_media_km).toFixed(1)} km</div>
-        `);
-
-        swarmLayer.addLayer(circle);
-      });
+      if (document.getElementById("toggle-heatmap").checked) heatLayer.addTo(map);
     }
 
     function drawSummary() {
@@ -1220,7 +1191,7 @@
 
       html += `</tbody></table>`;
       target.innerHTML = html;
-      note.innerHTML = `<strong>Índice RiskLab:</strong> experimental. <strong>Semáforo oficial:</strong> capa separada PEVOLCA.`;
+      note.innerHTML = `<strong>Índice RiskLab:</strong> experimental. <strong>Semáforo oficial:</strong> capa separada.`;
     }
 
     function updateStatus() {
@@ -1249,59 +1220,25 @@
 
     function buildSeriesChart() {
       if (seriesChart) seriesChart.destroy();
-
-      const labels = seriesData?.labels || [];
-      const counts = seriesData?.counts || [];
-      const mags = seriesData?.mmax || [];
-
+      const labels = compareData?.serie_labels || [];
       seriesChart = new Chart(document.getElementById("seriesChart"), {
         type: "line",
         data: {
-          labels,
-          datasets: [
-            {
-              label: "Eventos por día",
-              data: counts,
-              borderColor: "#2563eb",
-              backgroundColor: "rgba(37,99,235,0.12)",
-              fill: true,
-              tension: 0.25,
-              yAxisID: "y"
-            },
-            {
-              label: "Magnitud máxima diaria",
-              data: mags,
-              borderColor: "#1e3a8a",
-              backgroundColor: "rgba(30,58,138,0.04)",
-              fill: false,
-              tension: 0.25,
-              yAxisID: "y1"
-            }
-          ]
+          labels: labels,
+          datasets: [{
+            label: "Eventos por día",
+            data: [],
+            borderColor: "#2563eb"
+          }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: "top" } },
-          scales: {
-            y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } },
-            y1: {
-              beginAtZero: true,
-              position: "right",
-              grid: { drawOnChartArea: false },
-              title: { display: true, text: "Mmax" }
-            }
-          }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
       });
     }
 
     function buildDepthChart() {
       if (depthChart) depthChart.destroy();
-
       const labels = Object.keys(depthProfile || {});
       const values = Object.values(depthProfile || {});
-
       depthChart = new Chart(document.getElementById("depthChart"), {
         type: "bar",
         data: {
@@ -1312,18 +1249,12 @@
             backgroundColor: ["#dbeafe", "#93c5fd", "#60a5fa", "#3b82f6", "#1e3a8a"]
           }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } } }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
       });
     }
 
     function buildCompareChart() {
       if (compareChart) compareChart.destroy();
-
       const labels = ["24h", "7d", "10d", "30d"];
       const values = [
         compareData?.compare?.["24h"] ?? 0,
@@ -1331,7 +1262,6 @@
         compareData?.compare?.["10d"] ?? 0,
         compareData?.compare?.["30d"] ?? 0
       ];
-
       compareChart = new Chart(document.getElementById("compareChart"), {
         type: "bar",
         data: {
@@ -1342,12 +1272,7 @@
             backgroundColor: ["#2563eb", "#3b82f6", "#60a5fa", "#93c5fd"]
           }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, title: { display: true, text: "Nº eventos" } } }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
       });
     }
 
@@ -1359,8 +1284,6 @@
       }
 
       const m = interpretation.metrics || {};
-      const accelerationText = compareData?.acceleration?.label || "sin dato";
-
       target.innerHTML = `
         <div class="kpi-grid">
           <div class="kpi">24h<strong>${m["24h"] ?? 0}</strong></div>
@@ -1370,11 +1293,6 @@
           <div class="kpi">Mmax<strong>${safeNumber(m["mmax"]).toFixed(1)}</strong></div>
           <div class="kpi">Desv.<strong>${safeNumber(m["desviacion_vs_baseline_7d"]).toFixed(2)}x</strong></div>
         </div>
-
-        <div class="insight-card">
-          <strong>Aceleración:</strong> ${accelerationText}.
-        </div>
-
         <div class="insight-card">
           <strong>Ficha automática:</strong><br>
           ${interpretation.text || "Sin texto interpretativo."}
@@ -1385,10 +1303,8 @@
     function buildRegimeCard() {
       const target = document.getElementById("regimeContent");
       if (!regimeData) { target.innerHTML = ""; return; }
-
       const colorClass = regimeData.color === "green" ? "green" : regimeData.color === "orange" ? "orange" : "red";
       const drivers = (regimeData.drivers || []).map(x => `<li>${x}</li>`).join("");
-
       target.innerHTML = `
         <div class="insight-card">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
@@ -1404,10 +1320,8 @@
     function buildMigrationCard() {
       const target = document.getElementById("migrationContent");
       if (!migrationData) { target.innerHTML = ""; return; }
-
       const colorClass = migrationData.color === "green" ? "green" : migrationData.color === "orange" ? "orange" : "red";
       const drivers = (migrationData.drivers || []).map(x => `<li>${x}</li>`).join("");
-
       target.innerHTML = `
         <div class="insight-card">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
@@ -1422,10 +1336,8 @@
     function buildAnomalyCard() {
       const target = document.getElementById("anomalyContent");
       if (!anomalyData) { target.innerHTML = ""; return; }
-
       const colorClass = anomalyData.color === "green" ? "green" : anomalyData.color === "orange" ? "orange" : "red";
       const drivers = (anomalyData.drivers || []).map(x => `<li>${x}</li>`).join("");
-
       target.innerHTML = `
         <div class="insight-card">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
@@ -1487,17 +1399,12 @@
         return;
       }
 
-      let levelClass = "gray";
-      if (selectedMunicipalityData.color === "blue1") levelClass = "blue1";
-      else if (selectedMunicipalityData.color === "blue2") levelClass = "blue2";
-      else if (selectedMunicipalityData.color === "violet") levelClass = "violet";
-      else if (selectedMunicipalityData.color === "magenta") levelClass = "magenta";
-
+      const cls = selectedMunicipalityData.color || "gray";
       target.innerHTML = `
         <div class="insight-card">
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
             <strong>${selectedMunicipalityData.municipio}</strong>
-            <span class="badge ${levelClass}">${selectedMunicipalityData.nivel}</span>
+            <span class="badge ${cls}">${selectedMunicipalityData.nivel}</span>
           </div>
           Isla: ${selectedMunicipalityData.isla}<br>
           Eventos 24h: ${selectedMunicipalityData.eventos_24h}<br>
@@ -1511,9 +1418,49 @@
       `;
     }
 
+    function buildClusterCard() {
+      const target = document.getElementById("clusterContent");
+      if (!municipalClusters || municipalClusters.length === 0) {
+        target.innerHTML = `<div class="insight-card">No se detectan clusters municipales recientes para este filtro.</div>`;
+        return;
+      }
+
+      let html = `<div class="insight-card"><strong>Clusters municipales</strong><br>`;
+      municipalClusters.slice(0, 5).forEach(item => {
+        html += `
+          <div style="margin-top:6px;">
+            <span class="badge ${item.color}">${item.nivel}</span>
+            <strong style="margin-left:8px;">${item.municipio}</strong><br>
+            <span class="small-note">${item.isla} · ${item.eventos_7d} ev 7d · score ${safeNumber(item.score).toFixed(1)}</span>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      target.innerHTML = html;
+    }
+
+    function buildInfraExposureCard() {
+      const target = document.getElementById("infraExposureContent");
+      if (!infraExpuestas || infraExpuestas.length === 0) {
+        target.innerHTML = `<div class="insight-card">No hay infraestructuras expuestas para este filtro.</div>`;
+        return;
+      }
+
+      let html = `<div class="insight-card"><strong>Infraestructuras expuestas</strong><br>`;
+      infraExpuestas.slice(0, 8).forEach(item => {
+        html += `
+          <div style="margin-top:6px;">
+            <strong>${item.nombre}</strong><br>
+            <span class="small-note">${item.tipo} · ${item.municipio} · ${item.isla}${item.distancia_km !== null ? ` · ${item.distancia_km} km` : ""}</span>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      target.innerHTML = html;
+    }
+
     function buildTerritorialRanking() {
       const target = document.getElementById("territorialRankingContent");
-
       if (!municipalRanking || municipalRanking.length === 0) {
         target.innerHTML = `<div class="insight-card">No hay municipios con actividad reciente visible para este filtro.</div>`;
         return;
@@ -1540,12 +1487,13 @@
 
     function syncLayers() {
       toggleLayer("toggle-official-status", officialStatusLayer);
+      toggleLayer("toggle-exclusion", exclusionLayer);
       toggleLayer("toggle-volcanoes", volcanoLayer);
       toggleLayer("toggle-volcanic-zones", volcanicZonesLayer);
       toggleLayer("toggle-municipalities", municipalitiesLayer);
+      toggleLayer("toggle-clusters", clusterLayer);
       toggleLayer("toggle-ign", ignLayer);
       toggleLayer("toggle-usgs", usgsLayer);
-      toggleLayer("toggle-swarms", swarmLayer);
 
       if (document.getElementById("toggle-heatmap").checked) {
         if (heatLayer && !map.hasLayer(heatLayer)) heatLayer.addTo(map);
@@ -1587,28 +1535,11 @@
         bottomToggle.textContent = "Ocultar análisis";
         document.getElementById("toggle-official-status").checked = true;
         document.getElementById("toggle-municipalities").checked = true;
+        document.getElementById("toggle-clusters").checked = true;
       }
 
       syncLayers();
     }
-
-    const baseMaps = {
-      "OpenStreetMap": osm,
-      "Satélite": esriSatellite,
-      "Topográfico": openTopo
-    };
-
-    const overlayMaps = {
-      "Semáforo oficial": officialStatusLayer,
-      "Volcanes": volcanoLayer,
-      "Zonas volcánicas": volcanicZonesLayer,
-      "Actividad municipal": municipalitiesLayer,
-      "Sismos IGN": ignLayer,
-      "Sismos USGS": usgsLayer,
-      "Enjambres": swarmLayer
-    };
-
-    L.control.layers(baseMaps, overlayMaps, { collapsed: true }).addTo(map);
 
     async function loadAll() {
       const island = selectedIsland();
@@ -1620,6 +1551,7 @@
         ...ev,
         municipio: canonicalMunicipalityName(ev.municipio || "")
       }));
+
       summary = bundle.summary || {};
       risklabIndex = bundle.risklab_index || null;
       interpretation = bundle.interpretation || null;
@@ -1629,22 +1561,21 @@
         acceleration: bundle.acceleration || {},
         baseline: bundle.baseline || {}
       };
-      swarmCandidates = bundle.candidatos_enjambre || [];
-      seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
       regimeData = bundle.regime || null;
       migrationData = bundle.migration || null;
       anomalyData = bundle.anomaly || null;
       territorialData = bundle.territorial || null;
       officialStatus = bundle.official_status || [];
-      officialStatusPoints = bundle.official_status_points || [];
       municipalityStats = bundle.municipal_stats || {};
       municipalRanking = bundle.municipal_ranking || [];
       selectedMunicipalityData = bundle.selected_municipality || null;
+      municipalClusters = bundle.municipal_clusters || [];
+      infraExpuestas = bundle.infra_expuestas || [];
 
       try {
         const usgsJson = await fetchJson("/api/usgs-canarias");
         usgsEvents = (usgsJson.eventos || []).filter(ev => island === "Todas" || ev.isla === island);
-      } catch (e) {
+      } catch {
         usgsEvents = [];
       }
 
@@ -1652,14 +1583,15 @@
     }
 
     function redrawAll() {
-      buildMunicipalitiesLayer();
       drawOfficialStatus();
+      drawExclusion();
+      buildMunicipalitiesLayer();
+      drawClusters();
       drawVolcanoes();
       drawVolcanicZones();
       drawIgn();
       drawUSGS();
       drawHeatmap();
-      drawSwarms();
 
       drawSummary();
       updateStatus();
@@ -1673,7 +1605,10 @@
       buildTerritorialCard();
       buildOfficialStatusCards();
       buildSelectedMunicipalityCard();
+      buildClusterCard();
+      buildInfraExposureCard();
       buildTerritorialRanking();
+
       syncLayers();
 
       if (selectedMunicipality() !== "Todos") {
@@ -1685,8 +1620,10 @@
 
     document.querySelectorAll("#topright-panel input").forEach(el => {
       el.addEventListener("change", () => {
-        buildMunicipalitiesLayer();
         drawOfficialStatus();
+        drawExclusion();
+        buildMunicipalitiesLayer();
+        drawClusters();
         syncLayers();
       });
     });
@@ -1738,6 +1675,7 @@
 
     async function init() {
       await loadMunicipalitiesGeoJSON();
+      await loadExclusionGeoJSON();
       populateMunicipalityFilter();
       await loadAll();
     }

@@ -41,6 +41,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -634,8 +635,8 @@
     const clusterLayer = L.layerGroup().addTo(map);
     const ignLayer = L.layerGroup().addTo(map);
     const usgsLayer = L.layerGroup();
-    let heatLayer = null;
 
+    let heatLayer = null;
     let seriesChart = null;
     let depthChart = null;
     let compareChart = null;
@@ -647,6 +648,7 @@
     let interpretation = null;
     let depthProfile = {};
     let compareData = { compare: {}, acceleration: {}, baseline: {} };
+    let seriesData = { labels: [], counts: [], mmax: [] };
     let regimeData = null;
     let migrationData = null;
     let anomalyData = null;
@@ -769,11 +771,10 @@
 
     function magColor(mag) {
       const m = safeNumber(mag);
-      const css = getComputedStyle(document.documentElement);
-      if (m < 1) return css.getPropertyValue('--eq1').trim();
-      if (m < 2) return css.getPropertyValue('--eq2').trim();
-      if (m < 3) return css.getPropertyValue('--eq3').trim();
-      return css.getPropertyValue('--eq4').trim();
+      if (m < 1) return "#c7d2fe";
+      if (m < 2) return "#93c5fd";
+      if (m < 3) return "#60a5fa";
+      return "#3b82f6";
     }
 
     function officialColor(color) {
@@ -820,18 +821,16 @@
 
     function municipalityColor(muni) {
       const stat = municipalityStats[muni];
-      const css = getComputedStyle(document.documentElement);
-
-      if (!stat || stat.nivel === "sin actividad") return css.getPropertyValue('--municipio-0').trim();
-      if (stat.nivel === "baja") return css.getPropertyValue('--municipio-1').trim();
-      if (stat.nivel === "ligera") return css.getPropertyValue('--municipio-2').trim();
-      if (stat.nivel === "moderada") return css.getPropertyValue('--municipio-3').trim();
-      return css.getPropertyValue('--municipio-4').trim();
+      if (!stat || stat.nivel === "sin actividad") return "#e2e8f0";
+      if (stat.nivel === "baja") return "#dbeafe";
+      if (stat.nivel === "ligera") return "#60a5fa";
+      if (stat.nivel === "moderada") return "#8b5cf6";
+      return "#d946ef";
     }
 
     function municipalityBaseStyle(muni) {
       return {
-        color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-line').trim(),
+        color: "#475569",
         weight: 1,
         fillColor: municipalityColor(muni),
         fillOpacity: 0.60
@@ -840,7 +839,7 @@
 
     function municipalitySelectedStyle(muni) {
       return {
-        color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-selected-line').trim(),
+        color: "#111827",
         weight: 2.6,
         fillColor: municipalityColor(muni),
         fillOpacity: 0.88
@@ -1220,18 +1219,55 @@
 
     function buildSeriesChart() {
       if (seriesChart) seriesChart.destroy();
-      const labels = compareData?.serie_labels || [];
+
+      const labels = seriesData?.labels || [];
+      const counts = seriesData?.counts || [];
+      const mags = seriesData?.mmax || [];
+
       seriesChart = new Chart(document.getElementById("seriesChart"), {
         type: "line",
         data: {
-          labels: labels,
-          datasets: [{
-            label: "Eventos por día",
-            data: [],
-            borderColor: "#2563eb"
-          }]
+          labels,
+          datasets: [
+            {
+              label: "Eventos por día",
+              data: counts,
+              borderColor: "#2563eb",
+              backgroundColor: "rgba(37,99,235,0.12)",
+              fill: true,
+              tension: 0.25,
+              yAxisID: "y"
+            },
+            {
+              label: "Magnitud máxima diaria",
+              data: mags,
+              borderColor: "#1e3a8a",
+              backgroundColor: "rgba(30,58,138,0.04)",
+              fill: false,
+              tension: 0.25,
+              yAxisID: "y1"
+            }
+          ]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "top" }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Nº eventos" }
+            },
+            y1: {
+              beginAtZero: true,
+              position: "right",
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: "Mmax" }
+            }
+          }
+        }
       });
     }
 
@@ -1561,6 +1597,7 @@
         acceleration: bundle.acceleration || {},
         baseline: bundle.baseline || {}
       };
+      seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
       regimeData = bundle.regime || null;
       migrationData = bundle.migration || null;
       anomalyData = bundle.anomaly || null;

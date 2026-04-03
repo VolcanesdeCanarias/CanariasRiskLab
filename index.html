@@ -38,10 +38,15 @@
       --carretera: #64748b;
       --emergencias: #111827;
 
-      --municipio-line: #334155;
-      --municipio-fill: rgba(51, 65, 85, 0.05);
-      --municipio-selected-line: #d97706;
-      --municipio-selected-fill: rgba(245, 158, 11, 0.18);
+      --municipio-0: #e2e8f0;
+      --municipio-1: #bbf7d0;
+      --municipio-2: #fde68a;
+      --municipio-3: #fdba74;
+      --municipio-4: #fca5a5;
+
+      --municipio-line: #475569;
+      --municipio-selected-line: #1d4ed8;
+      --municipio-selected-fill: rgba(29, 78, 216, 0.22);
 
       --right-panel-width: 430px;
     }
@@ -229,7 +234,7 @@
       left: 12px;
       right: calc(var(--right-panel-width) + 24px);
       bottom: 56px;
-      height: 220px;
+      height: 240px;
       padding-bottom: 6px;
       transition: transform 0.25s ease, opacity 0.25s ease;
       transform: translateY(0);
@@ -237,7 +242,7 @@
     }
 
     #bottom-panel.collapsed {
-      transform: translateY(255px);
+      transform: translateY(275px);
       opacity: 0;
       pointer-events: none;
     }
@@ -272,7 +277,7 @@
 
     .tab-content {
       display: none;
-      height: 165px;
+      height: 184px;
       overflow: auto;
       padding-right: 3px;
     }
@@ -366,14 +371,19 @@
       flex: 0 0 auto;
     }
 
-    .municipio-legend {
+    .muni-legend-0, .muni-legend-1, .muni-legend-2, .muni-legend-3, .muni-legend-4 {
       width: 14px;
       height: 14px;
-      border: 2px solid var(--municipio-line);
-      background: var(--municipio-fill);
+      border: 1px solid rgba(0,0,0,0.18);
       border-radius: 2px;
       flex: 0 0 auto;
     }
+
+    .muni-legend-0 { background: var(--municipio-0); }
+    .muni-legend-1 { background: var(--municipio-1); }
+    .muni-legend-2 { background: var(--municipio-2); }
+    .muni-legend-3 { background: var(--municipio-3); }
+    .muni-legend-4 { background: var(--municipio-4); }
 
     .municipio-selected-legend {
       width: 14px;
@@ -467,6 +477,25 @@
       font-size: 0.72rem;
       margin-right: 6px;
       margin-bottom: 4px;
+    }
+
+    .municipality-rank {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .rank-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .rank-right {
+      text-align: right;
+      white-space: nowrap;
     }
 
     .leaflet-control-attribution {
@@ -645,6 +674,7 @@
 
       <div id="tab-territory" class="tab-content">
         <div id="territorialContent"></div>
+        <div id="territorialRankingContent"></div>
       </div>
 
       <div id="tab-infra" class="tab-content">
@@ -656,20 +686,26 @@
           <div>
             <div class="legend-item"><div class="triangle-legend"></div><span>Volcán</span></div>
             <div class="legend-item"><div class="zone-legend"></div><span>Zona volcánica</span></div>
-            <div class="legend-item"><div class="municipio-legend"></div><span>Municipio</span></div>
+            <div class="legend-item"><div class="muni-legend-0"></div><span>Municipio sin actividad</span></div>
+            <div class="legend-item"><div class="muni-legend-1"></div><span>Actividad municipal baja</span></div>
+            <div class="legend-item"><div class="muni-legend-2"></div><span>Actividad municipal ligera</span></div>
+            <div class="legend-item"><div class="muni-legend-3"></div><span>Actividad municipal moderada</span></div>
+            <div class="legend-item"><div class="muni-legend-4"></div><span>Actividad municipal alta</span></div>
             <div class="legend-item"><div class="municipio-selected-legend"></div><span>Municipio seleccionado</span></div>
+          </div>
+          <div>
             <div class="legend-item"><div class="dot" style="background:var(--eq1)"></div><span>Sismo IGN &lt; 1</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN 1–1.9</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq3)"></div><span>Sismo IGN 2–2.9</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq4)"></div><span>Sismo IGN ≥ 3</span></div>
-          </div>
-          <div>
-            <div class="legend-item"><div class="dot" style="background:#111"></div><span>Sismo USGS</span></div>
             <div class="legend-item"><div class="square-legend" style="background:var(--hospital)"></div><span>Hospital</span></div>
             <div class="legend-item"><div class="square-legend" style="background:var(--aeropuerto)"></div><span>Aeropuerto</span></div>
             <div class="legend-item"><div class="square-legend" style="background:var(--puerto)"></div><span>Puerto</span></div>
             <div class="legend-item"><div class="square-legend" style="background:#111827;border:2px solid #f59e0b"></div><span>Infra expuesta</span></div>
           </div>
+        </div>
+        <div class="small-note" style="margin-top:8px;">
+          El color municipal es un indicador experimental RiskLab construido con eventos recientes visibles en el visor.
         </div>
       </div>
     </div>
@@ -697,7 +733,7 @@
     );
 
     const openTopo = L.tileLayer(
-      "https://{s}.tile.opentopomap.org/{z}/{y}/{x}.png",
+      "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
       {
         maxZoom: 17,
         attribution: "Map data: &copy; OpenStreetMap contributors, style: &copy; OpenTopoMap"
@@ -725,11 +761,11 @@
     let summary = {};
     let risklabIndex = null;
     let interpretation = null;
-    let depthProfile = null;
-    let compareData = null;
+    let depthProfile = {};
+    let compareData = { compare: {}, acceleration: {}, baseline: {} };
     let infrastructures = [];
     let swarmCandidates = [];
-    let seriesData = null;
+    let seriesData = { labels: [], counts: [], mmax: [] };
     let regimeData = null;
     let migrationData = null;
     let anomalyData = null;
@@ -737,6 +773,7 @@
     let municipalitiesGeoJSON = null;
     let selectedMunicipalityLayer = null;
     let currentMode = "citizens";
+    let municipalityStats = {};
 
     const MUNICIPALITIES_BY_ISLAND = {
       "Tenerife": [
@@ -940,21 +977,66 @@
       );
     }
 
-    function municipalityBaseStyle() {
+    function municipalityLevel(score, count7d) {
+      if (count7d === 0) return "sin actividad";
+      if (score < 20) return "baja";
+      if (score < 45) return "ligera";
+      if (score < 80) return "moderada";
+      return "alta";
+    }
+
+    function computeMunicipalityStats() {
+      const stats = {};
+
+      Object.values(MUNICIPALITIES_BY_ISLAND).flat().forEach(m => {
+        stats[m] = { count7d: 0, mmax: 0, score: 0, level: "sin actividad", island: detectIslandForMunicipality(m) };
+      });
+
+      ignEvents.forEach(ev => {
+        const muni = canonicalMunicipalityName(ev.municipio || "");
+        if (!muni) return;
+        if (!stats[muni]) {
+          stats[muni] = { count7d: 0, mmax: 0, score: 0, level: "sin actividad", island: detectIslandForMunicipality(muni) };
+        }
+        stats[muni].count7d += 1;
+        stats[muni].mmax = Math.max(stats[muni].mmax, safeNumber(ev.magnitud));
+      });
+
+      Object.keys(stats).forEach(m => {
+        const item = stats[m];
+        item.score = item.count7d * 8 + item.mmax * 10;
+        item.level = municipalityLevel(item.score, item.count7d);
+      });
+
+      municipalityStats = stats;
+    }
+
+    function municipalityFillColor(muni) {
+      const stat = municipalityStats[muni];
+      const css = getComputedStyle(document.documentElement);
+
+      if (!stat || stat.count7d === 0) return css.getPropertyValue('--municipio-0').trim();
+      if (stat.level === "baja") return css.getPropertyValue('--municipio-1').trim();
+      if (stat.level === "ligera") return css.getPropertyValue('--municipio-2').trim();
+      if (stat.level === "moderada") return css.getPropertyValue('--municipio-3').trim();
+      return css.getPropertyValue('--municipio-4').trim();
+    }
+
+    function municipalityBaseStyle(muni) {
       return {
         color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-line').trim(),
         weight: 1,
-        fillColor: getComputedStyle(document.documentElement).getPropertyValue('--municipio-fill').trim(),
-        fillOpacity: 0.20
+        fillColor: municipalityFillColor(muni),
+        fillOpacity: 0.60
       };
     }
 
-    function municipalitySelectedStyle() {
+    function municipalitySelectedStyle(muni) {
       return {
         color: getComputedStyle(document.documentElement).getPropertyValue('--municipio-selected-line').trim(),
         weight: 2.4,
-        fillColor: getComputedStyle(document.documentElement).getPropertyValue('--municipio-selected-fill').trim(),
-        fillOpacity: 0.45
+        fillColor: municipalityFillColor(muni),
+        fillOpacity: 0.86
       };
     }
 
@@ -986,6 +1068,8 @@
 
       if (!municipalitiesGeoJSON || !municipalitiesGeoJSON.features) return;
 
+      computeMunicipalityStats();
+
       const island = selectedIsland();
       const muni = selectedMunicipality();
 
@@ -1002,18 +1086,27 @@
 
           return true;
         },
-        style: () => municipalityBaseStyle(),
+        style: feature => {
+          const muniName = getMunicipalityName(feature);
+          if (muni !== "Todos" && normalizeText(muniName) === normalizeText(muni)) {
+            return municipalitySelectedStyle(muniName);
+          }
+          return municipalityBaseStyle(muniName);
+        },
         onEachFeature: (feature, layer) => {
-          const name = getMunicipalityName(feature);
-          const islaReal = detectIslandForMunicipality(name);
+          const muniName = getMunicipalityName(feature);
+          const islaReal = detectIslandForMunicipality(muniName);
+          const stat = municipalityStats[muniName] || { count7d: 0, mmax: 0, level: "sin actividad", score: 0 };
 
           layer.bindPopup(`
-            <div class="popup-title">${name || "Municipio"}</div>
+            <div class="popup-title">${muniName || "Municipio"}</div>
             <div class="popup-row"><strong>Isla:</strong> ${islaReal}</div>
+            <div class="popup-row"><strong>Eventos 7d:</strong> ${stat.count7d}</div>
+            <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(stat.mmax).toFixed(1)}</div>
+            <div class="popup-row"><strong>Nivel municipal:</strong> ${stat.level}</div>
           `);
 
-          if (muni !== "Todos" && normalizeText(name) === normalizeText(muni)) {
-            layer.setStyle(municipalitySelectedStyle());
+          if (muni !== "Todos" && normalizeText(muniName) === normalizeText(muni)) {
             selectedMunicipalityLayer = layer;
           }
         }
@@ -1476,6 +1569,43 @@
       `;
     }
 
+    function buildTerritorialRanking() {
+      const target = document.getElementById("territorialRankingContent");
+      const island = selectedIsland();
+
+      let items = Object.entries(municipalityStats)
+        .filter(([name, stat]) => island === "Todas" || stat.island === island)
+        .sort((a, b) => {
+          if (b[1].score !== a[1].score) return b[1].score - a[1].score;
+          return b[1].mmax - a[1].mmax;
+        });
+
+      const top = items.filter(([_, stat]) => stat.count7d > 0).slice(0, 8);
+
+      if (!top.length) {
+        target.innerHTML = `<div class="insight-card">No hay municipios con actividad reciente visible para este filtro.</div>`;
+        return;
+      }
+
+      let html = `<div class="insight-card"><strong>Ranking municipal de actividad reciente</strong><br>`;
+      top.forEach(([name, stat], idx) => {
+        html += `
+          <div class="municipality-rank">
+            <div class="rank-left">
+              <strong>${idx + 1}. ${name}</strong>
+              <span class="small-note">${stat.island} · ${stat.level}</span>
+            </div>
+            <div class="rank-right">
+              <strong>${stat.count7d} ev</strong><br>
+              <span class="small-note">Mmax ${safeNumber(stat.mmax).toFixed(1)}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      target.innerHTML = html;
+    }
+
     function buildInfraContent() {
       const target = document.getElementById("infraContent");
       if (!infrastructures || infrastructures.length === 0) {
@@ -1587,12 +1717,16 @@
       migrationData = null;
       anomalyData = null;
       territorialData = null;
+      municipalityStats = {};
     }
 
     async function loadBundle(island, municipio) {
       const bundle = await fetchJson(`/api/risklab-bundle?island=${encodeURIComponent(island)}&municipio=${encodeURIComponent(municipio)}`);
 
-      ignEvents = bundle.ign_eventos || [];
+      ignEvents = (bundle.ign_eventos || []).map(ev => ({
+        ...ev,
+        municipio: canonicalMunicipalityName(ev.municipio || "")
+      }));
       summary = bundle.summary || {};
       risklabIndex = bundle.risklab_index || null;
       interpretation = bundle.interpretation || null;
@@ -1635,7 +1769,9 @@
       ]);
 
       if (ignRes.status === "fulfilled") {
-        ignEvents = (ignRes.value.eventos || []).filter(ev => island === "Todas" || ev.isla === island);
+        ignEvents = (ignRes.value.eventos || [])
+          .filter(ev => island === "Todas" || ev.isla === island)
+          .map(ev => ({ ...ev, municipio: canonicalMunicipalityName(ev.municipio || "") }));
       }
 
       if (summaryRes.status === "fulfilled") {
@@ -1663,7 +1799,7 @@
       }
 
       if (regimeRes.status === "fulfilled") {
-        regimeData = regimeRes.value.regime || null;
+        regimeData = compareRes.status === "fulfilled" ? regimeRes.value.regime || null : null;
       }
 
       if (migrationRes.status === "fulfilled") {
@@ -1725,6 +1861,7 @@
       try { buildMigrationCard(); } catch (e) { console.error("buildMigrationCard", e); }
       try { buildAnomalyCard(); } catch (e) { console.error("buildAnomalyCard", e); }
       try { buildTerritorialCard(); } catch (e) { console.error("buildTerritorialCard", e); }
+      try { buildTerritorialRanking(); } catch (e) { console.error("buildTerritorialRanking", e); }
       try { buildInfraContent(); } catch (e) { console.error("buildInfraContent", e); }
 
       syncLayers();

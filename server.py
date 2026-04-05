@@ -149,6 +149,10 @@ EMERGENCY_INFRASTRUCTURES = [
     {"nombre": "Aeropuerto Tenerife Norte", "tipo": "aeropuerto", "lat": 28.4820, "lon": -16.3410, "municipio": "San Cristóbal de La Laguna", "isla": "Tenerife"},
     {"nombre": "Hospital Universitario de Canarias", "tipo": "hospital", "lat": 28.4511, "lon": -16.2985, "municipio": "San Cristóbal de La Laguna", "isla": "Tenerife"},
     {"nombre": "Hospital Universitario Nuestra Señora de Candelaria", "tipo": "hospital", "lat": 28.4419, "lon": -16.2865, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
+    {"nombre": "Hospital Quirónsalud Tenerife", "tipo": "hospital", "lat": 28.4607, "lon": -16.2525, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
+    {"nombre": "Hospital Quirónsalud Costa Adeje", "tipo": "hospital", "lat": 28.0944, "lon": -16.7350, "municipio": "Adeje", "isla": "Tenerife"},
+    {"nombre": "Hospiten Sur", "tipo": "hospital", "lat": 28.0720, "lon": -16.7294, "municipio": "Arona", "isla": "Tenerife"},
+    {"nombre": "Hospiten Bellevue", "tipo": "hospital", "lat": 28.4161, "lon": -16.5480, "municipio": "Puerto de la Cruz", "isla": "Tenerife"},
     {"nombre": "Pabellón Roberto Estrello", "tipo": "polideportivo", "lat": 28.4917, "lon": -16.3150, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
 
     # La Palma
@@ -166,18 +170,22 @@ EMERGENCY_INFRASTRUCTURES = [
     {"nombre": "Puerto de Las Palmas", "tipo": "puerto", "lat": 28.1410, "lon": -15.4180, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
     {"nombre": "Puerto de Arinaga", "tipo": "puerto", "lat": 27.8600, "lon": -15.3900, "municipio": "Agüimes", "isla": "Gran Canaria"},
     {"nombre": "Aeropuerto de Gran Canaria", "tipo": "aeropuerto", "lat": 27.9319, "lon": -15.3866, "municipio": "Ingenio", "isla": "Gran Canaria"},
+    {"nombre": "Hospital Universitario Doctor Negrín", "tipo": "hospital", "lat": 28.1232, "lon": -15.4466, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
+    {"nombre": "Hospital Universitario Insular de Gran Canaria", "tipo": "hospital", "lat": 28.0914, "lon": -15.4149, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
 
     # Lanzarote
     {"nombre": "Puerto de Arrecife", "tipo": "puerto", "lat": 28.9630, "lon": -13.5470, "municipio": "Arrecife", "isla": "Lanzarote"},
+    {"nombre": "Puerto de Playa Blanca", "tipo": "puerto", "lat": 28.8620, "lon": -13.8290, "municipio": "Yaiza", "isla": "Lanzarote"},
     {"nombre": "Aeropuerto César Manrique-Lanzarote", "tipo": "aeropuerto", "lat": 28.9450, "lon": -13.6050, "municipio": "San Bartolomé", "isla": "Lanzarote"},
 
     # Fuerteventura
     {"nombre": "Puerto del Rosario", "tipo": "puerto", "lat": 28.4970, "lon": -13.8620, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
     {"nombre": "Aeropuerto de Fuerteventura", "tipo": "aeropuerto", "lat": 28.4520, "lon": -13.8630, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
+    {"nombre": "Hospital General de Fuerteventura", "tipo": "hospital", "lat": 28.5005, "lon": -13.8591, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
 
     # La Gomera
     {"nombre": "Puerto de San Sebastián de La Gomera", "tipo": "puerto", "lat": 28.0920, "lon": -17.1090, "municipio": "San Sebastián de La Gomera", "isla": "La Gomera"},
-    {"nombre": "Aeropuerto de La Gomera", "tipo": "aeropuerto", "lat": 28.0290, "lon": -17.2140, "municipio": "Alajeró", "isla": "La Gomera"}
+    {"nombre": "Aeropuerto de La Gomera", "tipo": "aeropuerto", "lat": 28.0290, "lon": -17.2140, "municipio": "Alajeró", "isla": "La Gomera"},
 ]
 
 # =========================================================
@@ -299,6 +307,15 @@ def haversine_km(lat1, lon1, lat2, lon2):
     return 2 * r * math.asin(math.sqrt(a))
 
 
+def mean_lat_lon(events):
+    if not events:
+        return None, None
+    return (
+        round(sum(e["lat"] for e in events) / len(events), 5),
+        round(sum(e["lon"] for e in events) / len(events), 5),
+    )
+
+
 def events_in_hours(eventos, hours):
     cutoff = now_utc() - timedelta(hours=hours)
     out = []
@@ -361,7 +378,7 @@ def parse_ign_canarias():
             tipo_mag = ""
             localizacion = ""
 
-            for i in range(hora_idx + 4, min(len(cells), hora_idx + 8)):
+            for i in range(hora_idx + 4, min(len(cells), hora_idx + 9)):
                 if re.fullmatch(r"\d+[.,]\d+", cells[i]):
                     mag = parse_float(cells[i])
                     if i + 1 < len(cells):
@@ -913,6 +930,198 @@ def municipality_summary(events_recent, municipio):
     evs = [e for e in events_recent if canonical_municipality_name(e.get("municipio", "")) == muni]
     return {"municipio": muni, "isla": municipality_to_island(muni), **municipality_score(evs)}
 
+# =========================================================
+# CLUSTERS Y FOCOS SÍSMICOS (FASE 6)
+# =========================================================
+
+def cluster_level_from_count(n):
+    if n >= 16:
+        return "concentrado", "magenta"
+    if n >= 6:
+        return "activo", "violet"
+    return "leve", "blue2"
+
+
+def cluster_level_from_score(score):
+    if score >= 60:
+        return "concentrado", "magenta"
+    if score >= 30:
+        return "activo", "violet"
+    return "leve", "blue2"
+
+
+def build_spatial_clusters(events_recent, island_name=None, hours=72, radius_km=12):
+    eventos = events_in_hours(events_recent, hours)
+
+    if island_name and island_name != "Todas":
+        eventos = [e for e in eventos if e["isla"] == island_name]
+
+    eventos = sorted(eventos, key=lambda e: parse_event_datetime(e) or datetime(1970, 1, 1, tzinfo=timezone.utc))
+    if not eventos:
+        return []
+
+    unassigned = list(range(len(eventos)))
+    clusters = []
+
+    while unassigned:
+        seed_idx = unassigned.pop(0)
+        seed = eventos[seed_idx]
+        group_idx = [seed_idx]
+        changed = True
+
+        while changed:
+            changed = False
+            current_members = list(group_idx)
+            remaining = list(unassigned)
+
+            for idx in remaining:
+                cand = eventos[idx]
+                for m_idx in current_members:
+                    ref = eventos[m_idx]
+                    d = haversine_km(ref["lat"], ref["lon"], cand["lat"], cand["lon"])
+                    if d <= radius_km:
+                        group_idx.append(idx)
+                        unassigned.remove(idx)
+                        changed = True
+                        break
+
+        group = [eventos[i] for i in group_idx]
+        if len(group) < 3:
+            continue
+
+        center_lat, center_lon = mean_lat_lon(group)
+        mags = [safe_float(e.get("magnitud")) for e in group]
+        deps = [safe_float(e.get("profundidad_km")) for e in group]
+        dts = [parse_event_datetime(e) for e in group if parse_event_datetime(e)]
+
+        max_radius = 0.0
+        for e in group:
+            max_radius = max(max_radius, haversine_km(center_lat, center_lon, e["lat"], e["lon"]))
+
+        level, color = cluster_level_from_count(len(group))
+        duration_h = 0
+        if len(dts) >= 2:
+            duration_h = round((max(dts) - min(dts)).total_seconds() / 3600, 1)
+
+        isla = island_name or classify_island(center_lat, center_lon)
+        municipios = sorted(list(set([canonical_municipality_name(e.get("municipio", "")) for e in group if e.get("municipio")])))
+        municipio_label = municipios[0] if len(municipios) == 1 else ", ".join(municipios[:2]) if municipios else ""
+
+        if len(group) >= 10 and max(mags or [0]) >= 2:
+            headline = "Foco concentrado reciente"
+        elif len(group) >= 5:
+            headline = "Foco activo reciente"
+        else:
+            headline = "Foco leve reciente"
+
+        clusters.append({
+            "cluster_id": f"{isla}_{round(center_lat,3)}_{round(center_lon,3)}_{len(group)}",
+            "isla": isla,
+            "municipio": municipio_label,
+            "nivel": level,
+            "color": color,
+            "headline": headline,
+            "eventos": len(group),
+            "magnitud_max": round(max(mags or [0]), 1),
+            "magnitud_media": round(sum(mags) / len(mags), 2) if mags else 0,
+            "profundidad_media_km": round(sum(deps) / len(deps), 1) if deps else 0,
+            "lat": center_lat,
+            "lon": center_lon,
+            "radio_km": round(max_radius, 1),
+            "ventana_horas": hours,
+            "duracion_horas": duration_h,
+            "drivers": [
+                f"{len(group)} eventos en la ventana de {hours}h",
+                f"magnitud máxima {round(max(mags or [0]),1)}",
+                f"profundidad media {round(sum(deps) / len(deps), 1) if deps else 0} km",
+                f"radio espacial aproximado {round(max_radius, 1)} km",
+            ]
+        })
+
+    clusters.sort(key=lambda x: (x["eventos"], x["magnitud_max"]), reverse=True)
+    return clusters
+
+
+def build_temporal_clusters(events_recent, island_name=None):
+    eventos = list(events_recent)
+    if island_name and island_name != "Todas":
+        eventos = [e for e in eventos if e["isla"] == island_name]
+
+    w24 = events_in_hours(eventos, 24)
+    w72 = events_in_hours(eventos, 72)
+    w7d = events_in_days(eventos, 7)
+
+    out = []
+    for label, group in [("24h", w24), ("72h", w72), ("7d", w7d)]:
+        if len(group) < 4:
+            continue
+
+        mags = [safe_float(e.get("magnitud")) for e in group]
+        deps = [safe_float(e.get("profundidad_km")) for e in group]
+        center_lat, center_lon = mean_lat_lon(group)
+        level, color = cluster_level_from_count(len(group))
+
+        out.append({
+            "ventana": label,
+            "eventos": len(group),
+            "magnitud_max": round(max(mags or [0]), 1),
+            "profundidad_media_km": round(sum(deps) / len(deps), 1) if deps else 0,
+            "lat": center_lat,
+            "lon": center_lon,
+            "nivel": level,
+            "color": color
+        })
+
+    out.sort(key=lambda x: x["eventos"], reverse=True)
+    return out
+
+
+def build_focus_ranking(events_recent, island_name=None):
+    spatial = build_spatial_clusters(events_recent, island_name=island_name, hours=72, radius_km=12)
+    ranking = []
+    for c in spatial:
+        score = (c["eventos"] * 4) + (c["magnitud_max"] * 12) + max(0, 12 - c["radio_km"])
+        score = round(score, 1)
+        nivel, color = cluster_level_from_score(score)
+        ranking.append({
+            **c,
+            "score": score,
+            "nivel": nivel,
+            "color": color
+        })
+
+    ranking.sort(key=lambda x: (x["score"], x["eventos"], x["magnitud_max"]), reverse=True)
+    return ranking
+
+
+def focus_summary(events_recent, island_name=None):
+    ranking = build_focus_ranking(events_recent, island_name)
+    dominant = ranking[0] if ranking else None
+
+    if not dominant:
+        return {
+            "focos_detectados": 0,
+            "foco_dominante": None,
+            "lectura": "No se detectan focos sísmicos significativos en la ventana reciente."
+        }
+
+    lectura = (
+        f"Se detectan {len(ranking)} focos sísmicos recientes. "
+        f"El foco dominante se sitúa en {dominant['isla']}"
+    )
+    if dominant.get("municipio"):
+        lectura += f", sector {dominant['municipio']}"
+    lectura += (
+        f", con {dominant['eventos']} eventos, magnitud máxima {dominant['magnitud_max']}"
+        f" y profundidad media {dominant['profundidad_media_km']} km."
+    )
+
+    return {
+        "focos_detectados": len(ranking),
+        "foco_dominante": dominant,
+        "lectura": lectura
+    }
+
 
 def detect_municipal_clusters(events_recent, island_name=None):
     stats = build_municipality_stats(events_recent, island_name)
@@ -950,6 +1159,9 @@ def detect_municipal_clusters(events_recent, island_name=None):
     clusters.sort(key=lambda x: (x["score"], x["eventos_7d"]), reverse=True)
     return clusters
 
+# =========================================================
+# INFRAESTRUCTURAS EXPUESTAS
+# =========================================================
 
 def exposed_infrastructures(events_recent, island_name=None, municipio=None):
     stats = build_municipality_stats(events_recent, island_name)
@@ -983,8 +1195,15 @@ def exposed_infrastructures(events_recent, island_name=None, municipio=None):
     out.sort(key=lambda x: (x["distancia_km"] is None, x["distancia_km"] if x["distancia_km"] is not None else 9999))
     return out
 
+
+def safe_float(value, fallback=0.0):
+    try:
+        return float(value)
+    except Exception:
+        return fallback
+
 # =========================================================
-# API
+# RUTAS
 # =========================================================
 
 @app.route("/")
@@ -1018,6 +1237,33 @@ def api_usgs_canarias():
 @app.route("/api/official-volcanic-status")
 def api_official_volcanic_status():
     return jsonify({"ok": True, "official_status": OFFICIAL_VOLCANIC_STATUS})
+
+
+@app.route("/api/risklab-clusters")
+def api_risklab_clusters():
+    try:
+        island_name = request.args.get("island")
+        island_filter = None if island_name in (None, "Todas") else island_name
+        recent = parse_ign_canarias()
+
+        ranking = build_focus_ranking(recent, island_filter)
+        temporal = build_temporal_clusters(recent, island_filter)
+        summary = focus_summary(recent, island_filter)
+
+        return jsonify({
+            "ok": True,
+            "clusters": ranking,
+            "temporal_clusters": temporal,
+            "focus_summary": summary
+        })
+    except Exception as e:
+        return jsonify({
+            "ok": False,
+            "error": str(e),
+            "clusters": [],
+            "temporal_clusters": [],
+            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."}
+        }), 500
 
 
 @app.route("/api/risklab-bundle")
@@ -1059,6 +1305,10 @@ def api_risklab_bundle():
         municipal_clusters = detect_municipal_clusters(recent_island, island_filter)
         infra_expuestas = exposed_infrastructures(recent_island, island_filter, municipio_filter)
 
+        focus_clusters = build_focus_ranking(recent, island_filter)
+        focus_temporal = build_temporal_clusters(recent, island_filter)
+        focus_info = focus_summary(recent, island_filter)
+
         territorial = None
         if island_filter:
             territorial = {
@@ -1095,7 +1345,10 @@ def api_risklab_bundle():
             "municipal_ranking": municipal_ranking,
             "selected_municipality": selected_municipality,
             "municipal_clusters": municipal_clusters,
-            "infra_expuestas": infra_expuestas
+            "infra_expuestas": infra_expuestas,
+            "focus_clusters": focus_clusters,
+            "focus_temporal_clusters": focus_temporal,
+            "focus_summary": focus_info
         })
     except Exception as e:
         return jsonify({
@@ -1119,7 +1372,10 @@ def api_risklab_bundle():
             "municipal_ranking": [],
             "selected_municipality": None,
             "municipal_clusters": [],
-            "infra_expuestas": []
+            "infra_expuestas": [],
+            "focus_clusters": [],
+            "focus_temporal_clusters": [],
+            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."}
         }), 500
 
 

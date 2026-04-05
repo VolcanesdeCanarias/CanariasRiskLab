@@ -34,14 +34,16 @@
       --municipio-3: #8b5cf6;
       --municipio-4: #d946ef;
 
-      --territorial-0: #9ca3af;  /* gris */
-      --territorial-1: #2563eb;  /* azul */
-      --territorial-2: #7c3aed;  /* morado */
-      --territorial-3: #111827;  /* negro */
+      --territorial-0: #9ca3af;
+      --territorial-1: #2563eb;
+      --territorial-2: #7c3aed;
+      --territorial-3: #111827;
 
-      --municipio-line: #475569;
-      --municipio-selected-line: #111827;
-      --right-panel-width: 440px;
+      --focus-leve: #60a5fa;
+      --focus-activo: #8b5cf6;
+      --focus-concentrado: #d946ef;
+
+      --right-panel-width: 455px;
     }
 
     * { box-sizing: border-box; }
@@ -76,7 +78,7 @@
       position: relative;
       width: 100%;
       height: calc(100vh - 76px);
-      min-height: 770px;
+      min-height: 780px;
     }
 
     #map {
@@ -123,7 +125,7 @@
     #sources-panel {
       top: 12px;
       left: 12px;
-      width: 270px;
+      width: 280px;
     }
 
     #topright-panel {
@@ -227,7 +229,7 @@
       left: 12px;
       right: calc(var(--right-panel-width) + 24px);
       bottom: 56px;
-      height: 260px;
+      height: 280px;
       padding-bottom: 6px;
       transition: transform 0.25s ease, opacity 0.25s ease;
       transform: translateY(0);
@@ -235,7 +237,7 @@
     }
 
     #bottom-panel.collapsed {
-      transform: translateY(300px);
+      transform: translateY(320px);
       opacity: 0;
       pointer-events: none;
     }
@@ -270,7 +272,7 @@
 
     .tab-content {
       display: none;
-      height: 204px;
+      height: 224px;
       overflow: auto;
       padding-right: 3px;
     }
@@ -330,9 +332,13 @@
     .territorial2 { background: var(--territorial-2); }
     .territorial3 { background: var(--territorial-3); }
 
+    .focusLeve { background: var(--focus-leve); }
+    .focusActivo { background: var(--focus-activo); }
+    .focusConcentrado { background: var(--focus-concentrado); }
+
     .legend-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      grid-template-columns: repeat(2, minmax(170px, 1fr));
       gap: 5px 16px;
     }
 
@@ -381,8 +387,18 @@
       flex: 0 0 auto;
     }
 
+    .square-legend {
+      width: 14px;
+      height: 14px;
+      border: 1px solid rgba(0,0,0,0.18);
+      background: #6b7280;
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+
     .muni-legend-0, .muni-legend-1, .muni-legend-2, .muni-legend-3, .muni-legend-4,
-    .risk-legend-0, .risk-legend-1, .risk-legend-2, .risk-legend-3 {
+    .risk-legend-0, .risk-legend-1, .risk-legend-2, .risk-legend-3,
+    .focus-legend-1, .focus-legend-2, .focus-legend-3 {
       width: 14px;
       height: 14px;
       border: 1px solid rgba(0,0,0,0.18);
@@ -400,6 +416,10 @@
     .risk-legend-1 { background: var(--territorial-1); }
     .risk-legend-2 { background: var(--territorial-2); }
     .risk-legend-3 { background: var(--territorial-3); }
+
+    .focus-legend-1 { background: var(--focus-leve); }
+    .focus-legend-2 { background: var(--focus-activo); }
+    .focus-legend-3 { background: var(--focus-concentrado); }
 
     .popup-title {
       font-weight: 800;
@@ -437,7 +457,7 @@
       margin-bottom: 6px;
     }
 
-    .municipality-rank {
+    .rank-row {
       display: flex;
       justify-content: space-between;
       gap: 10px;
@@ -486,18 +506,25 @@
     }
 
     .infra-icon {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      background: #6b7280;
       border: 2px solid white;
       box-shadow: 0 1px 4px rgba(0,0,0,0.35);
     }
 
-    .infra-puerto { background: #1d4ed8; }
-    .infra-aeropuerto { background: #0f766e; }
-    .infra-hospital { background: #7c3aed; }
-    .infra-polideportivo { background: #0891b2; }
-    .infra-campo_futbol { background: #16a34a; }
+    .focus-label {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(15,23,42,0.12);
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #111827;
+      white-space: nowrap;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
 
     @media (max-width: 1180px) {
       #bottom-panel { right: 12px; }
@@ -505,30 +532,37 @@
     }
 
     @media (max-width: 980px) {
-      #map-wrap { height: 1560px; }
+      #map-wrap { height: 1640px; }
+
       #sources-panel, #topright-panel, #bottom-panel {
         left: 12px;
         right: 12px;
         width: auto;
       }
+
       #sources-panel { top: 12px; }
+
       #topright-panel {
-        top: 195px;
+        top: 205px;
         max-height: none;
       }
+
       #bottom-toggle {
         bottom: 12px;
         left: 50%;
       }
+
       #bottom-panel {
-        top: 590px;
+        top: 620px;
         bottom: auto;
-        height: 920px;
+        height: 960px;
       }
+
       #bottom-panel.collapsed {
-        transform: translateY(960px);
+        transform: translateY(1000px);
       }
-      .tab-content { height: 835px; }
+
+      .tab-content { height: 875px; }
       .legend-grid { grid-template-columns: 1fr; }
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
       .control-list, .two-col { grid-template-columns: 1fr; }
@@ -538,7 +572,7 @@
 <body>
   <header>
     <h1>Canarias RiskLab</h1>
-    <div class="subtitle">Observatorio ciudadano experimental de actividad sísmica, territorio operativo y lectura volcánica en Canarias</div>
+    <div class="subtitle">Observatorio ciudadano experimental de actividad sísmica, focos activos, territorio operativo y lectura volcánica en Canarias</div>
   </header>
 
   <div id="map-wrap">
@@ -546,13 +580,13 @@
 
     <div id="sources-panel" class="panel">
       <h3>Fuentes</h3>
-      <div><strong>IGN Canarias</strong> · sismicidad reciente</div>
-      <div><strong>USGS</strong> · últimas 24h, filtrado Canarias</div>
+      <div><strong>IGN Canarias</strong> · fuente principal analítica</div>
+      <div><strong>USGS</strong> · contraste externo</div>
       <div><strong>PEVOLCA</strong> · semáforo volcánico oficial</div>
       <div><strong>Cabildo de La Palma</strong> · zona de exclusión</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
-      <div class="small-note">RiskLab es analítico y experimental. El semáforo oficial se muestra separado del análisis municipal y del nivel territorial operativo.</div>
+      <div class="small-note">RiskLab distingue entre semáforo oficial, análisis sísmico, focos activos e infraestructuras estratégicas.</div>
     </div>
 
     <div id="topright-panel" class="panel">
@@ -597,7 +631,8 @@
         <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
         <label><input type="checkbox" id="toggle-volcanic-zones"> Zonas volcánicas</label>
         <label><input type="checkbox" id="toggle-municipalities"> Actividad municipal</label>
-        <label><input type="checkbox" id="toggle-clusters"> Clusters municipales</label>
+        <label><input type="checkbox" id="toggle-clusters" checked> Clusters municipales</label>
+        <label><input type="checkbox" id="toggle-focuses" checked> Focos sísmicos</label>
         <label><input type="checkbox" id="toggle-ign" checked> Sismos IGN</label>
         <label><input type="checkbox" id="toggle-usgs"> Sismos USGS</label>
         <label><input type="checkbox" id="toggle-infra" checked> Infraestructuras</label>
@@ -640,6 +675,8 @@
         <div id="regimeContent"></div>
         <div id="migrationContent"></div>
         <div id="anomalyContent"></div>
+        <div id="focusSummaryContent"></div>
+        <div id="focusRankingContent"></div>
       </div>
 
       <div id="tab-territory" class="tab-content">
@@ -656,6 +693,7 @@
           <div>
             <div class="legend-item"><div class="triangle-legend"></div><span>Volcán</span></div>
             <div class="legend-item"><div class="zone-legend"></div><span>Zona volcánica</span></div>
+            <div class="legend-item"><div class="square-legend"></div><span>Infraestructura estratégica</span></div>
             <div class="legend-item"><div class="muni-legend-0"></div><span>RiskLab sin actividad</span></div>
             <div class="legend-item"><div class="muni-legend-1"></div><span>RiskLab baja</span></div>
             <div class="legend-item"><div class="muni-legend-2"></div><span>RiskLab ligera</span></div>
@@ -665,11 +703,17 @@
           <div>
             <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>Semáforo oficial verde</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--yellow)"></div><span>Semáforo oficial amarillo</span></div>
+            <div class="legend-item"><div class="focus-legend-1"></div><span>Foco leve</span></div>
+            <div class="legend-item"><div class="focus-legend-2"></div><span>Foco activo</span></div>
+            <div class="legend-item"><div class="focus-legend-3"></div><span>Foco concentrado</span></div>
             <div class="legend-item"><div class="risk-legend-0"></div><span>Territorial 0 · gris</span></div>
             <div class="legend-item"><div class="risk-legend-1"></div><span>Territorial 1 · azul</span></div>
             <div class="legend-item"><div class="risk-legend-2"></div><span>Territorial 2 · morado</span></div>
             <div class="legend-item"><div class="risk-legend-3"></div><span>Territorial 3 · negro</span></div>
           </div>
+        </div>
+        <div class="small-note" style="margin-top:8px;">
+          Los focos activos RiskLab son un detector experimental basado en la sismicidad reciente de IGN y no equivalen a avisos oficiales.
         </div>
       </div>
     </div>
@@ -706,6 +750,7 @@
     const volcanicZonesLayer = L.layerGroup();
     const municipalitiesLayer = L.layerGroup();
     const clusterLayer = L.layerGroup();
+    const focusLayer = L.layerGroup().addTo(map);
     const ignLayer = L.layerGroup().addTo(map);
     const usgsLayer = L.layerGroup();
     const infraLayer = L.layerGroup().addTo(map);
@@ -735,6 +780,9 @@
     let selectedMunicipalityData = null;
     let municipalClusters = [];
     let infraExpuestas = [];
+    let focusClusters = [];
+    let focusTemporalClusters = [];
+    let focusSummary = null;
     let selectedMunicipalityLayer = null;
     let currentMode = "citizens";
 
@@ -803,46 +851,44 @@
     ];
 
     const INFRASTRUCTURES = [
-      // Puertos
       { nombre:"Puerto de Granadilla", tipo:"puerto", lat:28.0510, lon:-16.5080, municipio:"Granadilla de Abona", isla:"Tenerife" },
       { nombre:"Puerto de Los Cristianos", tipo:"puerto", lat:28.0450, lon:-16.7200, municipio:"Arona", isla:"Tenerife" },
       { nombre:"Puerto de Santa Cruz de Tenerife", tipo:"puerto", lat:28.4700, lon:-16.2390, municipio:"Santa Cruz de Tenerife", isla:"Tenerife" },
-      { nombre:"Puerto de Santa Cruz de La Palma", tipo:"puerto", lat:28.6819, lon:-17.7648, municipio:"Santa Cruz de La Palma", isla:"La Palma" },
-      { nombre:"Puerto de La Estaca", tipo:"puerto", lat:27.7630, lon:-17.9020, municipio:"Valverde", isla:"El Hierro" },
-      { nombre:"Puerto de Arrecife", tipo:"puerto", lat:28.9630, lon:-13.5470, municipio:"Arrecife", isla:"Lanzarote" },
-      { nombre:"Puerto de Playa Blanca", tipo:"puerto", lat:28.8620, lon:-13.8290, municipio:"Yaiza", isla:"Lanzarote" },
-      { nombre:"Puerto del Rosario", tipo:"puerto", lat:28.4970, lon:-13.8620, municipio:"Puerto del Rosario", isla:"Fuerteventura" },
-      { nombre:"Puerto de San Sebastián de La Gomera", tipo:"puerto", lat:28.0920, lon:-17.1090, municipio:"San Sebastián de La Gomera", isla:"La Gomera" },
-      { nombre:"Puerto de Las Palmas", tipo:"puerto", lat:28.1410, lon:-15.4180, municipio:"Las Palmas de Gran Canaria", isla:"Gran Canaria" },
-
-      // Aeropuertos
       { nombre:"Aeropuerto Tenerife Sur", tipo:"aeropuerto", lat:28.0440, lon:-16.5720, municipio:"Granadilla de Abona", isla:"Tenerife" },
       { nombre:"Aeropuerto Tenerife Norte", tipo:"aeropuerto", lat:28.4820, lon:-16.3410, municipio:"San Cristóbal de La Laguna", isla:"Tenerife" },
-      { nombre:"Aeropuerto de La Palma", tipo:"aeropuerto", lat:28.6260, lon:-17.7550, municipio:"Villa de Mazo", isla:"La Palma" },
-      { nombre:"Aeropuerto de El Hierro", tipo:"aeropuerto", lat:27.8140, lon:-17.8870, municipio:"Valverde", isla:"El Hierro" },
-      { nombre:"Aeropuerto de Gran Canaria", tipo:"aeropuerto", lat:27.9319, lon:-15.3866, municipio:"Ingenio", isla:"Gran Canaria" },
-      { nombre:"Aeropuerto César Manrique-Lanzarote", tipo:"aeropuerto", lat:28.9450, lon:-13.6050, municipio:"San Bartolomé", isla:"Lanzarote" },
-      { nombre:"Aeropuerto de Fuerteventura", tipo:"aeropuerto", lat:28.4520, lon:-13.8630, municipio:"Puerto del Rosario", isla:"Fuerteventura" },
-      { nombre:"Aeropuerto de La Gomera", tipo:"aeropuerto", lat:28.0290, lon:-17.2140, municipio:"Alajeró", isla:"La Gomera" },
-
-      // Hospitales públicos
       { nombre:"Hospital Universitario de Canarias", tipo:"hospital", lat:28.4511, lon:-16.2985, municipio:"San Cristóbal de La Laguna", isla:"Tenerife" },
       { nombre:"Hospital Universitario Nuestra Señora de Candelaria", tipo:"hospital", lat:28.4419, lon:-16.2865, municipio:"Santa Cruz de Tenerife", isla:"Tenerife" },
-      { nombre:"Hospital General de La Palma", tipo:"hospital", lat:28.6671, lon:-17.7915, municipio:"Breña Alta", isla:"La Palma" },
-      { nombre:"Hospital Universitario Doctor Negrín", tipo:"hospital", lat:28.1232, lon:-15.4466, municipio:"Las Palmas de Gran Canaria", isla:"Gran Canaria" },
-      { nombre:"Hospital Universitario Insular de Gran Canaria", tipo:"hospital", lat:28.0914, lon:-15.4149, municipio:"Las Palmas de Gran Canaria", isla:"Gran Canaria" },
-      { nombre:"Hospital General de Fuerteventura", tipo:"hospital", lat:28.5005, lon:-13.8591, municipio:"Puerto del Rosario", isla:"Fuerteventura" },
-
-      // Hospitales privados
       { nombre:"Hospital Quirónsalud Tenerife", tipo:"hospital", lat:28.4607, lon:-16.2525, municipio:"Santa Cruz de Tenerife", isla:"Tenerife" },
       { nombre:"Hospital Quirónsalud Costa Adeje", tipo:"hospital", lat:28.0944, lon:-16.7350, municipio:"Adeje", isla:"Tenerife" },
       { nombre:"Hospiten Sur", tipo:"hospital", lat:28.0720, lon:-16.7294, municipio:"Arona", isla:"Tenerife" },
       { nombre:"Hospiten Bellevue", tipo:"hospital", lat:28.4161, lon:-16.5480, municipio:"Puerto de la Cruz", isla:"Tenerife" },
-
-      // Otros
       { nombre:"Pabellón Roberto Estrello", tipo:"polideportivo", lat:28.4917, lon:-16.3150, municipio:"Santa Cruz de Tenerife", isla:"Tenerife" },
+
+      { nombre:"Puerto de Santa Cruz de La Palma", tipo:"puerto", lat:28.6819, lon:-17.7648, municipio:"Santa Cruz de La Palma", isla:"La Palma" },
+      { nombre:"Aeropuerto de La Palma", tipo:"aeropuerto", lat:28.6260, lon:-17.7550, municipio:"Villa de Mazo", isla:"La Palma" },
+      { nombre:"Hospital General de La Palma", tipo:"hospital", lat:28.6671, lon:-17.7915, municipio:"Breña Alta", isla:"La Palma" },
       { nombre:"Polideportivo Municipal de Los Llanos", tipo:"polideportivo", lat:28.6562, lon:-17.9116, municipio:"Los Llanos de Aridane", isla:"La Palma" },
-      { nombre:"Campo de Fútbol de El Paso", tipo:"campo_futbol", lat:28.6514, lon:-17.8797, municipio:"El Paso", isla:"La Palma" }
+      { nombre:"Campo de Fútbol de El Paso", tipo:"campo_futbol", lat:28.6514, lon:-17.8797, municipio:"El Paso", isla:"La Palma" },
+
+      { nombre:"Puerto de La Estaca", tipo:"puerto", lat:27.7630, lon:-17.9020, municipio:"Valverde", isla:"El Hierro" },
+      { nombre:"Aeropuerto de El Hierro", tipo:"aeropuerto", lat:27.8140, lon:-17.8870, municipio:"Valverde", isla:"El Hierro" },
+
+      { nombre:"Puerto de Las Palmas", tipo:"puerto", lat:28.1410, lon:-15.4180, municipio:"Las Palmas de Gran Canaria", isla:"Gran Canaria" },
+      { nombre:"Puerto de Arinaga", tipo:"puerto", lat:27.8600, lon:-15.3900, municipio:"Agüimes", isla:"Gran Canaria" },
+      { nombre:"Aeropuerto de Gran Canaria", tipo:"aeropuerto", lat:27.9319, lon:-15.3866, municipio:"Ingenio", isla:"Gran Canaria" },
+      { nombre:"Hospital Universitario Doctor Negrín", tipo:"hospital", lat:28.1232, lon:-15.4466, municipio:"Las Palmas de Gran Canaria", isla:"Gran Canaria" },
+      { nombre:"Hospital Universitario Insular de Gran Canaria", tipo:"hospital", lat:28.0914, lon:-15.4149, municipio:"Las Palmas de Gran Canaria", isla:"Gran Canaria" },
+
+      { nombre:"Puerto de Arrecife", tipo:"puerto", lat:28.9630, lon:-13.5470, municipio:"Arrecife", isla:"Lanzarote" },
+      { nombre:"Puerto de Playa Blanca", tipo:"puerto", lat:28.8620, lon:-13.8290, municipio:"Yaiza", isla:"Lanzarote" },
+      { nombre:"Aeropuerto César Manrique-Lanzarote", tipo:"aeropuerto", lat:28.9450, lon:-13.6050, municipio:"San Bartolomé", isla:"Lanzarote" },
+
+      { nombre:"Puerto del Rosario", tipo:"puerto", lat:28.4970, lon:-13.8620, municipio:"Puerto del Rosario", isla:"Fuerteventura" },
+      { nombre:"Aeropuerto de Fuerteventura", tipo:"aeropuerto", lat:28.4520, lon:-13.8630, municipio:"Puerto del Rosario", isla:"Fuerteventura" },
+      { nombre:"Hospital General de Fuerteventura", tipo:"hospital", lat:28.5005, lon:-13.8591, municipio:"Puerto del Rosario", isla:"Fuerteventura" },
+
+      { nombre:"Puerto de San Sebastián de La Gomera", tipo:"puerto", lat:28.0920, lon:-17.1090, municipio:"San Sebastián de La Gomera", isla:"La Gomera" },
+      { nombre:"Aeropuerto de La Gomera", tipo:"aeropuerto", lat:28.0290, lon:-17.2140, municipio:"Alajeró", isla:"La Gomera" }
     ];
 
     function selectedIsland() {
@@ -927,18 +973,12 @@
       });
     }
 
-    function infraIcon(tipo) {
-      let klass = "infra-hospital";
-      if (tipo === "puerto") klass = "infra-puerto";
-      else if (tipo === "aeropuerto") klass = "infra-aeropuerto";
-      else if (tipo === "polideportivo") klass = "infra-polideportivo";
-      else if (tipo === "campo_futbol") klass = "infra-campo_futbol";
-
+    function infraIcon() {
       return L.divIcon({
         className: "",
-        html: `<div class="infra-icon ${klass}"></div>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
+        html: `<div class="infra-icon"></div>`,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7]
       });
     }
 
@@ -964,7 +1004,6 @@
       });
 
       const mmax20 = near20.length ? Math.max(...near20.map(e => safeNumber(e.magnitud))) : 0;
-      const mmax50 = near50.length ? Math.max(...near50.map(e => safeNumber(e.magnitud))) : 0;
       const minDist = near50.length ? Math.min(...near50.map(e => e.dist)) : null;
 
       let score = 0;
@@ -999,9 +1038,20 @@
         eventos20: near20.length,
         eventos50: near50.length,
         mmax20: Math.round(mmax20 * 10) / 10,
-        mmax50: Math.round(mmax50 * 10) / 10,
         minDist: minDist !== null ? Math.round(minDist * 10) / 10 : null
       };
+    }
+
+    function focusColor(color) {
+      if (color === "magenta") return "#d946ef";
+      if (color === "violet") return "#8b5cf6";
+      return "#60a5fa";
+    }
+
+    function focusBadgeClass(level) {
+      if (level === "concentrado") return "focusConcentrado";
+      if (level === "activo") return "focusActivo";
+      return "focusLeve";
     }
 
     async function fetchJson(url) {
@@ -1236,6 +1286,51 @@
         });
     }
 
+    function drawFocuses() {
+      focusLayer.clearLayers();
+
+      (focusClusters || [])
+        .filter(c => selectedIsland() === "Todas" || c.isla === selectedIsland())
+        .forEach(c => {
+          const color = focusColor(c.color);
+          const radiusMeters = Math.max(4500, safeNumber(c.radio_km) * 1000);
+
+          const circle = L.circle([c.lat, c.lon], {
+            radius: radiusMeters,
+            color: color,
+            weight: 2,
+            fillColor: color,
+            fillOpacity: 0.10
+          });
+
+          circle.bindPopup(`
+            <div class="popup-title">${c.headline}</div>
+            <div class="popup-row"><strong>Isla:</strong> ${c.isla}</div>
+            <div class="popup-row"><strong>Sector:</strong> ${c.municipio || "—"}</div>
+            <div class="popup-row"><strong>Nivel:</strong> ${c.nivel}</div>
+            <div class="popup-row"><strong>Eventos:</strong> ${c.eventos}</div>
+            <div class="popup-row"><strong>Mmax:</strong> ${safeNumber(c.magnitud_max).toFixed(1)}</div>
+            <div class="popup-row"><strong>Mmedia:</strong> ${safeNumber(c.magnitud_media).toFixed(2)}</div>
+            <div class="popup-row"><strong>Prof. media:</strong> ${safeNumber(c.profundidad_media_km).toFixed(1)} km</div>
+            <div class="popup-row"><strong>Radio:</strong> ${safeNumber(c.radio_km).toFixed(1)} km</div>
+            <div class="popup-row"><strong>Ventana:</strong> ${c.ventana_horas} h</div>
+            <div class="popup-row"><strong>Duración:</strong> ${safeNumber(c.duracion_horas).toFixed(1)} h</div>
+          `);
+
+          const label = L.marker([c.lat, c.lon], {
+            icon: L.divIcon({
+              className: "",
+              html: `<div class="focus-label">${c.nivel.toUpperCase()}</div>`,
+              iconSize: [90, 20],
+              iconAnchor: [45, 10]
+            })
+          });
+
+          focusLayer.addLayer(circle);
+          focusLayer.addLayer(label);
+        });
+    }
+
     function drawInfrastructure() {
       infraLayer.clearLayers();
 
@@ -1248,14 +1343,14 @@
         .forEach(x => {
           const metrics = infraExposureMetrics(x, ignEvents);
 
-          const marker = L.marker([x.lat, x.lon], { icon: infraIcon(x.tipo) });
+          const marker = L.marker([x.lat, x.lon], { icon: infraIcon() });
           marker.bindPopup(`
             <div class="popup-title">${x.nombre}</div>
             <div class="popup-row"><strong>Tipo:</strong> ${x.tipo}</div>
             <div class="popup-row"><strong>Municipio:</strong> ${x.municipio}</div>
             <div class="popup-row"><strong>Isla:</strong> ${x.isla}</div>
-            <div class="popup-row"><strong>Eventos &lt;20 km (7d):</strong> ${metrics.eventos20}</div>
-            <div class="popup-row"><strong>Eventos &lt;50 km (7d):</strong> ${metrics.eventos50}</div>
+            <div class="popup-row"><strong>Eventos &lt;20 km (IGN):</strong> ${metrics.eventos20}</div>
+            <div class="popup-row"><strong>Eventos &lt;50 km (IGN):</strong> ${metrics.eventos50}</div>
             <div class="popup-row"><strong>Mmax cercana:</strong> ${safeNumber(metrics.mmax20).toFixed(1)}</div>
             <div class="popup-row"><strong>Distancia mínima:</strong> ${metrics.minDist !== null ? metrics.minDist + " km" : "—"}</div>
             <div class="popup-row"><strong>Nivel territorial RiskLab:</strong> ${metrics.label}</div>
@@ -1622,6 +1717,67 @@
       `;
     }
 
+    function buildFocusSummaryCard() {
+      const target = document.getElementById("focusSummaryContent");
+
+      if (!focusSummary) {
+        target.innerHTML = `<div class="insight-card">No se pudo cargar el motor de focos sísmicos.</div>`;
+        return;
+      }
+
+      const dom = focusSummary.foco_dominante;
+      let html = `
+        <div class="insight-card">
+          <strong>Motor de focos sísmicos RiskLab</strong><br>
+          Focos detectados: ${safeNumber(focusSummary.focos_detectados)}<br>
+          Lectura: ${focusSummary.lectura}
+      `;
+
+      if (dom) {
+        html += `
+          <div style="margin-top:7px;">
+            <span class="badge ${focusBadgeClass(dom.nivel)}">${dom.nivel}</span>
+            <strong style="margin-left:8px;">Foco dominante</strong><br>
+            <span class="small-note">${dom.isla}${dom.municipio ? " · " + dom.municipio : ""} · ${dom.eventos} eventos · Mmax ${safeNumber(dom.magnitud_max).toFixed(1)}</span>
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+      target.innerHTML = html;
+    }
+
+    function buildFocusRankingCard() {
+      const target = document.getElementById("focusRankingContent");
+
+      const ranking = (focusClusters || [])
+        .filter(item => selectedIsland() === "Todas" || item.isla === selectedIsland())
+        .slice(0, 6);
+
+      if (!ranking.length) {
+        target.innerHTML = `<div class="insight-card">No se detectan focos sísmicos recientes para este filtro.</div>`;
+        return;
+      }
+
+      let html = `<div class="insight-card"><strong>Focos activos RiskLab</strong><br>`;
+      ranking.forEach((item, idx) => {
+        html += `
+          <div class="rank-row">
+            <div class="rank-left">
+              <strong>${idx + 1}. ${item.isla}${item.municipio ? " · " + item.municipio : ""}</strong>
+              <span class="small-note">${item.headline}</span>
+            </div>
+            <div class="rank-right">
+              <span class="badge ${focusBadgeClass(item.nivel)}">${item.nivel}</span><br>
+              <span class="small-note">${item.eventos} ev · Mmax ${safeNumber(item.magnitud_max).toFixed(1)}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      target.innerHTML = html;
+    }
+
     function buildTerritorialCard() {
       const target = document.getElementById("territorialContent");
 
@@ -1753,7 +1909,7 @@
           <div style="margin-top:6px;">
             <span class="badge ${item.metrics.badge}">N${item.metrics.level}</span>
             <strong style="margin-left:8px;">${item.nombre}</strong><br>
-            <span class="small-note">${item.tipo} · ${item.municipio} · ${item.isla} · ${item.metrics.eventos20} ev <20 km · Mmax ${safeNumber(item.metrics.mmax20).toFixed(1)}</span>
+            <span class="small-note">${item.tipo} · ${item.municipio} · ${item.isla} · ${item.metrics.eventos20} ev &lt;20 km · Mmax ${safeNumber(item.metrics.mmax20).toFixed(1)}</span>
           </div>
         `;
       });
@@ -1779,7 +1935,7 @@
       let html = `<div class="insight-card"><strong>Ranking territorial de exposición</strong><br>`;
       ranking.forEach((item, idx) => {
         html += `
-          <div class="municipality-rank">
+          <div class="rank-row">
             <div class="rank-left">
               <strong>${idx + 1}. ${item.nombre}</strong>
               <span class="small-note">${item.tipo} · ${item.isla}</span>
@@ -1802,6 +1958,7 @@
       toggleLayer("toggle-volcanic-zones", volcanicZonesLayer);
       toggleLayer("toggle-municipalities", municipalitiesLayer);
       toggleLayer("toggle-clusters", clusterLayer);
+      toggleLayer("toggle-focuses", focusLayer);
       toggleLayer("toggle-ign", ignLayer);
       toggleLayer("toggle-usgs", usgsLayer);
       toggleLayer("toggle-infra", infraLayer);
@@ -1843,6 +2000,7 @@
         bottomPanel.classList.remove("collapsed");
         bottomToggle.textContent = "Ocultar análisis";
         document.getElementById("toggle-ign").checked = true;
+        document.getElementById("toggle-focuses").checked = true;
       } else {
         territoryTab.click();
         bottomPanel.classList.remove("collapsed");
@@ -1885,6 +2043,9 @@
       selectedMunicipalityData = bundle.selected_municipality || null;
       municipalClusters = bundle.municipal_clusters || [];
       infraExpuestas = bundle.infra_expuestas || [];
+      focusClusters = bundle.focus_clusters || [];
+      focusTemporalClusters = bundle.focus_temporal_clusters || [];
+      focusSummary = bundle.focus_summary || null;
 
       try {
         const usgsJson = await fetchJson("/api/usgs-canarias");
@@ -1901,6 +2062,7 @@
       drawExclusion();
       buildMunicipalitiesLayer();
       drawClusters();
+      drawFocuses();
       drawVolcanoes();
       drawVolcanicZones();
       drawIgn();
@@ -1917,6 +2079,8 @@
       buildRegimeCard();
       buildMigrationCard();
       buildAnomalyCard();
+      buildFocusSummaryCard();
+      buildFocusRankingCard();
       buildTerritorialCard();
       buildOfficialStatusCards();
       buildSelectedMunicipalityCard();
@@ -1939,6 +2103,7 @@
         drawExclusion();
         buildMunicipalitiesLayer();
         drawClusters();
+        drawFocuses();
         drawInfrastructure();
         syncLayers();
       });

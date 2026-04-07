@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 from collections import defaultdict
 import os
 import math
+import json
 
 app = Flask(__name__, static_folder='.')
 
@@ -22,7 +23,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "green",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en verde."
     },
     {
@@ -31,7 +32,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "yellow",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en amarillo por situación post-eruptiva."
     },
     {
@@ -40,7 +41,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "green",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en verde."
     },
     {
@@ -49,7 +50,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "green",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en verde."
     },
     {
@@ -58,7 +59,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "green",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en verde."
     },
     {
@@ -67,7 +68,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "green",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en verde."
     },
     {
@@ -76,7 +77,7 @@ OFFICIAL_VOLCANIC_STATUS = [
         "color": "green",
         "scope": "isla",
         "fuente": "Gobierno de Canarias / PEVOLCA",
-        "last_verified": "2026-04-03",
+        "last_verified": "2026-04-06",
         "nota": "Estado oficial insular mostrado en verde."
     }
 ]
@@ -141,7 +142,6 @@ VOLCANO_REFERENCE = {
 }
 
 EMERGENCY_INFRASTRUCTURES = [
-    # Tenerife
     {"nombre": "Puerto de Granadilla", "tipo": "puerto", "lat": 28.0510, "lon": -16.5080, "municipio": "Granadilla de Abona", "isla": "Tenerife"},
     {"nombre": "Puerto de Los Cristianos", "tipo": "puerto", "lat": 28.0450, "lon": -16.7200, "municipio": "Arona", "isla": "Tenerife"},
     {"nombre": "Puerto de Santa Cruz de Tenerife", "tipo": "puerto", "lat": 28.4700, "lon": -16.2390, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
@@ -155,35 +155,29 @@ EMERGENCY_INFRASTRUCTURES = [
     {"nombre": "Hospiten Bellevue", "tipo": "hospital", "lat": 28.4161, "lon": -16.5480, "municipio": "Puerto de la Cruz", "isla": "Tenerife"},
     {"nombre": "Pabellón Roberto Estrello", "tipo": "polideportivo", "lat": 28.4917, "lon": -16.3150, "municipio": "Santa Cruz de Tenerife", "isla": "Tenerife"},
 
-    # La Palma
     {"nombre": "Puerto de Santa Cruz de La Palma", "tipo": "puerto", "lat": 28.6819, "lon": -17.7648, "municipio": "Santa Cruz de La Palma", "isla": "La Palma"},
     {"nombre": "Aeropuerto de La Palma", "tipo": "aeropuerto", "lat": 28.6260, "lon": -17.7550, "municipio": "Villa de Mazo", "isla": "La Palma"},
     {"nombre": "Hospital General de La Palma", "tipo": "hospital", "lat": 28.6671, "lon": -17.7915, "municipio": "Breña Alta", "isla": "La Palma"},
     {"nombre": "Polideportivo Municipal de Los Llanos", "tipo": "polideportivo", "lat": 28.6562, "lon": -17.9116, "municipio": "Los Llanos de Aridane", "isla": "La Palma"},
     {"nombre": "Campo de Fútbol de El Paso", "tipo": "campo_futbol", "lat": 28.6514, "lon": -17.8797, "municipio": "El Paso", "isla": "La Palma"},
 
-    # El Hierro
     {"nombre": "Puerto de La Estaca", "tipo": "puerto", "lat": 27.7630, "lon": -17.9020, "municipio": "Valverde", "isla": "El Hierro"},
     {"nombre": "Aeropuerto de El Hierro", "tipo": "aeropuerto", "lat": 27.8140, "lon": -17.8870, "municipio": "Valverde", "isla": "El Hierro"},
 
-    # Gran Canaria
     {"nombre": "Puerto de Las Palmas", "tipo": "puerto", "lat": 28.1410, "lon": -15.4180, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
     {"nombre": "Puerto de Arinaga", "tipo": "puerto", "lat": 27.8600, "lon": -15.3900, "municipio": "Agüimes", "isla": "Gran Canaria"},
     {"nombre": "Aeropuerto de Gran Canaria", "tipo": "aeropuerto", "lat": 27.9319, "lon": -15.3866, "municipio": "Ingenio", "isla": "Gran Canaria"},
     {"nombre": "Hospital Universitario Doctor Negrín", "tipo": "hospital", "lat": 28.1232, "lon": -15.4466, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
     {"nombre": "Hospital Universitario Insular de Gran Canaria", "tipo": "hospital", "lat": 28.0914, "lon": -15.4149, "municipio": "Las Palmas de Gran Canaria", "isla": "Gran Canaria"},
 
-    # Lanzarote
     {"nombre": "Puerto de Arrecife", "tipo": "puerto", "lat": 28.9630, "lon": -13.5470, "municipio": "Arrecife", "isla": "Lanzarote"},
     {"nombre": "Puerto de Playa Blanca", "tipo": "puerto", "lat": 28.8620, "lon": -13.8290, "municipio": "Yaiza", "isla": "Lanzarote"},
     {"nombre": "Aeropuerto César Manrique-Lanzarote", "tipo": "aeropuerto", "lat": 28.9450, "lon": -13.6050, "municipio": "San Bartolomé", "isla": "Lanzarote"},
 
-    # Fuerteventura
     {"nombre": "Puerto del Rosario", "tipo": "puerto", "lat": 28.4970, "lon": -13.8620, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
     {"nombre": "Aeropuerto de Fuerteventura", "tipo": "aeropuerto", "lat": 28.4520, "lon": -13.8630, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
     {"nombre": "Hospital General de Fuerteventura", "tipo": "hospital", "lat": 28.5005, "lon": -13.8591, "municipio": "Puerto del Rosario", "isla": "Fuerteventura"},
 
-    # La Gomera
     {"nombre": "Puerto de San Sebastián de La Gomera", "tipo": "puerto", "lat": 28.0920, "lon": -17.1090, "municipio": "San Sebastián de La Gomera", "isla": "La Gomera"},
     {"nombre": "Aeropuerto de La Gomera", "tipo": "aeropuerto", "lat": 28.0290, "lon": -17.2140, "municipio": "Alajeró", "isla": "La Gomera"},
 ]
@@ -199,6 +193,13 @@ def clean_text(value):
 def parse_float(value):
     value = str(value).replace(",", ".").strip()
     return float(value)
+
+
+def safe_float(value, fallback=0.0):
+    try:
+        return float(str(value).replace(",", "."))
+    except Exception:
+        return fallback
 
 
 def now_utc():
@@ -335,6 +336,18 @@ def events_in_days(eventos, days):
             out.append(e)
     return out
 
+
+def load_instrumentation_json():
+    path = os.path.join(os.path.dirname(__file__), "ign_instrumentation.json")
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("stations", [])
+    except Exception:
+        return []
+
 # =========================================================
 # INGESTA IGN
 # =========================================================
@@ -378,8 +391,8 @@ def parse_ign_canarias():
             tipo_mag = ""
             localizacion = ""
 
-            for i in range(hora_idx + 4, min(len(cells), hora_idx + 9)):
-                if re.fullmatch(r"\d+[.,]\d+", cells[i]):
+            for i in range(hora_idx + 4, min(len(cells), hora_idx + 10)):
+                if re.fullmatch(r"-?\d+[.,]\d+", cells[i]):
                     mag = parse_float(cells[i])
                     if i + 1 < len(cells):
                         tipo_mag = cells[i + 1]
@@ -524,6 +537,7 @@ def compute_baseline(events_recent, island_name=None):
 def compare_windows(events_recent):
     return {
         "24h": len(events_in_hours(events_recent, 24)),
+        "48h": len(events_in_hours(events_recent, 48)),
         "7d": len(events_in_days(events_recent, 7)),
         "10d": len(events_in_days(events_recent, 10)),
         "30d": len(events_in_days(events_recent, 30))
@@ -532,6 +546,7 @@ def compare_windows(events_recent):
 
 def compute_acceleration(events_recent):
     e24 = len(events_in_hours(events_recent, 24))
+    e48 = len(events_in_hours(events_recent, 48))
     e72 = len(events_in_hours(events_recent, 72))
     previous_48_within_72 = max(0, e72 - e24)
 
@@ -549,6 +564,7 @@ def compute_acceleration(events_recent):
 
     return {
         "eventos_24h": e24,
+        "eventos_48h": e48,
         "eventos_72h": e72,
         "previas_48h_en_72h": previous_48_within_72,
         "ratio": round(ratio, 2),
@@ -790,6 +806,7 @@ def compute_anomaly_signal(recent, island=None):
 
 def auto_interpretation(events_recent, label="Canarias"):
     n24 = len(events_in_hours(events_recent, 24))
+    n48 = len(events_in_hours(events_recent, 48))
     n72 = len(events_in_hours(events_recent, 72))
     n7d = len(events_in_days(events_recent, 7))
     e30d = events_in_days(events_recent, 30)
@@ -806,7 +823,9 @@ def auto_interpretation(events_recent, label="Canarias"):
     if n24 == 0 and n7d == 0:
         fragments.append(f"No se observan señales destacadas en la ventana reciente para {label}.")
     else:
-        fragments.append(f"En {label} se registran {n24} eventos en 24 horas, {n7d} en 7 días y una magnitud máxima reciente de {mmax:.1f}.")
+        fragments.append(
+            f"En {label} se registran {n24} eventos en 24 horas, {n48} en 48 horas, {n7d} en 7 días y una magnitud máxima reciente de {mmax:.1f}."
+        )
 
     if deviation_ratio >= 2:
         fragments.append(f"La actividad de 7 días se sitúa claramente por encima del baseline esperado ({deviation_ratio} veces).")
@@ -834,6 +853,7 @@ def auto_interpretation(events_recent, label="Canarias"):
         "text": " ".join(fragments).strip(),
         "metrics": {
             "24h": n24,
+            "48h": n48,
             "72h": n72,
             "7d": n7d,
             "30d": len(e30d),
@@ -931,7 +951,7 @@ def municipality_summary(events_recent, municipio):
     return {"municipio": muni, "isla": municipality_to_island(muni), **municipality_score(evs)}
 
 # =========================================================
-# CLUSTERS Y FOCOS SÍSMICOS (FASE 6)
+# CLUSTERS, FOCOS Y ENJAMBRES
 # =========================================================
 
 def cluster_level_from_count(n):
@@ -1047,12 +1067,11 @@ def build_temporal_clusters(events_recent, island_name=None):
     if island_name and island_name != "Todas":
         eventos = [e for e in eventos if e["isla"] == island_name]
 
-    w24 = events_in_hours(eventos, 24)
-    w72 = events_in_hours(eventos, 72)
-    w7d = events_in_days(eventos, 7)
-
+    windows = [("24h", 24), ("48h", 48), ("72h", 72), ("7d", 168)]
     out = []
-    for label, group in [("24h", w24), ("72h", w72), ("7d", w7d)]:
+
+    for label, hours in windows:
+        group = events_in_hours(eventos, hours) if hours < 168 else events_in_days(eventos, 7)
         if len(group) < 4:
             continue
 
@@ -1159,6 +1178,59 @@ def detect_municipal_clusters(events_recent, island_name=None):
     clusters.sort(key=lambda x: (x["score"], x["eventos_7d"]), reverse=True)
     return clusters
 
+
+def detect_swarms(events_recent, island_name=None):
+    eventos = list(events_recent)
+    if island_name and island_name != "Todas":
+        eventos = [e for e in eventos if e["isla"] == island_name]
+
+    recent_48h = events_in_hours(eventos, 48)
+    if not recent_48h:
+        return []
+
+    by_island = defaultdict(list)
+    for e in recent_48h:
+        by_island[e["isla"]].append(e)
+
+    swarms = []
+    for isla, evs in by_island.items():
+        if len(evs) < 4:
+            continue
+
+        center_lat, center_lon = mean_lat_lon(evs)
+        mags = [safe_float(e.get("magnitud")) for e in evs]
+        deps = [safe_float(e.get("profundidad_km")) for e in evs]
+        municipios = [canonical_municipality_name(e.get("municipio", "")) for e in evs if e.get("municipio")]
+        municipio = max(set(municipios), key=municipios.count) if municipios else ""
+
+        max_radius = 0.0
+        for e in evs:
+            max_radius = max(max_radius, haversine_km(center_lat, center_lon, e["lat"], e["lon"]))
+
+        if len(evs) >= 25 and max_radius <= 12:
+            nivel, color = "alto", "red"
+        elif len(evs) >= 10 and max_radius <= 15:
+            nivel, color = "moderado", "orange"
+        else:
+            nivel, color = "leve", "green"
+
+        swarms.append({
+            "isla": isla,
+            "municipio": municipio,
+            "lat": center_lat,
+            "lon": center_lon,
+            "count": len(evs),
+            "radio_km": round(max_radius, 1),
+            "magnitud_max": round(max(mags or [0]), 1),
+            "magnitud_media": round(sum(mags) / len(mags), 2) if mags else 0,
+            "profundidad_media_km": round(sum(deps) / len(deps), 1) if deps else 0,
+            "nivel": nivel,
+            "color": color
+        })
+
+    swarms.sort(key=lambda x: (x["count"], x["magnitud_max"]), reverse=True)
+    return swarms
+
 # =========================================================
 # INFRAESTRUCTURAS EXPUESTAS
 # =========================================================
@@ -1194,13 +1266,6 @@ def exposed_infrastructures(events_recent, island_name=None, municipio=None):
 
     out.sort(key=lambda x: (x["distancia_km"] is None, x["distancia_km"] if x["distancia_km"] is not None else 9999))
     return out
-
-
-def safe_float(value, fallback=0.0):
-    try:
-        return float(value)
-    except Exception:
-        return fallback
 
 # =========================================================
 # RUTAS
@@ -1239,6 +1304,15 @@ def api_official_volcanic_status():
     return jsonify({"ok": True, "official_status": OFFICIAL_VOLCANIC_STATUS})
 
 
+@app.route("/api/instrumentation")
+def api_instrumentation():
+    try:
+        stations = load_instrumentation_json()
+        return jsonify({"ok": True, "count": len(stations), "stations": stations})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "count": 0, "stations": []}), 500
+
+
 @app.route("/api/risklab-clusters")
 def api_risklab_clusters():
     try:
@@ -1249,12 +1323,14 @@ def api_risklab_clusters():
         ranking = build_focus_ranking(recent, island_filter)
         temporal = build_temporal_clusters(recent, island_filter)
         summary = focus_summary(recent, island_filter)
+        swarms = detect_swarms(recent, island_filter)
 
         return jsonify({
             "ok": True,
             "clusters": ranking,
             "temporal_clusters": temporal,
-            "focus_summary": summary
+            "focus_summary": summary,
+            "enjambres": swarms
         })
     except Exception as e:
         return jsonify({
@@ -1262,7 +1338,8 @@ def api_risklab_clusters():
             "error": str(e),
             "clusters": [],
             "temporal_clusters": [],
-            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."}
+            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."},
+            "enjambres": []
         }), 500
 
 
@@ -1308,22 +1385,22 @@ def api_risklab_bundle():
         focus_clusters = build_focus_ranking(recent, island_filter)
         focus_temporal = build_temporal_clusters(recent, island_filter)
         focus_info = focus_summary(recent, island_filter)
+        enjambres = detect_swarms(recent, island_filter)
+        instrumentation = load_instrumentation_json()
 
-        territorial = None
-        if island_filter:
-            territorial = {
-                "isla": island_filter,
-                "nivel_anomalia": anomaly["nivel"],
-                "lectura": (
-                    "actividad dentro de parámetros habituales"
-                    if anomaly["nivel"] == "baja"
-                    else "actividad ligeramente superior al baseline reciente"
-                    if anomaly["nivel"] == "moderada"
-                    else "actividad anómala que merece seguimiento"
-                ),
-                "infraestructuras": len([x for x in EMERGENCY_INFRASTRUCTURES if x["isla"] == island_filter]),
-                "infra_expuestas": infra_expuestas
-            }
+        territorial = {
+            "isla": island_filter or "Canarias",
+            "nivel_anomalia": anomaly["nivel"],
+            "lectura": (
+                "actividad dentro de parámetros habituales"
+                if anomaly["nivel"] == "baja"
+                else "actividad ligeramente superior al baseline reciente"
+                if anomaly["nivel"] == "moderada"
+                else "actividad anómala que merece seguimiento"
+            ),
+            "infraestructuras": len([x for x in EMERGENCY_INFRASTRUCTURES if not island_filter or x["isla"] == island_filter]),
+            "infra_expuestas": infra_expuestas
+        }
 
         return jsonify({
             "ok": True,
@@ -1348,7 +1425,9 @@ def api_risklab_bundle():
             "infra_expuestas": infra_expuestas,
             "focus_clusters": focus_clusters,
             "focus_temporal_clusters": focus_temporal,
-            "focus_summary": focus_info
+            "focus_summary": focus_info,
+            "enjambres": enjambres,
+            "instrumentation": instrumentation
         })
     except Exception as e:
         return jsonify({
@@ -1375,7 +1454,9 @@ def api_risklab_bundle():
             "infra_expuestas": [],
             "focus_clusters": [],
             "focus_temporal_clusters": [],
-            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."}
+            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."},
+            "enjambres": [],
+            "instrumentation": []
         }), 500
 
 

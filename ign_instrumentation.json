@@ -1,0 +1,53 @@
+{
+  "stations": [
+
+    {
+      "nombre": "Tenerife – estación sísmica Teide",
+      "tipo": "sismica",
+      "subtipo": "banda ancha",
+      "lat": 28.272,
+      "lon": -16.642,
+      "isla": "Tenerife",
+      "municipio": "La Orotava",
+      "fuente": "IGN",
+      "estado": "operativa"
+    },
+
+    {
+      "nombre": "Tenerife – GNSS Teide",
+      "tipo": "gnss",
+      "subtipo": "deformación",
+      "lat": 28.279,
+      "lon": -16.636,
+      "isla": "Tenerife",
+      "municipio": "La Orotava",
+      "fuente": "IGN",
+      "estado": "operativa"
+    },
+
+    {
+      "nombre": "La Palma – estación sísmica Cumbre Vieja",
+      "tipo": "sismica",
+      "subtipo": "banda ancha",
+      "lat": 28.571,
+      "lon": -17.838,
+      "isla": "La Palma",
+      "municipio": "El Paso",
+      "fuente": "IGN",
+      "estado": "operativa"
+    },
+
+    {
+      "nombre": "El Hierro – estación sísmica Restinga",
+      "tipo": "sismica",
+      "subtipo": "banda ancha",
+      "lat": 27.637,
+      "lon": -17.981,
+      "isla": "El Hierro",
+      "municipio": "El Pinar",
+      "fuente": "IGN",
+      "estado": "operativa"
+    }
+
+  ]
+}

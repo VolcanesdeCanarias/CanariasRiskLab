@@ -16,13 +16,18 @@
       --panel: rgba(255,255,255,0.96);
       --border: rgba(15,23,42,0.08);
       --shadow: 0 10px 24px rgba(15,23,42,0.14);
-
       --blue: #1d4ed8;
       --muted: #64748b;
       --green: #2f9e44;
       --orange: #dd6b20;
       --red: #dc2626;
       --yellow: #eab308;
+
+      --eq1: #dbeafe;
+      --eq2: #93c5fd;
+      --eq3: #60a5fa;
+      --eq4: #2563eb;
+      --eqStroke: #1e3a8a;
 
       --municipio-0: #e2e8f0;
       --municipio-1: #dbeafe;
@@ -35,15 +40,15 @@
       --territorial-2: #7c3aed;
       --territorial-3: #111827;
 
-      --focus-leve: #60a5fa;
-      --focus-activo: #8b5cf6;
-      --focus-concentrado: #d946ef;
+      --focus-leve: #7c3aed;
+      --focus-activo: #c026d3;
+      --focus-concentrado: #111827;
 
       --cluster-leve: #7c3aed;
       --cluster-activo: #c026d3;
       --cluster-concentrado: #111827;
 
-      --right-panel-width: 470px;
+      --right-panel-width: 455px;
     }
 
     * { box-sizing: border-box; }
@@ -125,7 +130,7 @@
     #sources-panel {
       top: 12px;
       left: 12px;
-      width: 290px;
+      width: 320px;
     }
 
     #topright-panel {
@@ -229,7 +234,7 @@
       left: 12px;
       right: calc(var(--right-panel-width) + 24px);
       bottom: 56px;
-      height: 295px;
+      height: 315px;
       padding-bottom: 6px;
       transition: transform 0.25s ease, opacity 0.25s ease;
       transform: translateY(0);
@@ -237,7 +242,7 @@
     }
 
     #bottom-panel.collapsed {
-      transform: translateY(330px);
+      transform: translateY(360px);
       opacity: 0;
       pointer-events: none;
     }
@@ -272,7 +277,7 @@
 
     .tab-content {
       display: none;
-      height: 238px;
+      height: 258px;
       overflow: auto;
       padding-right: 3px;
     }
@@ -364,6 +369,7 @@
       border-right: 8px solid transparent;
       border-bottom: 16px solid #8b4513;
       position: relative;
+      flex: 0 0 auto;
     }
 
     .triangle-legend::after {
@@ -396,31 +402,10 @@
       flex: 0 0 auto;
     }
 
-    .diamond-legend {
-      width: 14px;
-      height: 14px;
-      background: #111827;
-      transform: rotate(45deg);
-      border-radius: 2px;
-      border: 1px solid rgba(0,0,0,0.18);
-      flex: 0 0 auto;
-    }
-
-    .instrument-seismic-legend,
-    .instrument-gnss-legend,
-    .instrument-tilt-legend,
-    .instrument-multi-legend {
-      width: 18px;
-      height: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-    }
-
     .muni-legend-0, .muni-legend-1, .muni-legend-2, .muni-legend-3, .muni-legend-4,
     .risk-legend-0, .risk-legend-1, .risk-legend-2, .risk-legend-3,
-    .focus-legend-1, .focus-legend-2, .focus-legend-3 {
+    .focus-legend-1, .focus-legend-2, .focus-legend-3,
+    .cluster-legend-1, .cluster-legend-2, .cluster-legend-3 {
       width: 14px;
       height: 14px;
       border: 1px solid rgba(0,0,0,0.18);
@@ -442,6 +427,20 @@
     .focus-legend-1 { background: var(--focus-leve); }
     .focus-legend-2 { background: var(--focus-activo); }
     .focus-legend-3 { background: var(--focus-concentrado); }
+
+    .cluster-legend-1 { background: var(--cluster-leve); }
+    .cluster-legend-2 { background: var(--cluster-activo); }
+    .cluster-legend-3 { background: var(--cluster-concentrado); }
+
+    .instrument-legend {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
 
     .popup-title {
       font-weight: 800;
@@ -516,7 +515,7 @@
     }
 
     @media (max-width: 980px) {
-      #map-wrap { height: 1680px; }
+      #map-wrap { height: 1640px; }
 
       #sources-panel, #topright-panel, #bottom-panel {
         left: 12px;
@@ -527,7 +526,7 @@
       #sources-panel { top: 12px; }
 
       #topright-panel {
-        top: 210px;
+        top: 230px;
         max-height: none;
       }
 
@@ -537,16 +536,16 @@
       }
 
       #bottom-panel {
-        top: 650px;
+        top: 700px;
         bottom: auto;
-        height: 980px;
+        height: 960px;
       }
 
       #bottom-panel.collapsed {
-        transform: translateY(1020px);
+        transform: translateY(1000px);
       }
 
-      .tab-content { height: 895px; }
+      .tab-content { height: 875px; }
       .legend-grid { grid-template-columns: 1fr; }
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
       .control-list, .two-col { grid-template-columns: 1fr; }
@@ -680,24 +679,35 @@
             <div class="legend-item"><div class="triangle-legend"></div><span>Volcán</span></div>
             <div class="legend-item"><div class="zone-legend"></div><span>Zona volcánica</span></div>
             <div class="legend-item"><div class="square-legend"></div><span>Infraestructura estratégica</span></div>
-            <div class="legend-item"><div class="dot" style="background:#8fb7f0"></div><span>Sismo IGN</span></div>
-            <div class="legend-item"><div class="dot" style="background:#111827"></div><span>Sismo USGS</span></div>
-            <div class="legend-item"><div class="diamond-legend"></div><span>Cluster municipal</span></div>
+            <div class="legend-item"><div class="muni-legend-0"></div><span>RiskLab sin actividad</span></div>
+            <div class="legend-item"><div class="muni-legend-1"></div><span>RiskLab baja</span></div>
+            <div class="legend-item"><div class="muni-legend-2"></div><span>RiskLab ligera</span></div>
+            <div class="legend-item"><div class="muni-legend-3"></div><span>RiskLab moderada</span></div>
+            <div class="legend-item"><div class="muni-legend-4"></div><span>RiskLab alta</span></div>
+            <div class="legend-item"><div class="instrument-legend">📡</div><span>Estación sísmica</span></div>
+            <div class="legend-item"><div class="instrument-legend">📍</div><span>GNSS</span></div>
+            <div class="legend-item"><div class="instrument-legend">📐</div><span>Inclinómetro</span></div>
+            <div class="legend-item"><div class="instrument-legend">🧪</div><span>Multiparamétrica</span></div>
           </div>
           <div>
             <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>Semáforo oficial verde</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--yellow)"></div><span>Semáforo oficial amarillo</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN (magnitud baja)</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--eq4)"></div><span>Sismo IGN (magnitud mayor)</span></div>
+            <div class="legend-item"><div class="cluster-legend-1"></div><span>Cluster municipal leve</span></div>
+            <div class="legend-item"><div class="cluster-legend-2"></div><span>Cluster municipal activo</span></div>
+            <div class="legend-item"><div class="cluster-legend-3"></div><span>Cluster municipal concentrado</span></div>
             <div class="legend-item"><div class="focus-legend-1"></div><span>Foco leve</span></div>
             <div class="legend-item"><div class="focus-legend-2"></div><span>Foco activo</span></div>
             <div class="legend-item"><div class="focus-legend-3"></div><span>Foco concentrado</span></div>
-            <div class="legend-item"><div class="instrument-seismic-legend">📡</div><span>Estación sísmica</span></div>
-            <div class="legend-item"><div class="instrument-gnss-legend">📍</div><span>GNSS</span></div>
-            <div class="legend-item"><div class="instrument-tilt-legend">📐</div><span>Inclinómetro</span></div>
-            <div class="legend-item"><div class="instrument-multi-legend">🧪</div><span>Multiparamétrica</span></div>
+            <div class="legend-item"><div class="risk-legend-0"></div><span>Territorial 0 · gris</span></div>
+            <div class="legend-item"><div class="risk-legend-1"></div><span>Territorial 1 · azul</span></div>
+            <div class="legend-item"><div class="risk-legend-2"></div><span>Territorial 2 · morado</span></div>
+            <div class="legend-item"><div class="risk-legend-3"></div><span>Territorial 3 · negro</span></div>
           </div>
         </div>
         <div class="small-note" style="margin-top:8px;">
-          Los focos y clusters RiskLab son detectores experimentales basados en la sismicidad reciente de IGN y no equivalen a avisos oficiales.
+          Los focos activos RiskLab son un detector experimental basado en la sismicidad reciente de IGN y no equivalen a avisos oficiales.
         </div>
       </div>
     </div>
@@ -937,6 +947,23 @@
       return "#dc2626";
     }
 
+    function magSize(mag) {
+      const m = safeNumber(mag);
+      if (m < 1) return 8;
+      if (m < 2) return 12;
+      if (m < 3) return 16;
+      if (m < 4) return 20;
+      return 24;
+    }
+
+    function magFill(mag) {
+      const m = safeNumber(mag);
+      if (m < 1) return getComputedStyle(document.documentElement).getPropertyValue('--eq1').trim();
+      if (m < 2) return getComputedStyle(document.documentElement).getPropertyValue('--eq2').trim();
+      if (m < 3) return getComputedStyle(document.documentElement).getPropertyValue('--eq3').trim();
+      return getComputedStyle(document.documentElement).getPropertyValue('--eq4').trim();
+    }
+
     function svgIcon(html, width, height, anchorX, anchorY) {
       return L.divIcon({
         className: "",
@@ -946,21 +973,14 @@
       });
     }
 
-    function volcanoIcon() {
+    function earthquakeSvgIcon(mag = 1) {
+      const size = magSize(mag);
+      const fill = magFill(mag);
       return svgIcon(`
-        <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 27 L16 6 L27 27 Z" fill="#8b4513" stroke="#5b341c" stroke-width="1.5"/>
-          <path d="M13 16 L16 11 L19 16 Z" fill="#f59e0b"/>
+        <svg width="${size}" height="${size}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="10" fill="${fill}" stroke="var(--eqStroke)" stroke-width="2"/>
         </svg>
-      `, 24, 24, 12, 18);
-    }
-
-    function infraIcon() {
-      return svgIcon(`
-        <svg width="18" height="18" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <rect x="7" y="7" width="18" height="18" rx="2" fill="#6b7280" stroke="#ffffff" stroke-width="3"/>
-        </svg>
-      `, 18, 18, 9, 9);
+      `, size, size, size / 2, size / 2);
     }
 
     function clusterSvgIcon(level = "leve") {
@@ -970,49 +990,72 @@
         "#7c3aed";
 
       return svgIcon(`
-        <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <rect x="9" y="9" width="14" height="14" rx="2" transform="rotate(45 16 16)" fill="${color}" stroke="#ffffff" stroke-width="2"/>
+        <svg width="28" height="28" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="11" fill="none" stroke="${color}" stroke-width="3"/>
+          <circle cx="16" cy="16" r="4.5" fill="${color}" opacity="0.30"/>
         </svg>
-      `, 24, 24, 12, 12);
+      `, 28, 28, 14, 14);
     }
 
-    function instrumentationEmoji(tipo) {
+    function volcanoSvgIcon() {
+      return svgIcon(`
+        <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 27 L16 6 L27 27 Z" fill="#8b4513" stroke="#5b341c" stroke-width="1.5"/>
+          <path d="M13 16 L16 11 L19 16 Z" fill="#f59e0b"/>
+        </svg>
+      `, 24, 24, 12, 18);
+    }
+
+    function infraSvgIcon() {
+      return svgIcon(`
+        <svg width="18" height="18" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="7" width="18" height="18" rx="2" fill="#6b7280" stroke="#ffffff" stroke-width="3"/>
+        </svg>
+      `, 18, 18, 9, 9);
+    }
+
+    function instrumentationSvgIcon(tipo) {
       const t = String(tipo || "").toLowerCase();
-      if (t === "sismica") return "📡";
-      if (t === "gnss") return "📍";
-      if (t === "inclinometro") return "📐";
-      if (t === "multiparametrica") return "🧪";
-      return "⚙️";
+
+      if (t === "sismica") {
+        return svgIcon(`
+          <div style="font-size:18px;line-height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.45));">📡</div>
+        `, 18, 18, 9, 9);
+      }
+
+      if (t === "gnss") {
+        return svgIcon(`
+          <div style="font-size:18px;line-height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.45));">📍</div>
+        `, 18, 18, 9, 9);
+      }
+
+      if (t === "inclinometro") {
+        return svgIcon(`
+          <div style="font-size:18px;line-height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.45));">📐</div>
+        `, 18, 18, 9, 9);
+      }
+
+      if (t === "multiparametrica") {
+        return svgIcon(`
+          <div style="font-size:18px;line-height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.45));">🧪</div>
+        `, 18, 18, 9, 9);
+      }
+
+      return svgIcon(`
+        <div style="font-size:18px;line-height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.45));">⚙️</div>
+      `, 18, 18, 9, 9);
+    }
+
+    function volcanoIcon() {
+      return volcanoSvgIcon();
+    }
+
+    function infraIcon() {
+      return infraSvgIcon();
     }
 
     function instrumentationIcon(tipo) {
-      return L.divIcon({
-        className: "",
-        html: `
-          <div style="
-            font-size:18px;
-            text-align:center;
-            line-height:18px;
-            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.55));
-          ">${instrumentationEmoji(tipo)}</div>
-        `,
-        iconSize: [18, 18],
-        iconAnchor: [9, 9]
-      });
-    }
-
-    function earthquakeStyleIGN(mag) {
-      const m = safeNumber(mag);
-
-      if (m < 1) {
-        return { radius: 5, fill: "#d6e7ff", stroke: "#486f9c" };
-      } else if (m < 2) {
-        return { radius: 7, fill: "#b8d4ff", stroke: "#3f6790" };
-      } else if (m < 3) {
-        return { radius: 9, fill: "#8fb7f0", stroke: "#355c85" };
-      } else {
-        return { radius: 11, fill: "#5c95dd", stroke: "#27486d" };
-      }
+      return instrumentationSvgIcon(tipo);
     }
 
     function haversineKm(lat1, lon1, lat2, lon2) {
@@ -1076,9 +1119,9 @@
     }
 
     function focusColor(color) {
-      if (color === "magenta") return "#d946ef";
-      if (color === "violet") return "#8b5cf6";
-      return "#60a5fa";
+      if (color === "magenta") return "#111827";
+      if (color === "violet") return "#c026d3";
+      return "#7c3aed";
     }
 
     function focusBadgeClass(level) {
@@ -1288,7 +1331,6 @@
 
     function drawClusters() {
       clusterLayer.clearLayers();
-
       (municipalClusters || [])
         .filter(c => selectedIsland() === "Todas" || c.isla === selectedIsland())
         .forEach(c => {
@@ -1324,9 +1366,9 @@
           const circle = L.circle([c.lat, c.lon], {
             radius: radiusMeters,
             color: color,
-            weight: 2.2,
+            weight: 2.4,
             fillColor: color,
-            fillOpacity: 0.08
+            fillOpacity: 0.06
           });
 
           circle.bindPopup(`
@@ -1351,8 +1393,8 @@
             icon: L.divIcon({
               className: "",
               html: `<div class="focus-label">${c.nivel.toUpperCase()}</div>`,
-              iconSize: [90, 20],
-              iconAnchor: [45, 10]
+              iconSize: [110, 20],
+              iconAnchor: [55, 10]
             })
           });
 
@@ -1388,6 +1430,12 @@
           `);
           infraLayer.addLayer(marker);
         });
+    }
+
+    function zoomToSelectedMunicipality() {
+      if (selectedMunicipalityLayer) {
+        map.fitBounds(selectedMunicipalityLayer.getBounds(), { padding: [24, 24], maxZoom: 11 });
+      }
     }
 
     function drawVolcanoes() {
@@ -1431,14 +1479,8 @@
     function drawIgn() {
       ignLayer.clearLayers();
       ignEvents.forEach(ev => {
-        const st = earthquakeStyleIGN(ev.magnitud);
-
-        const marker = L.circleMarker([ev.lat, ev.lon], {
-          radius: st.radius,
-          color: st.stroke,
-          weight: 1.4,
-          fillColor: st.fill,
-          fillOpacity: 0.92
+        const marker = L.marker([ev.lat, ev.lon], {
+          icon: earthquakeSvgIcon(ev.magnitud)
         });
 
         marker.bindPopup(`
@@ -1483,11 +1525,11 @@
       usgsLayer.clearLayers();
       usgsEvents.forEach(ev => {
         const marker = L.circleMarker([ev.lat, ev.lon], {
-          radius: Math.max(4, 3 + safeNumber(ev.magnitud) * 2.2),
-          color: "#111827",
+          radius: Math.max(4, 3 + safeNumber(ev.magnitud) * 2.5),
+          color: "#111",
           weight: 1.1,
-          fillColor: "#111827",
-          fillOpacity: 0.70
+          fillColor: "#111",
+          fillOpacity: 0.72
         });
 
         marker.bindPopup(`
@@ -1915,24 +1957,23 @@
 
     function buildClusterCard() {
       const target = document.getElementById("clusterContent");
-      if (!municipalClusters || municipalClusters.length === 0) {
+      const list = (municipalClusters || []).filter(item => selectedIsland() === "Todas" || item.isla === selectedIsland());
+
+      if (!list.length) {
         target.innerHTML = `<div class="insight-card">No se detectan clusters municipales recientes para este filtro.</div>`;
         return;
       }
 
       let html = `<div class="insight-card"><strong>Clusters municipales</strong><br>`;
-      municipalClusters
-        .filter(item => selectedIsland() === "Todas" || item.isla === selectedIsland())
-        .slice(0, 5)
-        .forEach(item => {
-          html += `
-            <div style="margin-top:6px;">
-              <span class="badge ${item.color}">${item.nivel}</span>
-              <strong style="margin-left:8px;">${item.municipio}</strong><br>
-              <span class="small-note">${item.isla} · ${item.eventos_7d} ev 7d · score ${safeNumber(item.score).toFixed(1)}</span>
-            </div>
-          `;
-        });
+      list.slice(0, 5).forEach(item => {
+        html += `
+          <div style="margin-top:6px;">
+            <span class="badge ${item.color}">${item.nivel}</span>
+            <strong style="margin-left:8px;">${item.municipio}</strong><br>
+            <span class="small-note">${item.isla} · ${item.eventos_7d} ev 7d · score ${safeNumber(item.score).toFixed(1)}</span>
+          </div>
+        `;
+      });
       html += `</div>`;
       target.innerHTML = html;
     }
@@ -2003,9 +2044,10 @@
     }
 
     function toggleLayer(id, layer) {
-      const checkbox = document.getElementById(id);
-      if (!checkbox) return;
-      const checked = checkbox.checked;
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const checked = el.checked;
       if (checked && !map.hasLayer(layer)) map.addLayer(layer);
       if (!checked && map.hasLayer(layer)) map.removeLayer(layer);
     }
@@ -2055,6 +2097,7 @@
         bottomToggle.textContent = "Ocultar análisis";
         document.getElementById("toggle-ign").checked = true;
         document.getElementById("toggle-focuses").checked = true;
+        document.getElementById("toggle-instrumentation").checked = true;
       } else {
         territoryTab.click();
         bottomPanel.classList.remove("collapsed");
@@ -2151,13 +2194,12 @@
       buildTerritorialRanking();
 
       syncLayers();
-      applyMode();
 
-      if (selectedMunicipality() !== "Todos" && selectedMunicipalityLayer) {
-        setTimeout(() => {
-          map.fitBounds(selectedMunicipalityLayer.getBounds(), { padding: [24, 24], maxZoom: 11 });
-        }, 80);
+      if (selectedMunicipality() !== "Todos") {
+        setTimeout(() => zoomToSelectedMunicipality(), 80);
       }
+
+      applyMode();
     }
 
     document.querySelectorAll("#topright-panel input").forEach(el => {

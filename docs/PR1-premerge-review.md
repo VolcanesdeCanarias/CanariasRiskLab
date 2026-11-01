@@ -55,6 +55,8 @@ instaladas con versiones fijadas; no descarga teselas. Por ello sus capturas
 Resultado local: **28 pruebas Python, 9 JavaScript y 11 de navegador correctas**,
 sin fallos. En CI se ejecutan los diez casos de navegador reproducibles; el caso
 en vivo se omite expresamente.
+El runner se fija a Ubuntu 24.04, soportado por Playwright 1.58.2, para evitar
+que una actualización de `ubuntu-latest` impida instalar Chromium.
 
 ## Prueba visual y consultas reales
 

@@ -11,7 +11,8 @@ permissions:
 
 jobs:
   regression:
-    runs-on: ubuntu-latest
+    # Pin the supported OS; ubuntu-latest may advance beyond Playwright support.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:

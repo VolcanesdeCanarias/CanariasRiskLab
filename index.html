@@ -515,7 +515,7 @@
     }
 
     @media (max-width: 980px) {
-      #map-wrap { height: 1640px; }
+      #map-wrap { height: calc(var(--sources-height, 350px) + var(--controls-height, 550px) + 1050px); }
 
       #sources-panel, #topright-panel, #bottom-panel {
         left: 12px;
@@ -526,7 +526,7 @@
       #sources-panel { top: 12px; }
 
       #topright-panel {
-        top: 230px;
+        top: calc(var(--sources-height, 350px) + 24px);
         max-height: none;
       }
 
@@ -536,7 +536,7 @@
       }
 
       #bottom-panel {
-        top: 700px;
+        top: calc(var(--sources-height, 350px) + var(--controls-height, 550px) + 36px);
         bottom: auto;
         height: 960px;
       }
@@ -565,7 +565,7 @@
       <h3>Fuentes</h3>
       <div><strong>IGN Canarias</strong> · fuente principal analítica</div>
       <div><strong>USGS</strong> · contraste externo</div>
-      <div><strong>PEVOLCA</strong> · semáforo volcánico oficial</div>
+      <div><strong>PEVOLCA</strong> · referencia manual, vigencia no comprobada</div>
       <div><strong>Cabildo de La Palma</strong> · zona de exclusión</div>
       <div><strong>Cartografía base</strong> · OpenStreetMap / Esri / OpenTopoMap</div>
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
@@ -574,6 +574,7 @@
       <div id="ign-data-status" class="small-note" role="status" aria-live="polite"></div>
       <div id="usgs-data-status" class="small-note" role="status" aria-live="polite"></div>
       <div id="independent-data-status" class="small-note" role="status"></div>
+      <div id="official-data-status" class="small-note" role="status">PEVOLCA: datos manuales del 2026-04-06; no es una actualización oficial vigente.</div>
     </div>
 
     <div id="topright-panel" class="panel">
@@ -613,7 +614,7 @@
       </div>
 
       <div class="control-list">
-        <label><input type="checkbox" id="toggle-official-status" checked> Semáforo oficial</label>
+        <label><input type="checkbox" id="toggle-official-status" checked> PEVOLCA · referencia manual</label>
         <label><input type="checkbox" id="toggle-exclusion" checked> Exclusión La Palma</label>
         <label><input type="checkbox" id="toggle-volcanoes" checked> Volcanes</label>
         <label><input type="checkbox" id="toggle-volcanic-zones"> Zonas volcánicas</label>
@@ -693,8 +694,8 @@
             <div class="legend-item"><div class="instrument-legend">🧪</div><span>Multiparamétrica</span></div>
           </div>
           <div>
-            <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>Semáforo oficial verde</span></div>
-            <div class="legend-item"><div class="dot" style="background:var(--yellow)"></div><span>Semáforo oficial amarillo</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--green)"></div><span>PEVOLCA registrado verde · manual</span></div>
+            <div class="legend-item"><div class="dot" style="background:var(--yellow)"></div><span>PEVOLCA registrado amarillo · manual</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq2)"></div><span>Sismo IGN (magnitud baja)</span></div>
             <div class="legend-item"><div class="dot" style="background:var(--eq4)"></div><span>Sismo IGN (magnitud mayor)</span></div>
             <div class="legend-item"><div class="cluster-legend-1"></div><span>Cluster municipal leve</span></div>
@@ -710,7 +711,7 @@
           </div>
         </div>
         <div class="small-note" style="margin-top:8px;">
-          Los focos activos RiskLab son un detector experimental basado en la sismicidad reciente de IGN y no equivalen a avisos oficiales.
+          El contorno PEVOLCA gris discontinuo es una referencia manual de vigencia no comprobada. Los focos activos RiskLab son un detector experimental basado en la sismicidad reciente de IGN y no equivalen a avisos oficiales.
         </div>
       </div>
     </div>
@@ -787,13 +788,34 @@
     let ignDataState = "loading";
     let loadSequence = 0;
 
+    function hasIgnAnalysis() {
+      return (ignDataState === "available" || ignDataState === "empty") && ignEvents.length > 0;
+    }
+
     function analysisUnavailable(targetId) {
-      if (ignDataState === "available" || ignDataState === "empty") return false;
+      if (hasIgnAnalysis()) return false;
       const target = document.getElementById(targetId);
       target.textContent = ignDataState === "loading"
         ? "Adquiriendo y validando datos IGN…"
+        : (ignDataState === "available" || ignDataState === "empty")
+        ? "Catálogo IGN validado: sin eventos registrados para este filtro. Los indicadores experimentales no se evalúan sin eventos; esto no determina el estado volcánico oficial."
         : "Análisis no disponible: no se han podido validar los datos IGN. Esto no indica ausencia de actividad sísmica.";
       return true;
+    }
+
+    function observePanelSizes() {
+      const wrap = document.getElementById("map-wrap");
+      const sources = document.getElementById("sources-panel");
+      const controls = document.getElementById("topright-panel");
+      new ResizeObserver(() => {
+        wrap.style.setProperty("--sources-height", sources.offsetHeight + "px");
+        wrap.style.setProperty("--controls-height", controls.offsetHeight + "px");
+        map.invalidateSize();
+      }).observe(sources);
+      new ResizeObserver(() => {
+        wrap.style.setProperty("--controls-height", controls.offsetHeight + "px");
+        map.invalidateSize();
+      }).observe(controls);
     }
 
     const MUNICIPALITIES_BY_ISLAND = {
@@ -1187,7 +1209,7 @@
         color: "#475569",
         weight: 1,
         fillColor: municipalityColor(muni),
-        fillOpacity: (ignDataState === "available" || ignDataState === "empty") ? 0.60 : 0.10
+        fillOpacity: hasIgnAnalysis() ? 0.60 : 0.10
       };
     }
 
@@ -1241,8 +1263,9 @@
           const island = detectIslandForMunicipality(muni);
           const st = statusByIsland[island];
           return {
-            color: officialColor(st.color),
-            weight: 3.2,
+            color: "#64748b",
+            dashArray: "6 6",
+            weight: 2.2,
             fillOpacity: 0
           };
         },
@@ -1251,11 +1274,12 @@
           const island = detectIslandForMunicipality(muni);
           const st = statusByIsland[island];
           layer.bindPopup(`
-            <div class="popup-title">Semáforo volcánico oficial</div>
+            <div class="popup-title">PEVOLCA · referencia manual</div>
+            <div class="popup-row"><strong>Vigencia no comprobada. No es una actualización oficial vigente.</strong></div>
             <div class="popup-row"><strong>Isla:</strong> ${island}</div>
-            <div class="popup-row"><strong>Nivel:</strong> ${st.nivel}</div>
+            <div class="popup-row"><strong>Nivel registrado:</strong> ${st.nivel}</div>
             <div class="popup-row"><strong>Fuente:</strong> ${st.fuente}</div>
-            <div class="popup-row"><strong>Verificado:</strong> ${st.last_verified}</div>
+            <div class="popup-row"><strong>Fecha de referencia declarada:</strong> ${st.last_verified}</div>
             <div class="popup-row"><strong>Nota:</strong> ${st.nota}</div>
           `);
         }
@@ -1319,8 +1343,10 @@
         onEachFeature: (feature, layer) => {
           const muniName = getMunicipalityName(feature);
           const islaReal = detectIslandForMunicipality(muniName);
-          if (ignDataState !== "available" && ignDataState !== "empty") {
-            layer.bindPopup("Actividad municipal no evaluada: datos IGN no disponibles.");
+          if (!hasIgnAnalysis()) {
+            layer.bindPopup(ignDataState === "available" || ignDataState === "empty"
+              ? "Sin eventos IGN registrados para este filtro. Indicadores no evaluados."
+              : "Actividad municipal no evaluada: datos IGN no disponibles.");
             if (muni !== "Todos" && normalizeText(muniName) === normalizeText(muni)) selectedMunicipalityLayer = layer;
             return;
           }
@@ -1436,7 +1462,7 @@
         .filter(x => island === "Todas" || x.isla === island)
         .filter(x => muni === "Todos" || canonicalMunicipalityName(x.municipio) === canonicalMunicipalityName(muni))
         .forEach(x => {
-          const available = ignDataState === "available" || ignDataState === "empty";
+          const available = hasIgnAnalysis();
           const metrics = available ? infraExposureMetrics(x, ignEvents) : null;
 
           const marker = L.marker([x.lat, x.lon], { icon: infraIcon() });
@@ -1451,7 +1477,7 @@
             <div class="popup-row"><strong>Mmax cercana:</strong> ${safeNumber(metrics.mmax20).toFixed(1)}</div>
             <div class="popup-row"><strong>Distancia mínima:</strong> ${metrics.minDist !== null ? metrics.minDist + " km" : "—"}</div>
             <div class="popup-row"><strong>Nivel territorial RiskLab:</strong> ${metrics.label}</div>
-            ` : '<div class="popup-row">Exposición no evaluada: datos IGN no disponibles.</div>'}
+            ` : '<div class="popup-row">Exposición no evaluada: no hay eventos IGN validados para analizar.</div>'}
           `);
           infraLayer.addLayer(marker);
         });
@@ -1638,7 +1664,7 @@
             <td>${safeNumber(row.eventos_7d)}</td>
             <td>${safeNumber(row.eventos_30d)}</td>
             <td>${safeNumber(row.magnitud_max).toFixed(1).replace(".0","")}</td>
-            <td>${safeNumber(row.risklab_index).toFixed(1)}</td>
+            <td>${row.risklab_index == null || row.eventos_30d === 0 ? "—" : safeNumber(row.risklab_index).toFixed(1)}</td>
             <td>${safeNumber(row.desviacion_vs_baseline_7d).toFixed(2)}x</td>
           </tr>
         `;
@@ -1646,7 +1672,7 @@
 
       html += `</tbody></table>`;
       target.innerHTML = html;
-      note.innerHTML = `<strong>Índice RiskLab:</strong> experimental. <strong>Semáforo oficial:</strong> capa separada.`;
+      note.innerHTML = `<strong>Índice RiskLab:</strong> experimental. <strong>PEVOLCA:</strong> referencia manual; vigencia no comprobada.`;
     }
 
     function updateStatus() {
@@ -1656,6 +1682,12 @@
       if (ignDataState !== "available" && ignDataState !== "empty") {
         title.textContent = ignDataState === "loading" ? "Índice RiskLab: validando datos…" : "Índice RiskLab: no disponible";
         note.textContent = "Sin datos IGN validados no se puede evaluar la actividad sísmica.";
+        panel.style.borderLeftColor = "#94a3b8";
+        return;
+      }
+      if (!hasIgnAnalysis()) {
+        title.textContent = "Índice RiskLab: sin eventos registrados";
+        note.textContent = "Catálogo IGN validado. El índice experimental no se evalúa sin eventos; no representa actividad real ni determina el estado volcánico oficial.";
         panel.style.borderLeftColor = "#94a3b8";
         return;
       }
@@ -1680,7 +1712,7 @@
     }
 
     function buildSeriesChart() {
-      if (ignDataState !== "available" && ignDataState !== "empty") {
+      if (!hasIgnAnalysis()) {
         if (seriesChart) seriesChart.destroy();
         seriesChart = null;
         return;
@@ -1737,7 +1769,7 @@
     }
 
     function buildDepthChart() {
-      if (ignDataState !== "available" && ignDataState !== "empty") {
+      if (!hasIgnAnalysis()) {
         if (depthChart) depthChart.destroy();
         depthChart = null;
         return;
@@ -1760,7 +1792,7 @@
     }
 
     function buildCompareChart() {
-      if (ignDataState !== "available" && ignDataState !== "empty") {
+      if (!hasIgnAnalysis()) {
         if (compareChart) compareChart.destroy();
         compareChart = null;
         return;
@@ -1970,14 +2002,15 @@
         return;
       }
 
-      let html = `<div class="insight-card"><strong>Semáforo volcánico oficial (PEVOLCA)</strong><br>`;
+      let html = `<div class="insight-card"><strong>PEVOLCA · referencia manual</strong><br>
+        <strong>Vigencia no comprobada. No es una actualización oficial vigente.</strong><br>`;
       items.forEach(item => {
         const cls = item.color === "yellow" ? "yellow" : item.color;
         html += `
           <div style="margin-top:6px;">
             <span class="badge ${cls}">${item.nivel}</span>
             <strong style="margin-left:8px;">${item.isla}</strong><br>
-            <span class="small-note">${item.scope} · verificado ${item.last_verified}</span>
+            <span class="small-note">${item.scope} · fecha de referencia declarada ${item.last_verified}</span>
           </div>
         `;
       });
@@ -2189,6 +2222,8 @@
       ignDataState = "loading";
       clearIgnAnalysis();
       usgsEvents = [];
+      instrumentationStations = [];
+      officialStatus = [];
       document.getElementById("ign-data-status").textContent = "IGN: adquiriendo y validando datos…";
       document.getElementById("usgs-data-status").textContent = "USGS: adquiriendo datos…";
       document.getElementById("independent-data-status").textContent = "";
@@ -2213,7 +2248,7 @@
         }));
 
         summary = bundle.summary || {};
-        risklabIndex = bundle.risklab_index || null;
+        risklabIndex = hasIgnAnalysis() ? bundle.risklab_index || null : null;
         interpretation = bundle.interpretation || null;
         depthProfile = bundle.depth_profile || {};
         compareData = {
@@ -2226,7 +2261,6 @@
         migrationData = bundle.migration || null;
         anomalyData = bundle.anomaly || null;
         territorialData = bundle.territorial || null;
-        officialStatus = bundle.official_status || [];
         municipalityStats = bundle.municipal_stats || {};
         municipalRanking = bundle.municipal_ranking || [];
         selectedMunicipalityData = bundle.selected_municipality || null;
@@ -2303,7 +2337,6 @@
         setTimeout(() => zoomToSelectedMunicipality(), 80);
       }
 
-      applyMode();
     }
 
     document.querySelectorAll("#topright-panel input").forEach(el => {
@@ -2365,9 +2398,11 @@
     });
 
     async function init() {
+      observePanelSizes();
       await loadMunicipalitiesGeoJSON();
       await loadExclusionGeoJSON();
       populateMunicipalityFilter();
+      applyMode();
       await loadAll();
     }
 

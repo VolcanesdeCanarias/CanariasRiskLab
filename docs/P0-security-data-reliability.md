@@ -56,6 +56,18 @@ resultados científicos. El cliente debe comprobar `ok` y `data_status` antes de
 interpretarlos. Los indicadores e interpretación del bundle son `null` ante un
 fallo; los focos tienen conteo `null` y una lectura de no evaluación.
 
+El bundle añade `analysis_status`: `available`, `no_events` o `unavailable`.
+Se refiere al filtro aplicado, a diferencia de `data_status`, que describe la
+adquisición global. Si no hay eventos para ese filtro, el índice y las lecturas
+interpretativas son `null`, aunque la fuente sea válida. El resultado original
+de la fórmula con entrada vacía (9) no se publica ni se presenta como actividad.
+Las filas del resumen sin eventos muestran el índice como no evaluado.
+
+`official_status_metadata` declara que PEVOLCA es una referencia `manual`,
+`is_live: false`, `current_verified: false`, con fecha 2026-04-06. Esto se devuelve
+tanto en su API independiente como en el bundle. No se ha realizado una nueva
+verificación oficial y no se modifica la fecha declarada del registro.
+
 ## Validación de fuentes
 
 IGN requiere HTTP 200, Content-Type HTML y una tabla con los encabezados de
@@ -96,6 +108,11 @@ indisponibilidad, separado del resultado válido sin eventos. Un contador de
 solicitudes impide que una respuesta antigua sobrescriba los datos del filtro
 actual. Los mensajes externos de error se insertan con `textContent`.
 
+Las pestañas y elecciones de capas se conservan durante las recargas. En móvil
+se mide la altura real de los paneles para que los avisos no tapen los filtros.
+PEVOLCA se representa con un contorno gris discontinuo, avisos persistentes de
+vigencia no comprobada y fechas etiquetadas como referencias manuales.
+
 ## Pruebas reproducibles
 
 Requisitos: Python 3.12 con `requirements.txt` instalado y Node.js 24.
@@ -104,24 +121,37 @@ Desde la raíz del repositorio:
 ```sh
 python -B -m unittest discover -s tests -v
 node tests/frontend_data_status.test.cjs
+npm ci --prefix tests/browser
+npx --prefix tests/browser playwright install --with-deps chromium
+node tests/browser/review.cjs
 git diff --check
 ```
 
 La prueba de preservación científica necesita el commit auditado disponible en
 Git. El workflow usa `fetch-depth: 0`. Las pruebas de regresión no necesitan
 acceso a IGN ni USGS; usan mocks en memoria y el cliente de pruebas Flask. Las
-pruebas JavaScript ejecutan funciones reales del visor con un arnés DOM/red; no
-sustituyen una comprobación visual completa en navegador.
+pruebas JavaScript ejecutan funciones reales del visor con un arnés DOM/red.
+La suite adicional Playwright abre Chromium real y usa Leaflet, Leaflet.heat,
+Chart.js, los GeoJSON completos y el backend Flask. Solo se simulan las fuentes
+en el servidor de pruebas, sin importarlas ni publicarlas en producción.
+La suite reproducible no necesita teselas externas. El caso en vivo opcional
+usa CDN, teselas OpenStreetMap y consultas reales, sin desactivar TLS.
+Las capturas de escenarios controlados se publican como artefacto de CI y se
+identifican con el prefijo `fixture-`.
 
 Resultados locales del 1 de noviembre de 2026:
 
-- 26 pruebas Python: correctas.
+- 28 pruebas Python: correctas.
 - 9 pruebas JavaScript: correctas.
 - Sintaxis JavaScript, identificadores DOM y preservación de funciones
   científicas: correctas.
 - Consultas reales mediante el cliente Flask: IGN, USGS, bundle y clusters
   respondieron HTTP 200. IGN: 19 eventos validados. USGS: cero regionales, con
   feed válido. El HTTP 403 no se reprodujo en vivo; sí se verifica con mocks.
+- Revisión real en Chromium: mapa, controles de las 12 capas, siete pestañas,
+  tres gráficos, modos, filtros, catálogo vacío, PEVOLCA manual, errores y
+  recuperación, respuestas fuera de orden y móvil de 390 px.
+- Procedimiento y resultados ampliados: `docs/PR1-premerge-review.md`.
 
 ## Riesgos y trabajo posterior
 
@@ -131,11 +161,12 @@ Resultados locales del 1 de noviembre de 2026:
   proveedor esté actualizado; no se dispone de una marca de generación fiable
   del catálogo IGN. No se introduce una caché ni un servicio histórico en P0.
 - Se conservan los problemas metodológicos auditados: cobertura de diez días
-  para indicadores etiquetados 30d, baseline, puntuación vacía de 9, agrupación
-  experimental, municipios y exposición. Una adquisición vacía validada sigue
-  utilizando las fórmulas originales.
-- PEVOLCA continúa siendo una transcripción manual. Sus fechas y colores no se
-  modifican en esta intervención. Tampoco se modifica la escala experimental.
+  para indicadores etiquetados 30d, baseline, agrupación experimental, municipios
+  y exposición. La fórmula original permanece intacta, pero su puntuación con
+  entrada vacía ya no se publica ni interpreta.
+- PEVOLCA continúa siendo una transcripción manual. Se advierte de su antigüedad
+  sin afirmar vigencia. Los niveles registrados no se alteran. La escala
+  experimental continúa pendiente de revisión metodológica y visual.
 - La sanitización general de popups, dependencias y otros hallazgos de seguridad
   ajenos a la exposición de archivos quedan pendientes.
 - La lista permitida debe actualizarse expresamente si se añaden recursos

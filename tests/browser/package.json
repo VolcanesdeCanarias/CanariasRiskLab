@@ -1,0 +1,11 @@
+{
+  "name": "canarias-risklab-browser-regression",
+  "private": true,
+  "scripts": { "test": "node review.cjs" },
+  "devDependencies": {
+    "playwright": "1.58.2",
+    "leaflet": "1.9.4",
+    "leaflet.heat": "0.2.0",
+    "chart.js": "4.5.1"
+  }
+}

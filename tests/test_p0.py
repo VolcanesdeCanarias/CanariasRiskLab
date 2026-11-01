@@ -179,8 +179,36 @@ class P0Tests(unittest.TestCase):
             result = self.client.get("/api/risklab-bundle")
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json["data_status"]["state"], "empty")
-        # P0 does not change the experimental indicator methodology, including its empty input value.
-        self.assertEqual(result.json["risklab_index"]["value"], 9.0)
+        self.assertEqual(result.json["analysis_status"]["state"], "no_events")
+        self.assertIsNone(result.json["risklab_index"])
+        self.assertIsNone(result.json["interpretation"])
+        self.assertIsNone(result.json["anomaly"])
+        self.assertIsNone(result.json["territorial"])
+        self.assertTrue(all(x["risklab_index"] is None for x in result.json["summary"].values()))
+        # Original formula retained, but its empty-input artefact is never published.
+        self.assertEqual(server.compute_risklab_index([])["value"], 9.0)
+
+    def test_empty_filter_does_not_publish_index_even_with_valid_global_events(self):
+        with patch.object(server, "fetch_ign_html", return_value=table([row()])), \
+                patch.object(server, "compute_risklab_index", wraps=server.compute_risklab_index) as index:
+            result = self.client.get("/api/risklab-bundle?island=Tenerife&municipio=Arona")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json["data_status"]["state"], "available")
+        self.assertEqual(result.json["analysis_status"], {"state": "no_events", "count": 0})
+        self.assertIsNone(result.json["risklab_index"])
+        self.assertIsNone(result.json["selected_municipality"])
+        self.assertEqual(result.json["infra_expuestas"], [])
+        self.assertTrue(all(call.args[0] for call in index.call_args_list))
+
+    def test_pevolca_metadata_cannot_claim_current_official_verification(self):
+        for path in ["/api/official-volcanic-status", "/api/risklab-bundle"]:
+            with self.subTest(path=path), patch.object(server, "fetch_ign_html", return_value=table([row()])):
+                result = self.client.get(path)
+            metadata = result.json["official_status_metadata"]
+            self.assertEqual(metadata["mode"], "manual")
+            self.assertFalse(metadata["is_live"])
+            self.assertFalse(metadata["current_verified"])
+            self.assertIn("Vigencia no comprobada", metadata["notice"])
 
     def test_success_bundle_retains_all_existing_features(self):
         with patch.object(server, "fetch_ign_html", return_value=table([row()])):

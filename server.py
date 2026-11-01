@@ -87,6 +87,12 @@ OFFICIAL_VOLCANIC_STATUS = [
     }
 ]
 
+OFFICIAL_STATUS_METADATA = {
+    "mode": "manual", "is_live": False, "current_verified": False,
+    "reference_date": "2026-04-06",
+    "notice": "Referencia manual PEVOLCA del 2026-04-06. Vigencia no comprobada; no es una actualización oficial en tiempo real.",
+}
+
 MUNICIPALITIES_BY_ISLAND = {
     "Tenerife": [
         "Adeje", "Arafo", "Arico", "Arona", "Buenavista del Norte", "Candelaria",
@@ -1408,7 +1414,8 @@ def api_usgs_canarias():
 
 @app.route("/api/official-volcanic-status")
 def api_official_volcanic_status():
-    return jsonify({"ok": True, "official_status": OFFICIAL_VOLCANIC_STATUS})
+    return jsonify({"ok": True, "official_status": OFFICIAL_VOLCANIC_STATUS,
+                    "official_status_metadata": OFFICIAL_STATUS_METADATA})
 
 
 @app.route("/api/instrumentation")
@@ -1473,22 +1480,27 @@ def api_risklab_bundle():
         analytics_base = recent_selected if municipio_filter else recent_island
 
         summary = grouped_summary_by_island(recent)
-        risklab_index = compute_risklab_index(analytics_base, island_filter)
-        interpretation = auto_interpretation(analytics_base, municipio_filter or island_filter or "Canarias")
+        # An empty validated catalogue is not a measurement of the experimental index.
+        # Keep scientific functions untouched; gate their publication at the API boundary.
+        for item in summary.values():
+            if item["eventos_30d"] == 0:
+                item["risklab_index"] = None
+        risklab_index = compute_risklab_index(analytics_base, island_filter) if analytics_base else None
+        interpretation = auto_interpretation(analytics_base, municipio_filter or island_filter or "Canarias") if analytics_base else None
         depth = depth_profile(events_in_days(analytics_base, 30))
         compare = compare_windows(analytics_base)
-        acceleration = compute_acceleration(analytics_base)
-        baseline = compute_baseline(analytics_base, island_filter)
-        regime = detect_regime_change(analytics_base, island_filter)
-        migration = detect_depth_migration(analytics_base, island_filter)
-        anomaly = compute_anomaly_signal(analytics_base, island_filter)
+        acceleration = compute_acceleration(analytics_base) if analytics_base else None
+        baseline = compute_baseline(analytics_base, island_filter) if analytics_base else None
+        regime = detect_regime_change(analytics_base, island_filter) if analytics_base else None
+        migration = detect_depth_migration(analytics_base, island_filter) if analytics_base else None
+        anomaly = compute_anomaly_signal(analytics_base, island_filter) if analytics_base else None
         serie = serie_temporal(events_in_days(analytics_base, 30))
 
         municipal_stats = build_municipality_stats(recent_island, island_filter)
         municipal_ranking = municipality_ranking(recent_island, island_filter)
-        selected_municipality = municipality_summary(recent_island, municipio_filter) if municipio_filter else None
+        selected_municipality = municipality_summary(recent_island, municipio_filter) if municipio_filter and analytics_base else None
         municipal_clusters = detect_municipal_clusters(recent_island, island_filter)
-        infra_expuestas = exposed_infrastructures(recent_island, island_filter, municipio_filter)
+        infra_expuestas = exposed_infrastructures(recent_island, island_filter, municipio_filter) if analytics_base else []
 
         focus_clusters = build_focus_ranking(recent, island_filter)
         focus_temporal = build_temporal_clusters(recent, island_filter)
@@ -1508,11 +1520,12 @@ def api_risklab_bundle():
             ),
             "infraestructuras": len([x for x in EMERGENCY_INFRASTRUCTURES if not island_filter or x["isla"] == island_filter]),
             "infra_expuestas": infra_expuestas
-        }
+        } if analytics_base else None
 
         return jsonify({
             "ok": True,
             "data_status": source_status("IGN", recent),
+            "analysis_status": {"state": "available" if analytics_base else "no_events", "count": len(analytics_base)},
             "ign_eventos": analytics_base,
             "summary": summary,
             "risklab_index": risklab_index,
@@ -1527,6 +1540,7 @@ def api_risklab_bundle():
             "territorial": territorial,
             "serie": serie,
             "official_status": OFFICIAL_VOLCANIC_STATUS,
+            "official_status_metadata": OFFICIAL_STATUS_METADATA,
             "municipal_stats": municipal_stats,
             "municipal_ranking": municipal_ranking,
             "selected_municipality": selected_municipality,
@@ -1542,6 +1556,7 @@ def api_risklab_bundle():
         payload, status = acquisition_failure(e, "IGN")
         return jsonify({
             **payload,
+            "analysis_status": {"state": "unavailable", "count": None},
             "ign_eventos": [],
             "summary": {},
             "risklab_index": None,
@@ -1556,6 +1571,7 @@ def api_risklab_bundle():
             "territorial": None,
             "serie": {"labels": [], "counts": [], "mmax": []},
             "official_status": OFFICIAL_VOLCANIC_STATUS,
+            "official_status_metadata": OFFICIAL_STATUS_METADATA,
             "municipal_stats": {},
             "municipal_ranking": [],
             "selected_municipality": None,

@@ -37,7 +37,7 @@ function harness() {
     redrawAll() {},
     fetch: async () => { throw new Error('Unexpected network call'); }
   });
-  const names = ['analysisUnavailable', 'fetchJson', 'clearIgnAnalysis', 'loadAll', 'updateStatus',
+  const names = ['hasIgnAnalysis', 'analysisUnavailable', 'fetchJson', 'clearIgnAnalysis', 'loadAll', 'updateStatus',
     'drawSummary', 'buildInterpretation', 'buildRegimeCard', 'buildMigrationCard', 'buildAnomalyCard',
     'buildFocusSummaryCard', 'buildFocusRankingCard', 'buildTerritorialCard',
     'buildSelectedMunicipalityCard', 'buildClusterCard', 'buildInfraExposureCard', 'buildTerritorialRanking'];
@@ -122,9 +122,13 @@ test('validated empty catalogue is explicitly distinguished from unavailable dat
   context.fetchJson = sources({ ok: true, data_status: { state: 'empty' }, ign_eventos: [], risklab_index: { value: 9 } });
   await context.loadAll();
   assert.equal(context.ignDataState, 'empty');
-  assert.equal(context.risklabIndex.value, 9);
+  assert.equal(context.risklabIndex, null);
   assert.match(elements.get('ign-data-status').textContent, /adquisición validada.*sin eventos/);
   assert.match(elements.get('usgs-data-status').textContent, /adquisición correcta, sin eventos/);
+  context.updateStatus();
+  context.buildInterpretation();
+  assert.equal(elements.get('status-title').textContent, 'Índice RiskLab: sin eventos registrados');
+  assert.match(elements.get('interpretContent').textContent, /no se evalúan sin eventos/);
 });
 
 test('USGS failure is visible while IGN remains usable', async () => {

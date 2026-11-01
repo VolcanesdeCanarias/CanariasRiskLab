@@ -571,6 +571,9 @@
       <div><strong>Municipios</strong> · GeoJSON local de Canarias</div>
       <div><strong>Instrumentación</strong> · fichero local / API interna</div>
       <div class="small-note">RiskLab distingue entre semáforo oficial, análisis sísmico, focos activos, clusters, instrumentación e infraestructuras estratégicas.</div>
+      <div id="ign-data-status" class="small-note" role="status" aria-live="polite"></div>
+      <div id="usgs-data-status" class="small-note" role="status" aria-live="polite"></div>
+      <div id="independent-data-status" class="small-note" role="status"></div>
     </div>
 
     <div id="topright-panel" class="panel">
@@ -781,6 +784,17 @@
     let focusSummary = null;
     let selectedMunicipalityLayer = null;
     let currentMode = "citizens";
+    let ignDataState = "loading";
+    let loadSequence = 0;
+
+    function analysisUnavailable(targetId) {
+      if (ignDataState === "available" || ignDataState === "empty") return false;
+      const target = document.getElementById(targetId);
+      target.textContent = ignDataState === "loading"
+        ? "Adquiriendo y validando datos IGN…"
+        : "Análisis no disponible: no se han podido validar los datos IGN. Esto no indica ausencia de actividad sísmica.";
+      return true;
+    }
 
     const MUNICIPALITIES_BY_ISLAND = {
       "Tenerife": [
@@ -1132,8 +1146,11 @@
 
     async function fetchJson(url) {
       const res = await fetch(url);
-      if (!res.ok) throw new Error("Error en " + url);
-      return await res.json();
+      const data = await res.json();
+      if (!res.ok || data.ok === false) {
+        throw new Error(data.error || "Error HTTP " + res.status);
+      }
+      return data;
     }
 
     async function loadMunicipalitiesGeoJSON() {
@@ -1170,7 +1187,7 @@
         color: "#475569",
         weight: 1,
         fillColor: municipalityColor(muni),
-        fillOpacity: 0.60
+        fillOpacity: (ignDataState === "available" || ignDataState === "empty") ? 0.60 : 0.10
       };
     }
 
@@ -1302,6 +1319,11 @@
         onEachFeature: (feature, layer) => {
           const muniName = getMunicipalityName(feature);
           const islaReal = detectIslandForMunicipality(muniName);
+          if (ignDataState !== "available" && ignDataState !== "empty") {
+            layer.bindPopup("Actividad municipal no evaluada: datos IGN no disponibles.");
+            if (muni !== "Todos" && normalizeText(muniName) === normalizeText(muni)) selectedMunicipalityLayer = layer;
+            return;
+          }
           const stat = municipalityStats[muniName] || {
             eventos_24h: 0, eventos_7d: 0, eventos_30d: 0,
             magnitud_max_30d: 0, profundidad_media_km: 0,
@@ -1414,7 +1436,8 @@
         .filter(x => island === "Todas" || x.isla === island)
         .filter(x => muni === "Todos" || canonicalMunicipalityName(x.municipio) === canonicalMunicipalityName(muni))
         .forEach(x => {
-          const metrics = infraExposureMetrics(x, ignEvents);
+          const available = ignDataState === "available" || ignDataState === "empty";
+          const metrics = available ? infraExposureMetrics(x, ignEvents) : null;
 
           const marker = L.marker([x.lat, x.lon], { icon: infraIcon() });
           marker.bindPopup(`
@@ -1422,11 +1445,13 @@
             <div class="popup-row"><strong>Tipo:</strong> ${x.tipo}</div>
             <div class="popup-row"><strong>Municipio:</strong> ${x.municipio}</div>
             <div class="popup-row"><strong>Isla:</strong> ${x.isla}</div>
+            ${available ? `
             <div class="popup-row"><strong>Eventos &lt;20 km (IGN):</strong> ${metrics.eventos20}</div>
             <div class="popup-row"><strong>Eventos &lt;50 km (IGN):</strong> ${metrics.eventos50}</div>
             <div class="popup-row"><strong>Mmax cercana:</strong> ${safeNumber(metrics.mmax20).toFixed(1)}</div>
             <div class="popup-row"><strong>Distancia mínima:</strong> ${metrics.minDist !== null ? metrics.minDist + " km" : "—"}</div>
             <div class="popup-row"><strong>Nivel territorial RiskLab:</strong> ${metrics.label}</div>
+            ` : '<div class="popup-row">Exposición no evaluada: datos IGN no disponibles.</div>'}
           `);
           infraLayer.addLayer(marker);
         });
@@ -1572,6 +1597,10 @@
     }
 
     function drawSummary() {
+      if (analysisUnavailable("summary-content")) {
+        document.getElementById("summary-note").textContent = "";
+        return;
+      }
       const target = document.getElementById("summary-content");
       const note = document.getElementById("summary-note");
 
@@ -1624,6 +1653,12 @@
       const panel = document.getElementById("topright-panel");
       const title = document.getElementById("status-title");
       const note = document.getElementById("status-note");
+      if (ignDataState !== "available" && ignDataState !== "empty") {
+        title.textContent = ignDataState === "loading" ? "Índice RiskLab: validando datos…" : "Índice RiskLab: no disponible";
+        note.textContent = "Sin datos IGN validados no se puede evaluar la actividad sísmica.";
+        panel.style.borderLeftColor = "#94a3b8";
+        return;
+      }
 
       if (!risklabIndex) {
         title.textContent = "Índice RiskLab: sin datos";
@@ -1645,6 +1680,11 @@
     }
 
     function buildSeriesChart() {
+      if (ignDataState !== "available" && ignDataState !== "empty") {
+        if (seriesChart) seriesChart.destroy();
+        seriesChart = null;
+        return;
+      }
       if (seriesChart) seriesChart.destroy();
 
       const labels = seriesData?.labels || [];
@@ -1697,6 +1737,11 @@
     }
 
     function buildDepthChart() {
+      if (ignDataState !== "available" && ignDataState !== "empty") {
+        if (depthChart) depthChart.destroy();
+        depthChart = null;
+        return;
+      }
       if (depthChart) depthChart.destroy();
       const labels = Object.keys(depthProfile || {});
       const values = Object.values(depthProfile || {});
@@ -1715,6 +1760,11 @@
     }
 
     function buildCompareChart() {
+      if (ignDataState !== "available" && ignDataState !== "empty") {
+        if (compareChart) compareChart.destroy();
+        compareChart = null;
+        return;
+      }
       if (compareChart) compareChart.destroy();
       const labels = ["24h", "7d", "10d", "30d"];
       const values = [
@@ -1738,6 +1788,7 @@
     }
 
     function buildInterpretation() {
+      if (analysisUnavailable("interpretContent")) return;
       const target = document.getElementById("interpretContent");
       if (!interpretation) {
         target.innerHTML = `<div class="insight-card">No se pudo cargar la interpretación automática.</div>`;
@@ -1762,6 +1813,7 @@
     }
 
     function buildRegimeCard() {
+      if (analysisUnavailable("regimeContent")) return;
       const target = document.getElementById("regimeContent");
       if (!regimeData) { target.innerHTML = ""; return; }
       const colorClass = regimeData.color === "green" ? "green" : regimeData.color === "orange" ? "orange" : "red";
@@ -1779,6 +1831,7 @@
     }
 
     function buildMigrationCard() {
+      if (analysisUnavailable("migrationContent")) return;
       const target = document.getElementById("migrationContent");
       if (!migrationData) { target.innerHTML = ""; return; }
       const colorClass = migrationData.color === "green" ? "green" : migrationData.color === "orange" ? "orange" : "red";
@@ -1795,6 +1848,7 @@
     }
 
     function buildAnomalyCard() {
+      if (analysisUnavailable("anomalyContent")) return;
       const target = document.getElementById("anomalyContent");
       if (!anomalyData) { target.innerHTML = ""; return; }
       const colorClass = anomalyData.color === "green" ? "green" : anomalyData.color === "orange" ? "orange" : "red";
@@ -1811,6 +1865,7 @@
     }
 
     function buildFocusSummaryCard() {
+      if (analysisUnavailable("focusSummaryContent")) return;
       const target = document.getElementById("focusSummaryContent");
 
       if (!focusSummary) {
@@ -1841,6 +1896,7 @@
     }
 
     function buildFocusRankingCard() {
+      if (analysisUnavailable("focusRankingContent")) return;
       const target = document.getElementById("focusRankingContent");
 
       const ranking = (focusClusters || [])
@@ -1872,6 +1928,7 @@
     }
 
     function buildTerritorialCard() {
+      if (analysisUnavailable("territorialContent")) return;
       const target = document.getElementById("territorialContent");
 
       const island = selectedIsland();
@@ -1929,6 +1986,7 @@
     }
 
     function buildSelectedMunicipalityCard() {
+      if (analysisUnavailable("selectedMunicipalityContent")) return;
       const target = document.getElementById("selectedMunicipalityContent");
 
       if (!selectedMunicipalityData) {
@@ -1956,6 +2014,7 @@
     }
 
     function buildClusterCard() {
+      if (analysisUnavailable("clusterContent")) return;
       const target = document.getElementById("clusterContent");
       const list = (municipalClusters || []).filter(item => selectedIsland() === "Todas" || item.isla === selectedIsland());
 
@@ -1979,6 +2038,7 @@
     }
 
     function buildInfraExposureCard() {
+      if (analysisUnavailable("infraExposureContent")) return;
       const target = document.getElementById("infraExposureContent");
       const island = selectedIsland();
       const muni = selectedMunicipality();
@@ -2010,6 +2070,7 @@
     }
 
     function buildTerritorialRanking() {
+      if (analysisUnavailable("territorialRankingContent")) return;
       const target = document.getElementById("territorialRankingContent");
       const island = selectedIsland();
 
@@ -2109,55 +2170,98 @@
       syncLayers();
     }
 
+    function clearIgnAnalysis() {
+      ignEvents = [];
+      summary = {};
+      risklabIndex = interpretation = regimeData = migrationData = anomalyData = territorialData = null;
+      depthProfile = {};
+      compareData = { compare: {}, acceleration: {}, baseline: {} };
+      seriesData = { labels: [], counts: [], mmax: [] };
+      municipalityStats = {};
+      municipalRanking = municipalClusters = infraExpuestas = focusClusters = focusTemporalClusters = [];
+      selectedMunicipalityData = focusSummary = null;
+    }
+
     async function loadAll() {
+      const sequence = ++loadSequence;
       const island = selectedIsland();
       const municipio = selectedMunicipality();
+      ignDataState = "loading";
+      clearIgnAnalysis();
+      usgsEvents = [];
+      document.getElementById("ign-data-status").textContent = "IGN: adquiriendo y validando datos…";
+      document.getElementById("usgs-data-status").textContent = "USGS: adquiriendo datos…";
+      document.getElementById("independent-data-status").textContent = "";
+      redrawAll();
 
-      const bundle = await fetchJson(`/api/risklab-bundle?island=${encodeURIComponent(island)}&municipio=${encodeURIComponent(municipio)}`);
+      const results = await Promise.allSettled([
+        fetchJson(`/api/risklab-bundle?island=${encodeURIComponent(island)}&municipio=${encodeURIComponent(municipio)}`),
+        fetchJson("/api/usgs-canarias"),
+        fetchJson("/api/instrumentation"),
+        fetchJson("/api/official-volcanic-status")
+      ]);
+      if (sequence !== loadSequence) return;
+      const [ign, usgs, instrumentation, official] = results;
+      if (ign.status === "fulfilled" && ign.value.ok === true &&
+          ["available", "empty"].includes(ign.value.data_status?.state) &&
+          Array.isArray(ign.value.ign_eventos)) {
+        const bundle = ign.value;
+        ignDataState = bundle.data_status.state;
+        ignEvents = (bundle.ign_eventos || []).map(ev => ({
+          ...ev,
+          municipio: canonicalMunicipalityName(ev.municipio || "")
+        }));
 
-      ignEvents = (bundle.ign_eventos || []).map(ev => ({
-        ...ev,
-        municipio: canonicalMunicipalityName(ev.municipio || "")
-      }));
-
-      summary = bundle.summary || {};
-      risklabIndex = bundle.risklab_index || null;
-      interpretation = bundle.interpretation || null;
-      depthProfile = bundle.depth_profile || {};
-      compareData = {
-        compare: bundle.compare || {},
-        acceleration: bundle.acceleration || {},
-        baseline: bundle.baseline || {}
-      };
-      seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
-      regimeData = bundle.regime || null;
-      migrationData = bundle.migration || null;
-      anomalyData = bundle.anomaly || null;
-      territorialData = bundle.territorial || null;
-      officialStatus = bundle.official_status || [];
-      municipalityStats = bundle.municipal_stats || {};
-      municipalRanking = bundle.municipal_ranking || [];
-      selectedMunicipalityData = bundle.selected_municipality || null;
-      municipalClusters = bundle.municipal_clusters || [];
-      infraExpuestas = bundle.infra_expuestas || [];
-      focusClusters = bundle.focus_clusters || [];
-      focusTemporalClusters = bundle.focus_temporal_clusters || [];
-      focusSummary = bundle.focus_summary || null;
-
-      try {
-        const usgsJson = await fetchJson("/api/usgs-canarias");
-        usgsEvents = (usgsJson.eventos || []).filter(ev => island === "Todas" || ev.isla === island);
-      } catch {
+        summary = bundle.summary || {};
+        risklabIndex = bundle.risklab_index || null;
+        interpretation = bundle.interpretation || null;
+        depthProfile = bundle.depth_profile || {};
+        compareData = {
+          compare: bundle.compare || {},
+          acceleration: bundle.acceleration || {},
+          baseline: bundle.baseline || {}
+        };
+        seriesData = bundle.serie || { labels: [], counts: [], mmax: [] };
+        regimeData = bundle.regime || null;
+        migrationData = bundle.migration || null;
+        anomalyData = bundle.anomaly || null;
+        territorialData = bundle.territorial || null;
+        officialStatus = bundle.official_status || [];
+        municipalityStats = bundle.municipal_stats || {};
+        municipalRanking = bundle.municipal_ranking || [];
+        selectedMunicipalityData = bundle.selected_municipality || null;
+        municipalClusters = bundle.municipal_clusters || [];
+        infraExpuestas = bundle.infra_expuestas || [];
+        focusClusters = bundle.focus_clusters || [];
+        focusTemporalClusters = bundle.focus_temporal_clusters || [];
+        focusSummary = bundle.focus_summary || null;
+        const checked = bundle.data_status.checked_at;
+        document.getElementById("ign-data-status").textContent =
+          `IGN: adquisición validada${ignEvents.length ? "" : " · sin eventos para el filtro seleccionado"}${checked ? " · " + new Date(checked).toLocaleString("es-ES") : ""}.`;
+      } else {
+        ignDataState = "unavailable";
+        document.getElementById("ign-data-status").textContent =
+          "IGN no disponible: " + (ign.reason?.message || "respuesta no válida") +
+          " No se calculan indicadores; esto no indica ausencia de actividad sísmica.";
+      }
+      if (usgs.status === "fulfilled" && usgs.value.ok === true &&
+          ["available", "empty"].includes(usgs.value.data_status?.state) &&
+          Array.isArray(usgs.value.eventos)) {
+        usgsEvents = usgs.value.eventos.filter(ev => island === "Todas" || ev.isla === island);
+        document.getElementById("usgs-data-status").textContent = usgsEvents.length
+          ? "USGS: adquisición correcta."
+          : "USGS: adquisición correcta, sin eventos para el filtro seleccionado en el feed de 24 h.";
+      } else {
         usgsEvents = [];
+        document.getElementById("usgs-data-status").textContent =
+          "USGS no disponible: " + (usgs.reason?.message || "respuesta no válida") + " No se puede confirmar la ausencia de eventos.";
       }
-
-      try {
-        const instJson = await fetchJson("/api/instrumentation");
-        instrumentationStations = instJson.stations || [];
-      } catch {
-        instrumentationStations = [];
-      }
-
+      instrumentationStations = instrumentation.status === "fulfilled" ? instrumentation.value.stations || [] : [];
+      officialStatus = official.status === "fulfilled" ? official.value.official_status || [] : [];
+      document.getElementById("independent-data-status").textContent = [
+        instrumentation.status === "rejected" ? "Instrumentación no disponible." : "",
+        official.status === "rejected" ? "Estado oficial no disponible." : ""
+      ].filter(Boolean).join(" ");
       redrawAll();
     }
 
@@ -2267,7 +2371,13 @@
       await loadAll();
     }
 
-    init();
+    init().catch(() => {
+      ignDataState = "unavailable";
+      clearIgnAnalysis();
+      redrawAll();
+      document.getElementById("ign-data-status").textContent =
+        "No se pudo iniciar el visor. Datos no evaluados; esto no indica ausencia de actividad sísmica.";
+    });
   </script>
 </body>
 </html>

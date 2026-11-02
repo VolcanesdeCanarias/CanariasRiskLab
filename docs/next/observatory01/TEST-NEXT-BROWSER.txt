@@ -1,0 +1,35 @@
+Chromium 154.0.8037.57
+✔ 2D all-islands coverage, source labels and real event selection UI (3534.745406ms)
+✔ citizen and research share exact analysis snapshot and result (1986.218921ms)
+✔ Research open resize minimize close preserve Leaflet position (2036.001907ms)
+✔ quick filters discard stale results and preserve shared params (2128.920997ms)
+✔ IGN 403 never becomes zero or reassurance and recovers (1809.040293ms)
+✔ USGS failure is separate, empty is explicit, later acquisition recovers (1899.776346ms)
+✔ empty IGN has no index and no claim of absent activity (1641.525447ms)
+✔ institutional profile grants no server permissions (1584.710107ms)
+✔ 3D renders hypocenters and survives dock changes without camera jumps (4979.140076ms)
+✔ mobile viewport has no horizontal overflow and retains filters/research (2287.5293ms)
+✔ playback and exports refer to full selected interval (2370.742021ms)
+✔ MAP-01 repeated experience changes preserve island framing at four viewport sizes (4775.633177ms)
+✔ MAP-02 Research maximization, minimization and restore keep a useful map (2743.794916ms)
+✔ MAP-05 2D/3D transition preserves selected event, filters and camera context (3174.864198ms)
+✔ MAP-03 official basemaps and layer failures never change acquisition statistics (2341.451501ms)
+✔ territorial navigation includes La Graciosa, municipalities and documentary systems (2106.42308ms)
+✔ advanced depth filters remain active with identical results in Ciudadania (2051.324866ms)
+✔ optional DEM mesh renderer accepts a clearly test-only grid without fabricating nodata (2507.832974ms)
+✔ period wholly outside source coverage is unavailable rather than zero events (1825.865944ms)
+✔ PRODUCT-01 complete real historical case links science, analysis, territory and evidence (2634.957105ms)
+✔ PRODUCT-02 changed parameters invalidate export and produce a new reproducible run (2446.816111ms)
+✔ PRODUCT-03 assistance cites numerical evidence and refuses eruption predictions (2212.888451ms)
+✔ PRODUCT-04 research errors never export stale numbers and later recover (2178.380638ms)
+✔ PRODUCT-05 historical research remains independent from failed live IGN acquisition (2255.358325ms)
+✔ PRODUCT-06 archived case works on mobile and preserves shared results across public profiles (2155.919149ms)
+✔ PRODUCT-07 delayed catalogue cannot reactivate a closed study or overwrite La Graciosa (2400.042088ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64164.335502

@@ -1,6 +1,6 @@
 # Canarias RiskLab NEXT · revisión local
 
-Revisión de producto01 · versión0.3, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
+Observatorio multinsular · versión0.4, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
 
 ## Mac
 
@@ -23,4 +23,9 @@ La revisión 01 añade bases topográfica IGN, PNOA e híbrida, navegación muni
 Consulta [recorrido geocientífico y pruebas actuales](docs/next/PRODUCT-REVIEW-01.md), [método y reproducción](docs/next/RESEARCH-METHOD.md), [revisión anterior](docs/next/REVIEW-01.md), [cartografía oficial](docs/next/OFFICIAL-CARTOGRAPHY.md), [MDT opcional](docs/next/TERRAIN-IMPORT.md), [entrega anterior](docs/next/REVIEW.md), [matriz funcional](FEATURE-MATRIX.md), [arquitectura](ARCHITECTURE.md), [fuentes](DATA-SOURCES.md) y [punto de reanudación](SESSION-HANDOFF.md). No fusionar ni desplegar sin aprobación expresa.
 
 
-Para probar el salto funcional: selecciona Tenerife/Teide–Pico Viejo y pulsa **Investigar un sistema · caso Tenerife**. El históricoUSGS archivado funciona sin adquisición reciente; la cartografía externa sí necesita conexión. Ejecuta el caso2004 mbLg≥2, consulta fuentes/series/tasas/espacio, pregunta por cobertura y exporta el informe o ZIP de evidencias. Es un piloto con181 registros oficiales de procedencia verificada, no un catálogo regional completo ni una predicción. Para leer un resultado sin arrancar la aplicación, descarga docs/next/product01/example-evidence.zip, descomprímelo y abre report.html en tu navegador.
+Para probar el salto funcional: selecciona Tenerife/Teide–Pico Viejo y pulsa **Cuaderno Tenerife · archivo USGS**. El históricoUSGS archivado funciona sin adquisición reciente; la cartografía externa sí necesita conexión. Ejecuta el caso2004 mbLg≥2, consulta fuentes/series/tasas/espacio, pregunta por cobertura y exporta el informe o ZIP de evidencias. Es un piloto con181 registros oficiales de procedencia verificada, no un catálogo regional completo ni una predicción. Para leer un resultado sin arrancar la aplicación, descarga docs/next/product01/example-evidence.zip, descomprímelo y abre report.html en tu navegador.
+
+
+## Nuevo recorrido multinsular
+
+Pulsa **Investigar Canarias · histórico IGN**. Compara islas y periodos, explora series/profundidades, consulta municipios oficiales en el área visible y pregunta por evidencias. Archivo IGN: 3.609 registros de 2023–2024, sin simulaciones. Funciona sin adquisición reciente; cartografía externa requiere red. Exporta JSON/CSV y reproduce con `python3 tools/reproduce_observatory.py run.json`. [Guía de revisión y límites](docs/next/OBSERVATORY-01.md).

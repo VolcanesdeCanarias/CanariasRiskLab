@@ -1,0 +1,17 @@
+✔ inline JavaScript parses and referenced DOM IDs exist (2.102812ms)
+✔ HTTP errors and ok:false cannot be read as successful data (3.493254ms)
+✔ IGN failure clears old analysis but preserves independent sources (1.97404ms)
+✔ all analytical cards refuse to interpret unavailable data (2.12711ms)
+✔ validated empty catalogue is explicitly distinguished from unavailable data (1.624403ms)
+✔ USGS failure is visible while IGN remains usable (2.69949ms)
+✔ successful HTTP response with missing acquisition status is rejected (1.535399ms)
+✔ a later successful acquisition recovers from an error (5.054403ms)
+✔ out-of-order requests do not restore old data or overwrite an error (1.724023ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29.228663

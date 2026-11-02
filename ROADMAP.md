@@ -46,3 +46,8 @@ Producto01 reordena prioridades: recorrido vertical implementado en pilotoTeneri
 Siguiente prioridad P1: históricoIGN adquirido mediante interfaz documentada con licencia/calidad, reconciliación y análisis de completitud; después primera señalGNSS/InSAR auténtica con unidades/datum/huecos, corpus revisado científicamente, activos georreferenciados acreditados y proximidad distinguida de exposición. Cada fuente debe entregar originales versionados y pruebas. El archivo crudo/versionado existe para este piloto; ingesta/retención/cuotas de fuentes recientes siguen pendientes.
 
 MDT/batimetría no bloquean el valor científico inicial pero siguen pendientes de fuentes/resolución/licencia/datum y validación; no imagen inclinada como sustituto. Institucional/auth/escenarios permanecen cerrados. Antes de exposición pública: XSS/seguridad de legado, límites, cuotas, backups y revisión humana.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+Entregado: consulta IGN2023–2024 multinsular, comparación territorial/temporal, exploración gráfica, celdas/bloques descriptivos, asistencia vinculada a ejecución y capa municipal oficial consultable. Siguiente: ampliar el archivo a años adicionales mediante nuevas versiones, estudiar completitud/cambios de red y revisar atribución geográfica. MDT: falta autorización de salida a servicios.idee.es/centrodedescargas.cnig.es o un GeoTIFF oficial aportado; no bloquea las funciones anteriores. Después: instalaciones oficiales, GNSS/InSAR/gases, auth institucional y revisión experta.

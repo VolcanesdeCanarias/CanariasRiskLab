@@ -40,3 +40,8 @@ ADR-019: asistencia acotada a herramientas/resultados/corpus, sin LLM ni agentes
 ADR-020: referencia hospitalaria primaria sin coordenadas: no copiar las manuales para fingir proximidad/exposición. Geología/historia y límites de estudio tipados y separados.
 
 ADR-021: exportación reproducible original+run+informe+checksums y CLI, dependencias de código/geografía identificadas. Cambiar parámetros invalida resultados; fuentes recientes e históricas independientes.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+D0.4: usar paginación pública IGN verificada, rechazar CSV de solo cabecera y páginas duplicadas; acotar versión a2023–2024. Añadir BDDAE oficial como capa independiente sin sustituir GeoJSON original. Conservar implementación0.3 inmutable para reproducibilidad. Agrupar por celdas/bloques sin interpretar focos. La asistencia no es LLM. Conservar originales completos localmente; publicar tablas sísmicas sin sesión y GeoJSON administrativo transparente. Revisión automática rechazó HTML opaco con metadatos de sesión: no se publica. MDT permanece explícitamente ausente mientras no se autorice origen o aporte archivo oficial.

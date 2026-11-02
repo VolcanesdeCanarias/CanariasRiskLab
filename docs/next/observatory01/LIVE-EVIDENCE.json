@@ -1,0 +1,52 @@
+{
+  "browser": "154.0.8037.57",
+  "data": "Actual official IGN archive 2023–2024; 3609 source records; no simulated events",
+  "dataset_hash": "97bf28961d60b2cc8193563d56a227fc364f1d5f2d6bd8ea37171e89ca85945d",
+  "run_id": "58c632b1e01c2a0b71addbdc721a07b8f15cf1c8281a49201495143c73232a7d",
+  "counts": {
+    "Tenerife": 238,
+    "LaPalma": 90,
+    "previousTenerife": 232,
+    "archipelago": 909
+  },
+  "territory": "31 municipios intersectan el área visible consultada. No se actualiza al mover el mapa hasta volver a consultar.",
+  "errors": [],
+  "imageFailures": [],
+  "genuineWmsResponses": 224,
+  "wmsStatusCounts": {
+    "200": 224
+  },
+  "mobileOverflow": false,
+  "pose": {
+    "bounds": {
+      "_southWest": {
+        "lat": 27.773481387145207,
+        "lng": -16.987609863281254
+      },
+      "_northEast": {
+        "lat": 28.8831596093235,
+        "lng": -16.056518554687504
+      }
+    },
+    "requested": [
+      -16.924579646878712,
+      27.998062177761533,
+      -16.119377006829197,
+      28.588739735522616
+    ],
+    "events": 238,
+    "size": {
+      "x": 678,
+      "y": 918
+    }
+  },
+  "performance": {
+    "catalogueReadyMs": 1698,
+    "warmLocalHttpQueries": 10,
+    "medianMs": 33,
+    "maxMs": 38,
+    "hardware": "Cloud Chromium software WebGL; not Mac hardware or production load"
+  },
+  "terrain": "Ellipsoid, no real DEM included; explicitly labelled",
+  "tileTransport": "Genuine WMS images via configured proxy; TLS verified; no production proxy"
+}

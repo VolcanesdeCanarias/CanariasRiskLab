@@ -97,3 +97,19 @@ Actualización de producto01, conservando F01–F60 y funciones heredadas:
 | F56–F57,F60 | Originales históricos inmutables/runhash/CLI, corrupción/estado/refusal/export seguro,114 pruebas ampliadas | Pipeline global con cuotas/retención, endurecimiento operativo |
 
 Piloto soloTenerife/mar; otras islas no tienen caso histórico implementado. 3D/legado y navegación multinsular conservados; ninguna capacidad prevista se declara completada por existir documentación.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+| Función | Estado0.4 | Evidencia/límite |
+|---|---|---|
+| Histórico IGN multinsular | Operativo, cobertura parcial | 3609 IDs,73 páginas originales,2023–2024; no todo el histórico |
+| Comparar territorios y periodos | Operativo descriptivo | mismos filtros,previo duración exacta; sin inferir actividad |
+| Series/profundidad/magnitud | Operativo interactivo | selección temporal y fichas,incertidumbre ausente explícita |
+| Agrupaciones espaciotemporales | Experimental descriptivo | celdas angulares × bloques UTC; no focos físicos |
+| Asistencia fundamentada | Operativa acotada | herramientas deterministas,citas,hash,abstención |
+| Capa territorial oficial | Operativa | 88 municipios IGN BDDAE,consulta área,geometría completa |
+| MDT real incluido | Bloqueado | dominio oficial no autorizado;3D elipsoidal advertido |
+| Perfiles públicos | Operativos diferenciados | mismos resultados,controles avanzados por perfil |
+| Gestión autenticada | No habilitada | API403,no permisos por selector |
+| Cuaderno USGS0.3 | Conservado/reproducible | método fuente byte a byte |

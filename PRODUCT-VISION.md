@@ -23,3 +23,8 @@ Revisión01 (0.2): navegación municipal/sistemas documentales y bases oficiales
 ## Revisión de producto 01 · 2026-11-02
 
 Primer recorrido integral 0.3: seleccionar sistema → corpus científico → histórico oficial archivado → análisis de catálogo/espacial/sensibilidad → explicación con evidencias → contexto territorial → informe/ZIP reproducible. Piloto Tenerife/Teide–Pico Viejo, no cobertura funcional completa del archipiélago. Conservar ocho islas/mar y casos pendientes explícitos. El valor del producto es comprender qué dicen y qué NO dicen los datos, no convertir tasas de un catálogo incompleto en vigilancia o predicción.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+El recorrido multinsular incluye observación histórica IGN, análisis y explicación fundamentada dentro de la aplicación. Ciudadanía e Investigación comparten ejecuciones; Gestión permanece restringida. No confundir avance descriptivo con validación de interpretación científica.

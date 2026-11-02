@@ -47,3 +47,8 @@ Nuevo módulo research.py dentro del Blueprint Flask canónico: casos/catálogo 
 research_runs SQLite guarda resultados por hash de dataset/parámetros/contexto/método/código/geografía. Método catalogue-rates-spatial/1.0, especificación y CLI para repetición offline. Exportación allowlist HTML/CSV/JSON/ZIP, escapes/CSP y originales/checksums sin exponer archivos internos. research.mjs es un cuaderno en la misma aplicación, no un backend/prototipo independiente. Estado y datos históricos separados del IGN/USGS reciente: un fallo reciente no invalida evidencia archivada. Cambios de parámetros invalidan exportaciones/respuestas pendientes.
 
 Asistencia determinista de herramientas por intención acotada, con rutas de evidencia; sin ejecución arbitraria, proveedor LLM o pago. Más fuentes/multiseñal, RAG y validación quedan posteriores. No se atribuye cobertura/certidumbre por existir una respuesta HTTP200.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+Nuevo módulo `observatory.py` y cliente `observatory.mjs/css`, registrados por fachada `research.py`; API/servidor heredados intactos. `research_v1.py` conserva método0.3 y sus hashes. Archivo IGN inmutable + BDDAE con polígonos completos cacheados, originales completos privados locales; tablas públicas sin sesión y GeoJSON municipal transparente. SQLite guarda ejecuciones inmutables; exportaciones públicas acotadas. Sin backend institucional habilitado ni LLM.

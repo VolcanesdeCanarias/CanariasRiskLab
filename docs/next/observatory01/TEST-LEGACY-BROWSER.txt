@@ -1,0 +1,20 @@
+Browser: 154.0.8037.57
+✔ map, all layer controls, charts, modes and panels remain functional (12670.725498ms)
+✔ island and municipality filters preserve selected tab and layer switches (7490.157033ms)
+✔ validated empty IGN never displays experimental index 9 or reassuring interpretation (6642.670187ms)
+✔ empty municipality is distinct from failure even when other islands have events (3955.598287ms)
+✔ manual PEVOLCA dates cannot be mistaken for current official verification (2450.071306ms)
+✔ IGN error keeps independent layers, map and filters usable and recovers (2348.339218ms)
+✔ USGS failure and later recovery leave IGN and charts functional (3014.288786ms)
+✔ rapid island/municipality changes discard delayed success after latest failure (2122.182511ms)
+✔ rapid municipality changes cannot replace a newer empty filter with old events (2234.582514ms)
+✔ narrow-screen source warnings do not cover filters or panel tabs (2569.383917ms)
+﹣ live source smoke with real CDN assets and OpenStreetMap tiles (0.111508ms) # SKIP
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 45584.261217

@@ -19,3 +19,8 @@ Revisión funcional 01 incorporada: docs/next/REVIEW-01.md. No redimensionar cá
 ## Revisión de producto 01 · 2026-11-02
 
 Prioridad de producto01: entregar capacidades verticales verificables, no limitar las iteraciones a controles/cartografía. Cuaderno Tenerife implementado; no ampliar cobertura o promover el KMZ sin verificación. Ver docs/next/PRODUCT-REVIEW-01.md y RESEARCH-METHOD.md. ArchivoUSGS solo puede actualizarse creando versión nueva con originales, hashes y reconciliación; no sobrescribir esta evidencia. Asistencia acotada no es LLM/IA predictiva. Mantener perfiles y actualidad de fuentes separados de la investigación histórica.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+Observatorio0.4: preservar `research_v1.py` byte a byte para reproducción0.3; implementar nuevos métodos en `observatory.py`. No sobrescribir originales IGN archivados. Originales completos se conservan localmente; publicación solo de tablas extraídas y GeoJSON transparente, sin campos de sesión. Ver docs/next/OBSERVATORY-01.md.

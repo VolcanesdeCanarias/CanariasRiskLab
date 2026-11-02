@@ -15,3 +15,8 @@ Nuevo contrato USGS conserva magnitud ausente nula; el endpoint antiguo mantiene
 ## Revisión de producto 01 · 2026-11-02
 
 0.3.0 · Producto01. Añade cuaderno funcional de investigación Tenerife/Teide–Pico Viejo con archivo oficialUSGS181, corpus geológico/histórico primario, análisis versionado de tasas/espacio/sensibilidad y asistencia acotada con evidencia/abstención. Contexto territorial e infraestructuras con calidad explícita; informeHTML/CSV/ZIP originales/checksums y reproducciónCLI. Mantiene independencias reciente/histórico, invalidación de resultados, perfiles/2D/3D/P0 y originales. No históricoIGN/multiseñal/MDT/batimetría validados ni cobertura integral de todas las islas; no alertas o instituciones simuladas. Ver informe de producto01.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+0.4: nuevo observatorio IGN multinsular dentro de `/next/`, selección ocho islas/mar,comparación,celdas/tiempo,gráficos,fichas,consultas deterministas,exportación/reproducción y capa municipal IGN. Navegación al nuevo espacio desde Análisis/Territorio; perfiles públicos diferenciados; preservación cuaderno0.3. Pruebas y capturas reales en docs/next/observatory01. Sin cambios en server.py,index.html de producción,main,PR1,Earth o Render.

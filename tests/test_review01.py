@@ -41,7 +41,7 @@ class ReviewNavigationTests(NextTests):
 
     def test_review_documentary_cards_are_cited_not_current_alerts(self):
         c=self.client.get('/api/v1/catalog').json
-        self.assertEqual(len(c['volcanic_catalogue']['systems']),3)
+        self.assertEqual({s['catalogue_id'] for s in c['volcanic_catalogue']['systems']},{'383010','383020','383030','383040','383060'})
         for card in c['volcanic_catalogue']['systems']:
             self.assertIn('volcano.si.edu',card['sources'][0]['url']);self.assertNotIn('alert',card)
         self.assertEqual(c['instrumentation']['operational_status'],'not_verified')

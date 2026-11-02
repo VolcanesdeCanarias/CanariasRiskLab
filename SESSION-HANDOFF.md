@@ -13,3 +13,10 @@ Próximo hito: adquirir históricoIGN por interfaz documentada y evaluar complet
 Solo caso históricoTenerife/mar, otras islas not_implemented; navegación archipiélago/LaGraciosa/mar y capacidades previas conservadas. Institucional403 sin permisos reales, sin alertas. Logo auténtico pendiente. No merge/despliegue/pago. Probar localmente con README y python3 abrir.py; paquetes npm y Python existentes, sin dependencia científica de pago/LLM. PR https://github.com/VolcanesdeCanarias/CanariasRiskLab/pull/2 .
 
 Ejecución de ejemplo: b4de445ffe75643744d4d4e8083ece3f11fcc4e6c0891d29e51dd4ad8521804b · paquete docs/next/product01/example-evidence.zip · repetir con tools/reproduce_research.py. El informe y manifiesto explican alcance/limitaciones, no cobertura completa o validación causal.
+
+
+## Salto funcional multinsular · 0.4 · 2026-11-02
+
+Continuar exclusivamente `integration/next-phase1`, PR#2 en borrador. Incremento0.4 implementado: ver docs/next/OBSERVATORY-01.md. Archivo IGN3609 registros,2023–2024; BDDAE88 municipios; módulo multinsular y asistencia determinista. No publicar como vigilancia. `research_v1.py` intacto mantiene evidencia0.3. Ejecutar Python/JS/browser; revisión real `tools/review_observatory.cjs`. Original WFS restaurable localmente o desde su URL oficial por tools/data/restore_administration_original.py; HTML íntegro no distribuido por campos de sesión. MDT bloqueado por política de salida, no confundir elipsoide con relieve. Siguientes datos: ampliar años IGN,completitud,instrumentación y fuentes territoriales oficiales. Revisión/actualización remota del PR por confirmar en evidencia final; jamás merge/desplegar.
+
+Fuente pública0.4 final: dataset97bf28961d60b2cc8193563d56a227fc364f1d5f2d6bd8ea37171e89ca85945d; ejemplo58c632b1e01c2a0b71addbdc721a07b8f15cf1c8281a49201495143c73232a7d. Original HTML con sesión retenido localmente, no en GitHub. Publicación por tablas extraídas y88 GeoJSON legibles; no reintentar HTML rechazado por revisión automática.

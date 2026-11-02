@@ -13,3 +13,8 @@ Interfaz principal luminosa, sans serif, petróleo/turquesa moderado, mapa prota
 Primera entrega: corte vertical local funcional de adquisición validada → instantánea → selección multinsular → análisis descriptivo → explicación con evidencia → exportación. El mapa 3D inicial es elipsoidal, sin MDT validado redistribuible; no sustituye la experiencia de terreno Earth V2.1. Las funciones restantes conservan acceso en la aplicación heredada y se migrarán con pruebas específicas.
 
 Criterio de excelencia: capacidad demostrable, fuente/fecha/cobertura, seguridad, pruebas, revisión proporcional, accesibilidad, rendimiento medido y límites explícitos. No afirmar superioridad internacional sin evaluación.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión01 (0.2): navegación municipal/sistemas documentales y bases oficiales IGN/PNOA integradas; Research preserva mapa útil. Relieve numérico real/batimetría y validación experta siguen pendientes. El importador MDT no equivale a entregar un modelo real.

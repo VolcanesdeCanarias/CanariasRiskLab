@@ -12,3 +12,16 @@
 - ADR-010 · Interfaz luminosa, sans serif de sistema equivalente a Inter sin dependencia de fuente remota; marca de producto textual. Logo de Volcanes de Canarias pendiente del archivo oficial.
 
 Decisiones revisables al disponer de evidencia. Incertidumbres de licencia, fuente, datum y validación científica no se resuelven por suposición técnica.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+ADR-011: fila cartográfica real, mínimo útil, presupuesto dinámico Research y estado de cámara independiente; resize solo visible y Leaflet reset para evitar deriva de píxel.
+
+ADR-012: integrar primero WMS IGN con atribución comprobada. GRAFCAN requiere revisar condiciones/conectividad; gratuidad no implica redistribución irrestricta. WMS no es MDT.
+
+ADR-013: importación local GeoTIFF documentado con malla LOD limitada; no empaquetar alturas ficticias/activos privados. MAP-04 parcial hasta datos reales y revisión vertical.
+
+ADR-014: sistema documental navega cámara/ficha, sin inventar polígono geológico ni filtrar observaciones silenciosamente. Municipio/profundidad son filtros de servidor exportables.
+
+ADR-015: sin cobertura total → count nulo/no_coverage, sin CSV/gráfico cero; fallos cartográficos independientes de adquisición.

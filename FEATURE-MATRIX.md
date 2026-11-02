@@ -64,3 +64,21 @@ Inspección: CanariasRiskLab main `647bec9544e2bc2fbee36731e850cca60b685c2a`; P0
 | 58 · IA documental/natural | Prevista, no implementada | No | Arquitectura herramientas/RAG; plantilla temprana real | P2 | ARCHITECTURE |
 | 59 · Escenarios/revisión institucional | Previstos, no implementados | No | Bloqueados hasta datos, modelos, permisos y revisión humana | P2 | ROADMAP F5 |
 | 60 · Pruebas/calidad | 28 Python +9 JS + navegador P0 | Core/integridad/browser V2.1 | Pruebas heredadas más contrato/UI NEXT; no certificación científica | P0 | tests/ / docs/next/REVIEW.md |
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión01 actualiza estas filas manteniendo las 60 originales:
+
+| Filas | Recuperación demostrable | Pendiente |
+|---|---|---|
+| 01–07,16 | Encuadre estable, ocho islas/mar, La Graciosa separada de islotes, municipios/bounds/filtro | Certificar límites y consultas área/coordenadas |
+| 02–03,13 | Transferencia 2D/3D coherente, base oficial sobre elipsoide e importador/malla MDT con LOD | No hay MDT real validado ni batimetría |
+| 18,25 | Filtro/histograma de profundidad recuperados | Series multiseñal y análisis avanzados |
+| 22–23,26–29 | Comparación/CSV con mismos filtros; no_coverage con abstención | Históricos completos/licenciados y comparación multiterritorio dedicada |
+| 31–34 | Research ajustable/minimizar/restaurar y mapa mínimo; cuatro viewports | Accesibilidad integral, Safari/Mac |
+| 35–36 | Tres fichas documentales de fuente primaria y navegación sin límites geológicos inventados | Catálogo completo/revisión experta/Tagoro |
+| 39,43,55 | Cuatro estaciones manuales sin estado operativo; inventarios organizados; bases oficiales | Telemetría y capas analíticas restantes |
+| 56–57,60 | Falta de cobertura distinta de cero y cartografía fallida independiente; regresión ampliada | Persistencia cruda, cuotas, seguridad del legado, preparación pública |
+
+Legado disponible no equivale a migración completa. Originales y fórmulas preservados.

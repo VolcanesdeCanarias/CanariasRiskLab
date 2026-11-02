@@ -1,0 +1,11 @@
+{
+  "schema": "risklab.documentary-catalogue/1",
+  "reviewed_at": "2026-11-02",
+  "verification": "documentary_primary_source",
+  "limitation": "Fichas documentales con fuentes primarias consultadas. No sustituyen revisión científica experta ni comunican actividad o alerta actual. El encuadre es de navegación, no delimita un sistema geológico ni un área de peligro.",
+  "systems": [
+    {"id":"gvp-383030","name":"Tenerife · Teide–Pico Viejo","island":"Tenerife","bounds":[-16.85,28.12,-16.45,28.42],"catalogue_name":"Tenerife","catalogue_id":"383030","facts":["El Global Volcanism Program mantiene el registro insular Tenerife con identificador 383030.","Teide y Pico Viejo forman parte del contexto volcánico de Tenerife; el registro insular incluye más centros que un único edificio.","GVP documenta la erupción de 1909 dentro del registro Tenerife. Esa fecha no se atribuye aquí al cráter del Teide."],"sources":[{"title":"Smithsonian Global Volcanism Program · Tenerife","url":"https://volcano.si.edu/volcano.cfm?vn=383030"}]},
+    {"id":"gvp-383010","name":"La Palma · Cumbre Vieja","island":"La Palma","bounds":[-17.96,28.43,-17.72,28.69],"catalogue_name":"La Palma","catalogue_id":"383010","facts":["El Global Volcanism Program identifica La Palma con el número 383010.","La ficha insular reúne información geológica, historia eruptiva y referencias documentales. No es un parte de vigilancia en tiempo real."],"sources":[{"title":"Smithsonian Global Volcanism Program · La Palma","url":"https://volcano.si.edu/volcano.cfm?vn=383010"}]},
+    {"id":"gvp-383020","name":"El Hierro · sistema insular","island":"El Hierro","bounds":[-18.2,27.58,-17.86,27.88],"catalogue_name":"Hierro","catalogue_id":"383020","facts":["El Global Volcanism Program mantiene la ficha Hierro con identificador 383020.","Un registro insular no equivale a un único centro eruptivo. Esta ficha no resuelve las coordenadas discrepantes de la referencia manual Tagoro."],"sources":[{"title":"Smithsonian Global Volcanism Program · Hierro","url":"https://volcano.si.edu/volcano.cfm?vn=383020"}]}
+  ]
+}

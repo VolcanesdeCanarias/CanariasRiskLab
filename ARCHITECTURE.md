@@ -29,3 +29,12 @@ Autenticación OIDC y autorización de servidor por ámbito/rol; separación de 
 ## Cartografía
 
 Earth es un adaptador de representación de las mismas observaciones. Cesium utiliza ahora elipsoide WGS84 y contornos muestreados; coordenada vertical de hipocentros = −profundidad de catálogo es aproximación visual sin transformación de datum. No hay batimetría ni relieve validado en NEXT. V2.1 conserva sus activos privados sin cambios. Integrar MDT/imagen solo al acreditar licencia, cobertura, resolución y transformación vertical. La Graciosa se identifica mediante componente del multipolígono Teguise al norte de 29.20 y oeste de −13.40; regla de selección documentada, pendiente de validación cartográfica, no límite oficial nuevo.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión01: view-state.mjs separa estado geográfico de consultas y calcula presupuesto Research con mínimo de mapa320px escritorio/250px móvil. Solo resize de vista visible, preservando pose/centro/zoom con reset explícito. Transiciones transfieren ámbito seguro sin alterar evento/filtros. Cambio físico de anchura reencuadra territorio; abrir panel no es ese evento.
+
+Catálogo añade bounds por isla/municipio, fichas GVP, instrumentación manual no operativa verificada y registro fijo WMS. Método descriptive-counts/1.1 añade municipality_id/min_depth/max_depth compartidos en comparación/CSV. no_coverage mantiene count nulo y bloquea CSV. Normalización1.1 corrige componentes de Teguise; instantáneas antiguas conservadas.
+
+cartography.mjs integra fuentes fijas sin proxy público. terrain.py lee derivado local fijo, presupuesto limitado, metadatos declarados y nodata. Cesium puede dibujar malla de LOD; no hay MDT real incluido, batimetría, transformación vertical ni colisiones contra esa malla. Ver TERRAIN-IMPORT.md.

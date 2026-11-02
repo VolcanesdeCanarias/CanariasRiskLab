@@ -1,0 +1,28 @@
+Chromium 154.0.8037.57
+✔ 2D all-islands coverage, source labels and real event selection UI (4805.459443ms)
+✔ citizen and research share exact analysis snapshot and result (2052.764683ms)
+✔ Research open resize minimize close preserve Leaflet position (2596.942386ms)
+✔ quick filters discard stale results and preserve shared params (2230.930938ms)
+✔ IGN 403 never becomes zero or reassurance and recovers (1917.400533ms)
+✔ USGS failure is separate, empty is explicit, later acquisition recovers (2072.419573ms)
+✔ empty IGN has no index and no claim of absent activity (1782.323178ms)
+✔ institutional profile grants no server permissions (1838.018368ms)
+✔ 3D renders hypocenters and survives dock changes without camera jumps (5074.62589ms)
+✔ mobile viewport has no horizontal overflow and retains filters/research (2288.333939ms)
+✔ playback and exports refer to full selected interval (2184.545296ms)
+✔ MAP-01 repeated experience changes preserve island framing at four viewport sizes (4697.5414ms)
+✔ MAP-02 Research maximization, minimization and restore keep a useful map (3224.755937ms)
+✔ MAP-05 2D/3D transition preserves selected event, filters and camera context (3864.388629ms)
+✔ MAP-03 official basemaps and layer failures never change acquisition statistics (2461.605675ms)
+✔ territorial navigation includes La Graciosa, municipalities and documentary systems (2275.856939ms)
+✔ advanced depth filters remain active with identical results in Ciudadania (2173.634711ms)
+✔ optional DEM mesh renderer accepts a clearly test-only grid without fabricating nodata (2509.534194ms)
+✔ period wholly outside source coverage is unavailable rather than zero events (2109.552667ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 52343.006699

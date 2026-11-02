@@ -9,3 +9,8 @@ Antes de publicar código/activos, revisar permisos de redistribución y datos r
 Al trabajar, actualizar los diez documentos maestros, la matriz funcional y el punto de reanudación. Diferenciar código implementado, preservado en legado, experimental y planificado. Ejecutar unittest, pruebas JS y navegador proporcionales al cambio. Usar respuestas de test claramente identificadas. Documentar cobertura, incertidumbre, datum, licencia, versiones y evidencia. No declarar una fase completa porque exista documentación o una maqueta.
 
 Decisiones técnicas rutinarias autorizadas: avanzar sin pedir nueva confirmación. Elevar únicamente restricciones de permisos, decisiones científicas/materiales o acciones fuera de alcance. No introducir agentes autónomos sin justificación técnica.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión funcional 01 incorporada: docs/next/REVIEW-01.md. No redimensionar cámaras ocultas; conservar mínimo de mapa, selección y filtros entre perfiles. Separar fallos de cartografía/adquisición/falta de cobertura. Importación MDT solo real y documentada; fixtures de alturas exclusivamente en tests.

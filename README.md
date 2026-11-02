@@ -1,6 +1,6 @@
 # Canarias RiskLab NEXT · revisión local
 
-Primera integración funcional, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
+Revisión funcional01 · versión0.2, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
 
 ## Mac
 
@@ -18,6 +18,6 @@ Se abre http://127.0.0.1:8787/next/ . Para detener: Ctrl+C. El servidor solo esc
 
 Selecciona territorio/fuente/periodo UTC, pulsa Aplicar, explora eventos y abre Investigación. El panel inferior permite cambiar altura con ratón/táctil o flechas de teclado; minimizar/cerrar conserva cámara. Exportación utiliza la selección completa (el cursor de reproducción solo cambia visualización). Perfiles comparten resultados; Gestión institucional es espacio no habilitado con acceso servidor rechazado.
 
-El 3D de esta primera integración muestra elipsoide y eventos, **sin MDT ni batimetría validados**. El Earth V2.1 privado conserva su terreno local separado. Capas manuales opcionales no certifican actividad ni instalaciones críticas. No hay logo oficial disponible para incorporar.
+La revisión 01 añade bases topográfica IGN, PNOA e híbrida, navegación municipal/sistemas documentales, filtro e histograma de profundidad y Research con mapa mínimo. El 3D muestra cartografía sobre elipsoide y eventos, **sin MDT ni batimetría reales validados en esta entrega**. Incluye importador local opcional de GeoTIFF auténtico documentado, aún pendiente de prueba con un MDT real. El Earth V2.1 privado conserva su terreno local separado. Capas manuales opcionales no certifican actividad ni instalaciones críticas. No hay logo oficial disponible para incorporar.
 
-Consulta [revisión y pruebas](docs/next/REVIEW.md), [matriz funcional](FEATURE-MATRIX.md), [arquitectura](ARCHITECTURE.md), [fuentes](DATA-SOURCES.md) y [punto de reanudación](SESSION-HANDOFF.md). No fusionar ni desplegar sin aprobación expresa.
+Consulta [revisión actual y pruebas](docs/next/REVIEW-01.md), [cartografía oficial](docs/next/OFFICIAL-CARTOGRAPHY.md), [MDT opcional](docs/next/TERRAIN-IMPORT.md), [entrega anterior](docs/next/REVIEW.md), [matriz funcional](FEATURE-MATRIX.md), [arquitectura](ARCHITECTURE.md), [fuentes](DATA-SOURCES.md) y [punto de reanudación](SESSION-HANDOFF.md). No fusionar ni desplegar sin aprobación expresa.

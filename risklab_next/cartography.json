@@ -1,0 +1,10 @@
+{
+  "reviewed_at":"2026-11-02",
+  "basemaps":[
+    {"id":"osm","name":"OpenStreetMap","kind":"street","url":"https://tile.openstreetmap.org/{z}/{x}/{y}.png","attribution":"© OpenStreetMap contributors","licence_url":"https://www.openstreetmap.org/copyright","capabilities_url":null,"max_zoom":18},
+    {"id":"ign-topo","name":"Topográfica · IGN","kind":"wms","url":"https://www.ign.es/wms-inspire/mapa-raster","layers":"mtn_rasterizado","attribution":"CC BY 4.0 ign.es · Cartografía ráster IGN","licence_url":"https://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf","capabilities_url":"https://www.ign.es/wms-inspire/mapa-raster?SERVICE=WMS&REQUEST=GetCapabilities","max_zoom":18},
+    {"id":"pnoa","name":"Ortofoto · PNOA","kind":"wms","url":"https://www.ign.es/wms-inspire/pnoa-ma","layers":"OI.OrthoimageCoverage","attribution":"CC BY 4.0 scne.es · Ortofoto PNOA máxima actualidad","licence_url":"https://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf","capabilities_url":"https://www.ign.es/wms-inspire/pnoa-ma?SERVICE=WMS&REQUEST=GetCapabilities","max_zoom":19},
+    {"id":"ign-hybrid","name":"Híbrida · PNOA + IGN","kind":"hybrid","url":"https://www.ign.es/wms-inspire/pnoa-ma","layers":"OI.OrthoimageCoverage","overlay_url":"https://www.ign.es/wms-inspire/ign-base","overlay_layers":"IGNBaseOrto","attribution":"CC BY 4.0 scne.es · PNOA + IGNBaseOrto","licence_url":"https://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf","capabilities_url":"https://www.ign.es/wms-inspire/ign-base?SERVICE=WMS&REQUEST=GetCapabilities","max_zoom":19}
+  ],
+  "limitations":["WMS sirve imágenes, no elevaciones para generar terreno 3D.","La escala de visualización no acredita resolución o precisión uniforme. Consultar metadatos del producto y fecha de vuelo por zona.","Conexión directa al proveedor, sin archivo masivo de teselas ni proxy abierto."]
+}

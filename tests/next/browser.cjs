@@ -20,3 +20,59 @@ test('institutional profile grants no server permissions',async()=>{await page.s
 test('3D renders hypocenters and survives dock changes without camera jumps',async()=>{await page.click('#view3d');await page.waitForFunction(()=>risklabNext.state.earth?.points.length===16);await page.evaluate(()=>risklabNext.state.earth.ready);const before=await page.evaluate(()=>JSON.stringify(risklabNext.state.earth.viewer.camera.positionWC));await page.click('#close-context');await page.click('#research-toggle');await page.focus('#resize');await page.keyboard.press('ArrowUp');await page.click('#close-research');assert.equal(await page.evaluate(()=>JSON.stringify(risklabNext.state.earth.viewer.camera.positionWC)),before);assert.ok(await page.locator('#map3d canvas').count());await screenshot('earth-3d-fixtures');});
 test('mobile viewport has no horizontal overflow and retains filters/research',async()=>{await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.selectOption('#profile','research');await page.focus('#resize');await page.keyboard.press('ArrowUp');assert.equal(await page.locator('#export').isVisible(),true);await page.click('#close-research');await screenshot('mobile-fixtures');});
 test('playback and exports refer to full selected interval',async()=>{await page.click('#play');await page.waitForTimeout(180);assert.equal(await page.locator('#play').getAttribute('aria-label'),'Pausar eventos');await page.click('#play');assert.equal(await page.locator('#export').isDisabled(),false);await page.click('#research-toggle');const download=page.waitForEvent('download');await page.click('#manifest');const file=await download;assert.equal(file.suggestedFilename(),'risklab-analysis.json');});
+
+const near=(a,b)=>Math.abs(a-b)<1e-7;
+async function pose2d(){return page.evaluate(()=>({lat:risklabNext.map.getCenter().lat,lon:risklabNext.map.getCenter().lng,zoom:risklabNext.map.getZoom()}));}
+function assertPose(a,b){assert.ok(near(a.lat,b.lat)&&near(a.lon,b.lon),JSON.stringify({a,b}));assert.equal(a.zoom,b.zoom);}
+test('MAP-01 repeated experience changes preserve island framing at four viewport sizes',async()=>{
+ for(const size of [{width:1440,height:1000},{width:1280,height:720},{width:768,height:1024},{width:390,height:844}]){
+  await page.setViewportSize(size);await page.waitForTimeout(80);await page.selectOption('#territory','Tenerife');await loaded(4);await page.waitForTimeout(80);
+  const before=await pose2d();assert.ok(before.lat>27&&before.lat<30&&before.lon>-18&&before.lon<-15);
+  for(const profile of ['research','institutional','citizen','research','citizen']){await page.selectOption('#profile',profile);await page.waitForTimeout(60);assertPose(await pose2d(),before);}
+ }
+});
+test('MAP-02 Research maximization, minimization and restore keep a useful map',async()=>{
+ for(const size of [{width:1440,height:900},{width:390,height:844}]){
+  await page.setViewportSize(size);await page.waitForTimeout(80);await page.click('#research-toggle');await page.evaluate(()=>risklabNext.height(10000));await page.waitForTimeout(80);
+  assert.ok(await page.locator('#map-stage').evaluate(e=>e.clientHeight)>=(size.width<681?250:320));
+  await page.click('#minimize-research');assert.ok(await page.locator('#research').evaluate(e=>e.clientHeight)<=64);
+  await page.click('#restore-research');assert.ok(await page.locator('#map-stage').evaluate(e=>e.clientHeight)>=(size.width<681?250:320));await page.click('#close-research');
+ }
+});
+test('MAP-05 2D/3D transition preserves selected event, filters and camera context',async()=>{
+ await page.selectOption('#territory','Tenerife');await loaded(4);const before=await pose2d();
+ const point=await page.evaluate(()=>{const e=risklabNext.state.result.events[0],p=risklabNext.map.latLngToContainerPoint([e.lat,e.lon]);return{x:p.x,y:p.y};});await page.locator('#map2d').click({position:point});
+ const selection=await page.evaluate(()=>({id:risklabNext.state.selected,query:JSON.stringify(risklabNext.state.result.parameters),snapshot:risklabNext.state.snapshot.snapshot_id}));assert.ok(selection.id);
+ await page.click('#view3d');await page.waitForFunction(()=>risklabNext.state.earth?.points.length===4);assert.match(await page.locator('#context-body').innerText(),/Magnitud/);
+ for(const profile of ['research','institutional','citizen']){await page.selectOption('#profile',profile);await page.waitForTimeout(60);}
+ await page.click('#view2d');assertPose(await pose2d(),before);
+ assert.deepEqual(await page.evaluate(()=>({id:risklabNext.state.selected,query:JSON.stringify(risklabNext.state.result.parameters),snapshot:risklabNext.state.snapshot.snapshot_id})),selection);
+});
+test('MAP-03 official basemaps and layer failures never change acquisition statistics',async()=>{
+ const before=await page.evaluate(()=>JSON.stringify(risklabNext.state.result));
+ for(const id of ['pnoa','ign-hybrid','osm','ign-topo']){await page.selectOption('#basemap',id);await page.waitForTimeout(40);assert.equal(await page.evaluate(()=>JSON.stringify(risklabNext.state.result)),before);}
+ await page.click('#layers-toggle');await page.check('#station-layer');assert.match(await page.locator('#layers').innerText(),/sin verificar/);assert.equal(await page.locator('#legend').isVisible(),false);
+ await page.uncheck('#event-layer');assert.equal(await page.evaluate(()=>JSON.stringify(risklabNext.state.result)),before);await page.check('#event-layer');await page.click('#layers-toggle');
+});
+test('territorial navigation includes La Graciosa, municipalities and documentary systems',async()=>{
+ await page.selectOption('#territory','La Graciosa');await loaded(0);const center=await pose2d();assert.ok(center.lat>29.2&&center.lat<29.31);assert.ok(center.zoom>=10);
+ await page.selectOption('#territory','Tenerife');await loaded(4);const m=await page.evaluate(()=>risklabNext.state.result.events[0].municipality_id);await page.selectOption('#municipality',m);await loaded(4);
+ assert.equal(await page.evaluate(()=>risklabNext.state.result.parameters.municipality_id),m);
+ const before=await page.evaluate(()=>JSON.stringify(risklabNext.state.result));await page.selectOption('#volcanic-system','gvp-383030');assert.equal(await page.evaluate(()=>JSON.stringify(risklabNext.state.result)),before);
+ assert.equal(await page.locator('#context-body a').getAttribute('href'),'https://volcano.si.edu/volcano.cfm?vn=383030');assert.match(await page.locator('#context-body').innerText(),/no recorta/);
+});
+test('advanced depth filters remain active with identical results in Ciudadania',async()=>{
+ await page.selectOption('#profile','research');await page.fill('#min-depth','11');await page.fill('#max-depth','20');await page.click('#apply-depth');await loaded(0);
+ const before=await page.evaluate(()=>JSON.stringify(risklabNext.state.result));await page.selectOption('#profile','citizen');assert.equal(await page.evaluate(()=>JSON.stringify(risklabNext.state.result)),before);
+ assert.equal(await page.evaluate(()=>risklabNext.state.result.parameters.min_depth),11);
+});
+test('optional DEM mesh renderer accepts a clearly test-only grid without fabricating nodata',async()=>{
+ await page.route('**/api/v1/terrain',r=>r.fulfill({json:{state:'documented_import',grid:{width:5,height:5,bounds:[-16.7,28.2,-16.6,28.3],values:Array(25).fill(300),metadata:{product:'TEST FIXTURE ONLY',source_resolution_m:25,vertical_datum:'TEST DATUM'}}}}));
+ await page.click('#view3d');await page.waitForFunction(()=>!!risklabNext.state.earth?.terrainPrimitive);assert.match(await page.locator('#terrain-status').innerText(),/TEST FIXTURE ONLY/);
+ assert.equal(await page.evaluate(()=>risklabNext.state.earth.grid.values.length),25);await page.click('#close-context');
+});
+test('period wholly outside source coverage is unavailable rather than zero events',async()=>{
+ await page.selectOption('#profile','research');const day=await page.evaluate(()=>new Date(Date.parse(risklabNext.state.snapshot.quality.checked_at)-20*86400000).toISOString().slice(0,19));
+ await page.fill('#until',day);await page.fill('#from','2020-01-01T00:00');await page.click('#apply');await loaded(null);
+ assert.equal(await page.evaluate(()=>risklabNext.state.result.state),'no_coverage');assert.equal(await page.locator('#export').isDisabled(),true);assert.equal(await page.locator('#depth-chart rect').count(),0);assert.match(await page.locator('#data-status').innerText(),/no tiene cobertura/);
+});

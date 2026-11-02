@@ -19,3 +19,10 @@
 Acquisición y observación son fechas distintas. El snapshot conserva el tiempo de adquisición y los tiempos originales de eventos; no inventa fecha de publicación o actualización del organismo. Estado empty solo tras adquisición válida; filtered_empty significa selección sin registros; partial_coverage indica rango fuera de la ventana nominal; unavailable no permite calcular cero. Comparaciones exigen dos ventanas iguales dentro de cobertura nominal, que no prueba completitud instrumental.
 
 No se han introducido datos simulados en producción, ni observaciones GNSS/InSAR/gas inventadas. Los inventarios manuales no se convierten en datos oficiales por haber sido recuperados. Para redistribución nueva de datos, resolver atribución/licencia por activo; que el original ya sea público no concede derechos adicionales.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión01: fuentes/cartografía y verificaciones directas en docs/next/OFFICIAL-CARTOGRAPHY.md. IGN topográfica/PNOA/híbrida con atribución de capabilities; sin archivos Esri privados. Tres fichas GVP con fecha de consulta, no alertas ni validación experta. Inventario de cuatro estaciones sin etiqueta de operación actual. La Graciosa usa mayor componente septentrional de Teguise, sin Alegranza/Montaña Clara; regla pendiente de certificación SIG.
+
+MDT real no adquirido: importador preparado, sin dataset simulado en producción. imported_at no es vuelo/levantamiento oficial. no_coverage distinto de vacío/fallo/filtros/solapamiento parcial. GRAFCAN/IHM/EMODnet investigados, sin conexión implementada ni cobertura efectiva por isla verificada.

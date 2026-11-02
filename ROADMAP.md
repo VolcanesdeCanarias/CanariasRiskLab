@@ -30,3 +30,10 @@ Estado 2026-11-02: Fase 0 documentada con benchmark preliminar; primera integrac
 Presupuestos propuestos: consultas descriptivas 13k < 1 s en equipo de referencia, interacción de filtros p95 < 500 ms tras caché, primer mapa utilizable < 3 s sin coste de red externa; 3D ≥ 30 FPS en GPU Mac de referencia. Son objetivos, no resultados medidos ni garantías. Medir con datos reales y hardware documentado antes de ampliar. Consultas/CSV completos, nivel de detalle solo visual sin cambiar números.
 
 Siguiente secuencia autorizada: consolidar pruebas de esta entrega → ingesta cruda/retención/contrato OpenAPI → navegación municipio/área y recuperación progresiva de capas con trazabilidad → licencia MDT y fichas volcánicas. La publicación pública sigue bloqueada hasta revisión P0, datos/activos y autorización del promotor.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión01: MAP-01/02/05 implementados y comprobados en cuatro viewports; MAP-03 primera integración IGN/PNOA/híbrida y evaluación oficial documentada; MAP-06 leyenda plegable/capas por naturaleza. F2-02 navegación municipal/bounds/filtro y sistemas documentales; áreas/coordenadas aún pendientes. F1-06 tres fichas documentales, no catálogo completo ni validación experta. F2-01 histograma/filtro profundidad y estaciones manuales recuperados.
+
+MAP-04 parcial: importador/malla LOD probados, sin MDT real. Siguiente tarea: habilitar dominio oficial mediante configuración autorizada o recibir archivo auténtico; verificar licencia/datum/resolución/cobertura, importar isla piloto y probar geodesia/LOD/Mac. Cierre exige archivo real con checksum y revisión vertical; no imagen WMS. Mantener pendientes archivo crudo/retención y endurecimiento público.

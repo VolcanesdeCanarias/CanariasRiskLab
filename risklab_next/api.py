@@ -10,6 +10,8 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from .terrain import load_grid
+
 from flask import Blueprint, abort, jsonify, request, send_from_directory, Response
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -46,17 +48,29 @@ class Geography:
         self.sha256 = hashlib.sha256(original).hexdigest()
         data = json.loads(original)
         self.parts, self.municipalities, self.outlines = [], [], []
+        self.views = {}
         for f in data['features']:
             p, g = f['properties'], f['geometry']
             island = ISLANDS[p['gcd_isla']]
-            self.municipalities.append({'id': p['geocode'], 'name': p['etiqueta'], 'island': island})
+            municipality = {'id': p['geocode'], 'name': p['etiqueta'], 'island': island, 'bounds': None}
+            self.municipalities.append(municipality)
             polygons = g['coordinates'] if g['type'] == 'MultiPolygon' else [g['coordinates']]
+            northern = [poly for poly in polygons if min(v[1] for v in poly[0]) > 29.2]
+            # Largest northern component of Teguise is La Graciosa. Do not label
+            # Alegranza or Montaña Clara as this inhabited island.
+            graciosa = max(northern, key=lambda poly: (max(v[0] for v in poly[0])-min(v[0] for v in poly[0])) *
+                           (max(v[1] for v in poly[0])-min(v[1] for v in poly[0])), default=None) if p['geocode']=='35024' else None
             for polygon in polygons:
                 xs, ys = zip(*[(v[0], v[1]) for v in polygon[0]])
                 # Component of Teguise north-west of Lanzarote. Explicit selection rule,
                 # not a new administrative boundary or a nearest-island classifier.
-                name = 'La Graciosa' if p['geocode'] == '35024' and min(ys) > 29.20 and max(xs) < -13.40 else island
-                self.parts.append((min(xs), min(ys), max(xs), max(ys), polygon, p['geocode'], name))
+                name = 'La Graciosa' if polygon is graciosa else island
+                bounds = [min(xs), min(ys), max(xs), max(ys)]
+                def union(a, b):
+                    return b[:] if a is None else [min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])]
+                municipality['bounds'] = union(municipality['bounds'], bounds)
+                self.views[name] = union(self.views.get(name), bounds)
+                self.parts.append((*bounds, polygon, p['geocode'], name))
                 stride = max(1, math.ceil(len(polygon[0]) / 150))
                 ring = polygon[0][::stride]
                 self.outlines.append(ring + [ring[0]])
@@ -118,7 +132,7 @@ class SnapshotStore:
                 events, quality = [], {**payload['data_status'], 'checked_at': checked,
                                        'code': payload['error_code'], 'message': payload['error']}
             snapshot = {'schema': 'risklab.observations/1', 'source': source, 'quality': quality,
-                        'normalization': {'method': 'catalogue-normalization/1.0',
+                        'normalization': {'method': 'catalogue-normalization/1.1',
                                           'geography_sha256': self.geography.sha256,
                                           'geography_reference': 'Inherited CRS84 municipal polygons; unverified current validity.'},
                         'coverage': SOURCES[source], 'events': events,
@@ -135,7 +149,7 @@ class SnapshotStore:
             return snapshot
 
 
-def analyze(snapshot, args):
+def analyze(snapshot, args, municipality_ids=None):
     """Half-open UTC windows; comparisons only when both windows fit acquisition coverage."""
     checked = datetime.fromisoformat(snapshot['quality']['checked_at'])
     try:
@@ -146,12 +160,21 @@ def analyze(snapshot, args):
         minimum = float(args.get('min_mag', '-10'))
         if not math.isfinite(minimum) or not -10 <= minimum <= 10:
             raise ValueError('Magnitud fuera de rango.')
+        municipality = args.get('municipality_id', '')
+        if municipality and (not municipality.isdigit() or len(municipality) != 5 or
+                             (municipality_ids is not None and municipality not in municipality_ids)):
+            raise ValueError('Municipio desconocido.')
+        depth_min, depth_max = float(args.get('min_depth', '-10')), float(args.get('max_depth', '1000'))
+        if not all(math.isfinite(v) for v in [depth_min, depth_max]) or not -10 <= depth_min <= depth_max <= 1000:
+            raise ValueError('Intervalo de profundidad inválido.')
         territory = args.get('territory', 'Canarias')
         if territory not in ['Canarias'] + TERRITORIES:
             raise ValueError('Territorio desconocido.')
     except (ValueError, TypeError) as error:
         raise ValueError('Parámetros de consulta inválidos: ' + str(error)) from error
     eligible = [e for e in snapshot['events'] if (territory == 'Canarias' or e['territory'] == territory)
+                and (not municipality or e.get('municipality_id') == municipality)
+                and depth_min <= e['depth_km'] <= depth_max
                 and ((e['magnitude'] is None and minimum == -10)
                      or (e['magnitude'] is not None and e['magnitude'] >= minimum))]
     def select(a, b):
@@ -162,22 +185,26 @@ def analyze(snapshot, args):
     covered = start >= coverage_start
     comparable = start - duration >= coverage_start
     state = snapshot['quality']['state']
-    valid = state != 'unavailable'
+    overlap = until > coverage_start
+    valid = state != 'unavailable' and overlap
     def stats(values):
         return {'count': len(values), 'max_magnitude': max((e['magnitude'] for e in values if e['magnitude'] is not None), default=None),
                 'missing_magnitude': sum(e['magnitude'] is None for e in values)}
-    result = {'schema': 'risklab.descriptive/1', 'method': 'descriptive-counts/1.0',
+    result = {'schema': 'risklab.descriptive/1', 'method': 'descriptive-counts/1.1',
               'snapshot_id': snapshot['snapshot_id'], 'quality': snapshot['quality'],
-              'parameters': {'from': start.isoformat(), 'until': until.isoformat(), 'territory': territory, 'min_mag': minimum},
+              'parameters': {'from': start.isoformat(), 'until': until.isoformat(), 'territory': territory, 'min_mag': minimum,
+                             'municipality_id': municipality, 'min_depth': depth_min, 'max_depth': depth_max},
               'duration_hours': duration.total_seconds() / 3600,
-              'state': 'unavailable' if not valid else 'partial_coverage' if not covered else 'filtered_empty' if not events and state != 'empty' else state,
+              'state': 'unavailable' if state == 'unavailable' else 'no_coverage' if not overlap else 'partial_coverage' if not covered else 'filtered_empty' if not events and state != 'empty' else state,
               'statistics': stats(events) if valid else {'count': None, 'max_magnitude': None},
               'comparison': {'state': 'available' if valid and comparable else 'insufficient_coverage',
                              'previous_from': (start - duration).isoformat(), 'previous_until': start.isoformat(),
                              'duration_hours': duration.total_seconds() / 3600,
                              'statistics': stats(select(start - duration, start)) if valid and comparable else None},
               'events': events if valid else []}
-    if not valid:
+    if state != 'unavailable' and not overlap:
+        explanation = 'El periodo no solapa la cobertura nominal de esta adquisición. No se puede calcular un recuento histórico ni inferir ausencia de actividad.'
+    elif not valid:
         explanation = 'Adquisición no disponible. No se puede inferir ausencia de actividad ni calcular un índice.'
     elif not events:
         explanation = 'No hay registros en esta selección. No demuestra ausencia de actividad ni modifica ningún nivel oficial.'
@@ -203,7 +230,7 @@ def create_blueprint(adapters, failure, database=None):
 
     @blueprint.get('/next/assets/<path:name>')
     def assets(name):
-        if name not in {'app.mjs', 'style.css', 'earth.mjs'}:
+        if name not in {'app.mjs', 'style.css', 'earth.mjs', 'view-state.mjs', 'cartography.mjs'}:
             abort(404)
         return send_from_directory(ROOT / 'next', name)
 
@@ -219,10 +246,20 @@ def create_blueprint(adapters, failure, database=None):
         references = json.loads((ROOT / 'risklab_next/references.json').read_text())
         return jsonify({'territories': TERRITORIES, 'municipalities': geography.municipalities,
                         'sources': SOURCES, 'references': references,
+                        'territory_views': geography.views,
+                        'volcanic_catalogue': json.loads((ROOT / 'risklab_next/volcanic-systems.json').read_text()),
+                        'cartography': json.loads((ROOT / 'risklab_next/cartography.json').read_text()),
+                        'instrumentation': {'state': 'manual_unverified', 'operational_status': 'not_verified',
+                                            'stations': [{k: v for k, v in item.items() if k != 'estado'} for item in json.loads((ROOT / 'ign_instrumentation.json').read_text())['stations']]},
                         'capabilities': {'observation': True, 'descriptive_analysis': True,
                                          'grounded_templates': True, 'predictive_ai': False,
                                          'institutional': False, 'gnss_series': False, 'insar': False},
                         'official_status': {'state': 'not_verified', 'message': 'No hay un comunicado oficial vigente verificado en esta integración.'}})
+
+    @blueprint.get('/api/v1/terrain')
+    def terrain():
+        # Fixed local import path; never arbitrary file paths from HTTP parameters.
+        return jsonify(load_grid(ROOT / '.risklab-next/terrain.json'))
 
     @blueprint.get('/api/v1/territory-outlines')
     def outlines():
@@ -242,12 +279,12 @@ def create_blueprint(adapters, failure, database=None):
         if snapshot is None:
             abort(404)
         try:
-            result = analyze(snapshot, request.args)
+            result = analyze(snapshot, request.args, {m['id'] for m in geography.municipalities})
         except ValueError as error:
             return jsonify({'error': str(error)}), 400
         if request.args.get('format') == 'csv':
-            if result['state'] == 'unavailable':
-                return jsonify({'error': 'No se exporta un fallo como catálogo vacío.'}), 503
+            if result['state'] in {'unavailable', 'no_coverage'}:
+                return jsonify({'error': 'No se exporta un fallo o ausencia de cobertura como catálogo vacío.'}), 503
             out = io.StringIO()
             writer = csv.writer(out)
             writer.writerow(['snapshot_id', 'source', 'id', 'time_utc', 'latitude', 'longitude', 'depth_km', 'magnitude', 'territory'])

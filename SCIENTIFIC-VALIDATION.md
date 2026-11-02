@@ -18,3 +18,8 @@ Escala experimental heredada gris/azul/morado/negro no es PEVOLCA. No se muestra
 Hallazgos que requieren trabajo posterior: baseline usa subconjunto solapado; aceleración compara duraciones distintas; régimen umbral potencialmente inalcanzable; clusters espaciales transitivos sin profundidad y coste elevado; fechas heredadas de serie pierden año y fallan en 29/02, Mmax inicializado a cero sesga magnitudes negativas. No ocultar estos problemas con un diseño nuevo. Reproducciones y archivos constan en FEATURE-MATRIX. No presentar los algoritmos heredados como validados mientras se mantengan accesibles.
 
 Revisión necesaria: sismología (completitud/errores/reconciliación de catálogos), geodesia (datum/LOS/InSAR), volcanología (fichas/historia/hipótesis), SIG (límites/exposición) y protección civil (documentos vigentes/procedimientos). Cada aceptación tendrá revisor, fecha, datasets, versión de código, parámetros, comparación de referencia y límites de aplicabilidad. La aprobación técnica de un PR no sustituye revisión científica.
+
+
+## Revisión funcional 01 · 2026-11-02
+
+Revisión01: fichas GVP son referencias documentales verificables, no evaluación de actividad. Encuadres de sistema no son límites geológicos/peligro. descriptive-counts/1.1 añade selección municipal/profundidad y abstención fuera de cobertura; fórmulas experimentales heredadas intactas. WMS de sombreado/relieve/batimetría es imagen, no validación de elevación 3D. Importador/renderer probado con fixtures de tests; ningún MDT real validado todavía. Malla reducida/LOD no añaden precisión ni rellenan nodata; datum sin convertir solo aproxima una vista, no una medición.

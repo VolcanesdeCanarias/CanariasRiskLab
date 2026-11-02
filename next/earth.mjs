@@ -47,7 +47,7 @@ export class EarthView {
       const provider=layers?new C.WebMapServiceImageryProvider({url,layers,rectangle:C.Rectangle.fromDegrees(-19.5,26,-12,31),tilingScheme:new C.GeographicTilingScheme({rectangle:C.Rectangle.fromDegrees(-19.5,26,-12,31),numberOfLevelZeroTilesX:1,numberOfLevelZeroTilesY:1}),parameters:{format:transparent?'image/png':'image/jpeg',transparent,version:'1.1.1'},credit:config.attribution,maximumLevel:config.max_zoom}):new C.UrlTemplateImageryProvider({url,credit:config.attribution,maximumLevel:config.max_zoom});
       provider.errorEvent.addEventListener(()=>{if(sequence===this.baseSequence)notice(`${config.name}: cartografía 3D no disponible. Las observaciones se conservan.`,true);});collection.addImageryProvider(provider);
     };
-    add(config.url,config.kind==='street'?null:config.layers);if(config.kind==='hybrid')add(config.overlay_url,config.overlay_layers,true);
+    add(config.url,config.kind==='street'?null:config.layers,config.id==='pnoa'||config.kind==='hybrid');if(config.kind==='hybrid')add(config.overlay_url,config.overlay_layers,true);
     this.viewer.scene.requestRender();
   }
   async loadTerrain(){

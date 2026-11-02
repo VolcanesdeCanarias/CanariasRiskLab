@@ -1,0 +1,1557 @@
+{
+  "annual_series": [
+    {
+      "catalogue_records_in_study_area": 2,
+      "returned_records": 1,
+      "source_records_in_query_box": 3,
+      "state": "records_selected",
+      "year": 2000
+    },
+    {
+      "catalogue_records_in_study_area": 8,
+      "returned_records": 8,
+      "source_records_in_query_box": 11,
+      "state": "records_selected",
+      "year": 2001
+    },
+    {
+      "catalogue_records_in_study_area": 25,
+      "returned_records": 25,
+      "source_records_in_query_box": 27,
+      "state": "records_selected",
+      "year": 2002
+    },
+    {
+      "catalogue_records_in_study_area": 63,
+      "returned_records": 35,
+      "source_records_in_query_box": 68,
+      "state": "records_selected",
+      "year": 2003
+    },
+    {
+      "catalogue_records_in_study_area": 37,
+      "returned_records": 11,
+      "source_records_in_query_box": 39,
+      "state": "records_selected",
+      "year": 2004
+    },
+    {
+      "catalogue_records_in_study_area": 9,
+      "returned_records": 6,
+      "source_records_in_query_box": 11,
+      "state": "records_selected",
+      "year": 2005
+    },
+    {
+      "catalogue_records_in_study_area": 5,
+      "returned_records": 2,
+      "source_records_in_query_box": 8,
+      "state": "records_selected",
+      "year": 2006
+    },
+    {
+      "catalogue_records_in_study_area": 8,
+      "returned_records": 8,
+      "source_records_in_query_box": 10,
+      "state": "records_selected",
+      "year": 2007
+    },
+    {
+      "catalogue_records_in_study_area": 2,
+      "returned_records": 2,
+      "source_records_in_query_box": 3,
+      "state": "records_selected",
+      "year": 2008
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2009
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2010
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2011
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2012
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2013
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2014
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2015
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2016
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2017
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2018
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 1,
+      "state": "empty_study_area",
+      "year": 2019
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2020
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2021
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2022
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2023
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2024
+    },
+    {
+      "catalogue_records_in_study_area": 0,
+      "returned_records": 0,
+      "source_records_in_query_box": 0,
+      "state": "no_records_returned_not_proof_of_inactivity",
+      "year": 2025
+    }
+  ],
+  "comparison": {
+    "catalogue_rate_ratio": 0.31428571428571433,
+    "inference_allowed": false,
+    "p_value": null,
+    "reason": "Completitud y estabilidad de detección no acreditadas; no se prueba un cambio de actividad geofísica."
+  },
+  "context": {
+    "case_id": "teide-pico-viejo",
+    "documented_observations": [
+      {
+        "claim": "IGN describe un episodio sísmico de baja magnitud en 2004 con agrupaciones en Icod y Vilaflor; los datos USGS no reconstruyen por sí solos ese catálogo regional.",
+        "id": "ign-2004",
+        "sources": [
+          "ign-geology"
+        ],
+        "year": 2004
+      },
+      {
+        "claim": "IGN documenta un enjambre en Las Cañadas el 2 de octubre de 2016. Un cero de USGS en ese año no demuestra inactividad.",
+        "id": "ign-2016",
+        "sources": [
+          "ign-geology"
+        ],
+        "year": 2016
+      },
+      {
+        "claim": "IGN documenta otro enjambre en Las Cañadas el 14 de julio de 2019. Es contexto documental, no incorporación de eventos inventados al catálogo.",
+        "id": "ign-2019",
+        "sources": [
+          "ign-geology"
+        ],
+        "year": 2019
+      }
+    ],
+    "geology": [
+      {
+        "claim": "El complejo Teide–Pico Viejo reúne estratovolcanes compuestos en el contexto postcaldera de Las Cañadas.",
+        "id": "geo-1",
+        "sources": [
+          "ign-geology",
+          "igme-guide"
+        ]
+      },
+      {
+        "claim": "Las Cañadas y los ejes de rift forman parte del contexto estructural de Tenerife. Aquí no se dibujan trazas o límites geológicos sin una capa acreditada.",
+        "id": "geo-2",
+        "sources": [
+          "ign-geology"
+        ]
+      }
+    ],
+    "history": [
+      {
+        "claim": "Erupción histórica en el ámbito del parque y en el flanco de Pico Viejo; no es una erupción del cráter sumital del Teide.",
+        "id": "eruption-1798",
+        "name": "Chahorra / Narices del Teide",
+        "relation": "Flanco suroeste de Pico Viejo",
+        "sources": [
+          "miteco",
+          "gvp"
+        ],
+        "year": 1798
+      },
+      {
+        "claim": "El registro insular GVP recoge Chinyero en 1909. No se traslada esa fecha al cráter del Teide.",
+        "id": "eruption-1909",
+        "name": "Chinyero",
+        "relation": "Rift noroeste de Tenerife; contexto insular",
+        "sources": [
+          "gvp"
+        ],
+        "year": 1909
+      }
+    ],
+    "limits": [
+      "No se infiere origen volcánico, intrusión, unrest, alerta ni erupción a partir de la proximidad o los cambios del catálogo.",
+      "Inventarios manuales heredados no se promueven a inventarios oficiales. No hay escenario de afectación ni cálculo de exposición, vulnerabilidad o riesgo.",
+      "La revisión documental no sustituye validación científica experta ni comunicaciones oficiales vigentes."
+    ],
+    "missing_signals": [
+      "GNSS histórico validado no adquirido",
+      "InSAR no adquirido",
+      "Geoquímica no adquirida",
+      "MDT/batimetría numéricos reales no validados"
+    ],
+    "name": "Tenerife · Teide–Pico Viejo",
+    "relations": [
+      {
+        "from": "teide-pico-viejo",
+        "kind": "documented_geological_context",
+        "to": "geo-1"
+      },
+      {
+        "from": "eruption-1798",
+        "kind": "documented_flank_eruption",
+        "to": "teide-pico-viejo"
+      },
+      {
+        "from": "study_observations",
+        "kind": "shared_study_area_only_not_causal",
+        "to": "teide-pico-viejo"
+      },
+      {
+        "from": "CNH-380178",
+        "kind": "documented_municipality_not_exposure",
+        "to": "Tenerife"
+      }
+    ],
+    "reviewed_at": "2026-11-02",
+    "schema": "risklab.scientific-context/1",
+    "sources": [
+      {
+        "consulted_at": "2026-11-02",
+        "id": "ign-geology",
+        "publication_date": null,
+        "title": "IGN · Sismicidad, geología y tectónica de Tenerife",
+        "type": "official_document",
+        "url": "https://www.ign.es/web/resources/sismologia/tproximos/sismotectonica/pag_sismotectonicas/can_tenerife.html"
+      },
+      {
+        "consulted_at": "2026-11-02",
+        "id": "igme-guide",
+        "publication_date": null,
+        "title": "IGME-CSIC · Guía geológica del Parque Nacional del Teide, 2ª edición",
+        "type": "scientific_geological_reference",
+        "url": "https://www.igme.es/libros-y-guias/parque-nacional-del-teide-2a-edicion/"
+      },
+      {
+        "consulted_at": "2026-11-02",
+        "id": "gvp",
+        "publication_date": null,
+        "title": "Smithsonian GVP · Tenerife 383030, historia eruptiva",
+        "type": "scientific_catalogue",
+        "url": "https://volcano.si.edu/volcano.cfm?vn=383030"
+      },
+      {
+        "consulted_at": "2026-11-02",
+        "id": "miteco",
+        "publication_date": null,
+        "title": "MITECO · Teide, valores naturales",
+        "type": "official_document",
+        "url": "https://www.miteco.gob.es/es/parques-nacionales-oapn/red-parques-nacionales/parques-nacionales/teide/valores-naturales.html"
+      },
+      {
+        "consulted_at": "2026-11-02",
+        "id": "usgs-coverage",
+        "publication_date": null,
+        "title": "USGS · Limitaciones para localizar terremotos pequeños fuera de EE. UU.",
+        "type": "provider_limitations",
+        "url": "https://earthquake.usgs.gov/earthquakes/map/?about=true&help=missing"
+      },
+      {
+        "consulted_at": "2026-11-02",
+        "id": "hospital-register",
+        "publication_date": null,
+        "title": "Ministerio de Sanidad · CNH 380178",
+        "type": "official_register",
+        "url": "https://www.sanidad.gob.es/ciudadanos/centros.do?metodo=realizarDetalle&numero=380178&tipo=hospital"
+      }
+    ],
+    "status": "documentary_primary_sources; expert scientific review pending",
+    "study_area_note": "Caja de estudio Tenerife y entorno marino; no es límite geológico del sistema, zona de peligro ni adscripción causal de los sismos.",
+    "study_bounds": [
+      -16.95,
+      27.95,
+      -16.05,
+      28.7
+    ],
+    "territory": [
+      {
+        "geometry": null,
+        "id": "park",
+        "kind": "protected_territorial_context",
+        "name": "Parque Nacional del Teide",
+        "quality": "Existencia y contexto documentados; límites oficiales no incorporados",
+        "sources": [
+          "miteco"
+        ]
+      },
+      {
+        "address": "Carretera Cuesta Taco s/n",
+        "geometry": null,
+        "id": "CNH-380178",
+        "kind": "hospital",
+        "municipality": "San Cristóbal de La Laguna",
+        "name": "Hospital Universitario de Canarias",
+        "quality": "Referencia transcrita del registro oficial; coordenadas, capacidad y estado operativo no certificados por RiskLab. No se calcula proximidad a una dirección sin geocodificación validada.",
+        "sources": [
+          "hospital-register"
+        ]
+      }
+    ]
+  },
+  "context_hash": "e871a3d6ac5b3d775d171aa7e40525f976438b2005d60e9478d3945d1f2e1369",
+  "dataset_hash": "609f4f89a7b470e2975163a4b289cae92f7e26e1209646c4f00b03a657be3879",
+  "explanation": {
+    "cautions": [
+      "El umbral de consulta no es una estimación de magnitud de completitud.",
+      "El documento IGN describe actividad regional que ComCat puede omitir; no concluir quietud en años sin registros.",
+      "Proximidad espacial no atribuye origen volcánico ni actividad al sistema.",
+      "No se ha validado un modelo de exposición, vulnerabilidad, peligro o riesgo."
+    ],
+    "evidence": [
+      "periods.current",
+      "periods.previous",
+      "comparison",
+      "dataset_hash"
+    ],
+    "kind": "deterministic evidence-bound interpretation",
+    "text": "USGS devuelve 11 registros para el periodo actual y 35 para el previo. Son registros del catálogo, no una medida completa de actividad. La razón de tasas publicadas es 0.314, con duraciones iguales de 366 días."
+  },
+  "geography_method_sha256": "5874150a1737214a025aace7884bc76f8a1717d66b3b6045eca44a8b3448d927",
+  "geography_sha256": "458b48a65238c1a21de827b60b34e7a9daa8e5a113b9f93f2d4507e26bdfcae1",
+  "magnitude_sensitivity": [
+    {
+      "current_count": 11,
+      "min_mag": 2,
+      "previous_count": 35
+    },
+    {
+      "current_count": 3,
+      "min_mag": 2.5,
+      "previous_count": 22
+    },
+    {
+      "current_count": 1,
+      "min_mag": 3,
+      "previous_count": 5
+    }
+  ],
+  "manifest": {
+    "count_url": "https://earthquake.usgs.gov/fdsnws/event/1/count?starttime=2000-01-01&endtime=2026-01-01&minlatitude=27.5&maxlatitude=29.0&minlongitude=-17.4&maxlongitude=-15.5",
+    "coverage": {
+      "bounds": [
+        -17.4,
+        27.5,
+        -15.5,
+        29
+      ],
+      "from": "2000-01-01T00:00:00+00:00",
+      "meaning": "Intervalo y caja consultados, no garantía de completitud instrumental.",
+      "until": "2026-01-01T00:00:00+00:00"
+    },
+    "csv_url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime=2000-01-01&endtime=2026-01-01&minlatitude=27.5&maxlatitude=29.0&minlongitude=-17.4&maxlongitude=-15.5&orderby=time-asc&limit=10000",
+    "dataset_hash": "609f4f89a7b470e2975163a4b289cae92f7e26e1209646c4f00b03a657be3879",
+    "files": {
+      "catalogue.csv": {
+        "bytes": 29621,
+        "sha256": "f1883a72b37152b8ae2b24313dc3d80746dd68cea3d5999405460b63473583d2"
+      },
+      "catalogue.geojson": {
+        "bytes": 127748,
+        "sha256": "9696d57632ae32acf76b70471c059dae0cbfed3471f66ef8e29e34c0520cc0cf"
+      },
+      "count.txt": {
+        "bytes": 3,
+        "sha256": "580811fa95269f3ecd4f22d176e079d36093573680b6ef66fa341e687a15b5da"
+      }
+    },
+    "id": "usgs-tenerife-2000-2026",
+    "licence": {
+      "name": "USGS public domain; network us for all included records",
+      "policy_url": "https://www.usgs.gov/media/files/anss-data-and-products-policy",
+      "url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits"
+    },
+    "limitations": [
+      "ComCat no sustituye el catálogo regional IGN ni representa exhaustivamente la microsismicidad.",
+      "Los años sin registros son ausencia de registros retornados por USGS, no ausencia demostrada de actividad.",
+      "No hay certificación de completitud ni homogeneidad temporal de detección.",
+      "No convertir magnitudes entre escalas sin metodología; se puede seleccionar un único tipo.",
+      "Solo una fila publica horizontalError/depthError/magError en este CSV; las ausencias no son error cero.",
+      "No se mezcla automáticamente con IGN reciente ni con el KMZ candidato."
+    ],
+    "provider": "USGS ComCat",
+    "queried_at": "2026-11-02T17:52:27+00:00",
+    "query_url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2000-01-01&endtime=2026-01-01&minlatitude=27.5&maxlatitude=29.0&minlongitude=-17.4&maxlongitude=-15.5&orderby=time-asc&limit=10000",
+    "schema": "risklab.historical-dataset/1",
+    "source_generated_at_ms": 1793641947000,
+    "time_note": "Fecha de generación comunicada por USGS; no fecha de cada revisión de origen.",
+    "verification": {
+      "count_response": 181,
+      "csv_rows": 181,
+      "geojson_rows": 181,
+      "http_status": 200,
+      "limits": "Validación de procedencia, formato e integridad; no validación de completitud ni de causalidad geofísica.",
+      "status": "cross_format_validated"
+    }
+  },
+  "method": "catalogue-rates-spatial/1.0",
+  "method_source_sha256": "a6827e600c59bee274622d588c577451b23accf8d54768a1f56bf7a76ff94552",
+  "parameters": {
+    "case_id": "teide-pico-viejo",
+    "from": "2004-01-01T00:00:00+00:00",
+    "grid_degrees": 0.05,
+    "mag_type": "mblg",
+    "min_mag": 2,
+    "study_bounds": [
+      -16.95,
+      27.95,
+      -16.05,
+      28.7
+    ],
+    "until": "2005-01-01T00:00:00+00:00"
+  },
+  "periods": {
+    "current": {
+      "catalogue_rate_per_year": 10.977459016393443,
+      "count": 11,
+      "coverage": "queried_catalogue; detection_completeness_unknown",
+      "depth_median_km": 11.3,
+      "duration_days": 366,
+      "events": [
+        {
+          "depth_km": 27.9,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000ckx8",
+          "lat": 28.025,
+          "lon": -16.183,
+          "magnitude": 2.5,
+          "magnitude_type": "mblg",
+          "place": "33 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-02-10T21:10:15.050000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000ckx8"
+        },
+        {
+          "depth_km": 20.4,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cpyp",
+          "lat": 28.048,
+          "lon": -16.138,
+          "magnitude": 2.2,
+          "magnitude_type": "mblg",
+          "place": "35 km W of San Nicolás, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-03-14T20:10:38.830000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cpyp"
+        },
+        {
+          "depth_km": 30.5,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cshv",
+          "lat": 28.076,
+          "lon": -16.167,
+          "magnitude": 2.2,
+          "magnitude_type": "mblg",
+          "place": "32 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-04-15T08:22:58.920000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cshv"
+        },
+        {
+          "depth_km": 9.5,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000ct2d",
+          "lat": 28.304,
+          "lon": -16.644,
+          "magnitude": 2.2,
+          "magnitude_type": "mblg",
+          "place": "7 km S of La Guancha, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-04-21T18:05:20.130000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000ct2d"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000ctu8",
+          "lat": 28.144,
+          "lon": -16.14,
+          "magnitude": 2.3,
+          "magnitude_type": "mblg",
+          "place": "31 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-04-30T10:46:01.860000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000ctu8"
+        },
+        {
+          "depth_km": 11.3,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cu4c",
+          "lat": 28.302,
+          "lon": -16.68,
+          "magnitude": 2,
+          "magnitude_type": "mblg",
+          "place": "8 km SSW of La Guancha, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-05-04T03:24:29.490000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cu4c"
+        },
+        {
+          "depth_km": 2.7,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cusg",
+          "lat": 28.344,
+          "lon": -16.732,
+          "magnitude": 3,
+          "magnitude_type": "mblg",
+          "place": "3 km SSW of Icod de los Vinos, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-05-11T20:31:11.240000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cusg"
+        },
+        {
+          "depth_km": 26.5,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cuww",
+          "lat": 28.044,
+          "lon": -16.159,
+          "magnitude": 2.2,
+          "magnitude_type": "mblg",
+          "place": "34 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-05-13T06:01:15.210000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cuww"
+        },
+        {
+          "depth_km": 4.7,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cvaj",
+          "lat": 28.314,
+          "lon": -16.726,
+          "magnitude": 2.1,
+          "magnitude_type": "mblg",
+          "place": "6 km SSW of Icod de los Vinos, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-05-17T07:32:50.850000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cvaj"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cvh3",
+          "lat": 28.171,
+          "lon": -16.119,
+          "magnitude": 2.1,
+          "magnitude_type": "mblg",
+          "place": "32 km SE of Candelaria, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-05-19T01:43:31.030000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cvh3"
+        },
+        {
+          "depth_km": 14.1,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cw20",
+          "lat": 28.081,
+          "lon": -16.184,
+          "magnitude": 2.6,
+          "magnitude_type": "mblg",
+          "place": "30 km SE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2004-05-24T04:02:58.130000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cw20"
+        }
+      ],
+      "from": "2004-01-01T00:00:00+00:00",
+      "magnitude_median": 2.2,
+      "uncertainty_available": {
+        "depth_km": 0,
+        "horizontal_km": 0,
+        "magnitude": 0
+      },
+      "until": "2005-01-01T00:00:00+00:00"
+    },
+    "previous": {
+      "catalogue_rate_per_year": 34.928278688524586,
+      "count": 35,
+      "coverage": "queried_catalogue; detection_completeness_unknown",
+      "depth_median_km": 16.9,
+      "duration_days": 366,
+      "events": [
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bp06",
+          "lat": 28.048,
+          "lon": -16.159,
+          "magnitude": 3,
+          "magnitude_type": "mblg",
+          "place": "34 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-01-22T18:37:12.570000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bp06"
+        },
+        {
+          "depth_km": 26.4,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bp3b",
+          "lat": 28.069,
+          "lon": -16.136,
+          "magnitude": 2.1,
+          "magnitude_type": "mblg",
+          "place": "35 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-01-24T05:06:14.930000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bp3b"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bppd",
+          "lat": 28.142,
+          "lon": -16.181,
+          "magnitude": 3.3,
+          "magnitude_type": "mblg",
+          "place": "27 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-01-31T08:30:31.230000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bppd"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bpuw",
+          "lat": 28.108,
+          "lon": -16.247,
+          "magnitude": 3,
+          "magnitude_type": "mblg",
+          "place": "23 km SE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-02T16:17:40.030000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bpuw"
+        },
+        {
+          "depth_km": 8.9,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bq2t",
+          "lat": 28.141,
+          "lon": -16.188,
+          "magnitude": 2.6,
+          "magnitude_type": "mblg",
+          "place": "26 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-06T05:41:34.940000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bq2t"
+        },
+        {
+          "depth_km": 21.7,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bq33",
+          "lat": 28.339,
+          "lon": -16.281,
+          "magnitude": 2.1,
+          "magnitude_type": "mblg",
+          "place": "9 km E of Candelaria, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-06T09:56:29.240000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bq33"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bq44",
+          "lat": 28.067,
+          "lon": -16.095,
+          "magnitude": 2.9,
+          "magnitude_type": "mblg",
+          "place": "32 km WNW of San Nicolás, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-06T18:58:46.060000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bq44"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bq8t",
+          "lat": 28.091,
+          "lon": -16.13,
+          "magnitude": 2.8,
+          "magnitude_type": "mblg",
+          "place": "34 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-08T15:13:24.440000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bq8t"
+        },
+        {
+          "depth_km": 27,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bq9s",
+          "lat": 28.052,
+          "lon": -16.132,
+          "magnitude": 2.8,
+          "magnitude_type": "mblg",
+          "place": "35 km WNW of San Nicolás, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-09T00:47:51.380000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bq9s"
+        },
+        {
+          "depth_km": 25.8,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bqat",
+          "lat": 28.064,
+          "lon": -16.126,
+          "magnitude": 2.9,
+          "magnitude_type": "mblg",
+          "place": "34 km WNW of San Nicolás, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-09T13:20:50.170000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bqat"
+        },
+        {
+          "depth_km": 33.3,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bqba",
+          "lat": 28.065,
+          "lon": -16.141,
+          "magnitude": 2,
+          "magnitude_type": "mblg",
+          "place": "34 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-09T19:00:24.300000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bqba"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bqjg",
+          "lat": 28.094,
+          "lon": -16.145,
+          "magnitude": 2.7,
+          "magnitude_type": "mblg",
+          "place": "32 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-12T23:40:19.880000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bqjg"
+        },
+        {
+          "depth_km": 10.3,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000brnv",
+          "lat": 28.133,
+          "lon": -16.194,
+          "magnitude": 2.7,
+          "magnitude_type": "mblg",
+          "place": "26 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-02-28T16:42:14.600000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000brnv"
+        },
+        {
+          "depth_km": 31,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000brrz",
+          "lat": 27.993,
+          "lon": -16.164,
+          "magnitude": 3.1,
+          "magnitude_type": "mblg",
+          "place": "36 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-03-02T00:07:46.240000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000brrz"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000btd3",
+          "lat": 28.206,
+          "lon": -16.371,
+          "magnitude": 2.5,
+          "magnitude_type": "mblg",
+          "place": "7 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-03-24T08:11:20.220000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000btd3"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000btf7",
+          "lat": 28.069,
+          "lon": -16.142,
+          "magnitude": 2.3,
+          "magnitude_type": "mblg",
+          "place": "34 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-03-25T03:11:34.590000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000btf7"
+        },
+        {
+          "depth_km": 24,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000buf6",
+          "lat": 28.024,
+          "lon": -16.184,
+          "magnitude": 2.9,
+          "magnitude_type": "mblg",
+          "place": "33 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-04-05T17:46:41.290000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000buf6"
+        },
+        {
+          "depth_km": 28.5,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bufp",
+          "lat": 28.086,
+          "lon": -16.226,
+          "magnitude": 2.2,
+          "magnitude_type": "mblg",
+          "place": "26 km SE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-04-05T20:54:58.110000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bufp"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000buq2",
+          "lat": 28.034,
+          "lon": -16.225,
+          "magnitude": 2.9,
+          "magnitude_type": "mblg",
+          "place": "29 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-04-08T10:43:21.860000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000buq2"
+        },
+        {
+          "depth_km": 27.8,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000buut",
+          "lat": 28.147,
+          "lon": -16.189,
+          "magnitude": 2.3,
+          "magnitude_type": "mblg",
+          "place": "26 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-04-10T04:50:57.840000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000buut"
+        },
+        {
+          "depth_km": 23.8,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bw5w",
+          "lat": 28.215,
+          "lon": -16.192,
+          "magnitude": 3.3,
+          "magnitude_type": "mblg",
+          "place": "23 km SE of Candelaria, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-04-28T23:22:40.970000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bw5w"
+        },
+        {
+          "depth_km": 3.3,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000bxfs",
+          "lat": 28.087,
+          "lon": -16.113,
+          "magnitude": 2.6,
+          "magnitude_type": "mblg",
+          "place": "34 km WNW of San Nicolás, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-05-18T18:45:34.190000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000bxfs"
+        },
+        {
+          "depth_km": 26.8,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000by58",
+          "lat": 28.099,
+          "lon": -16.235,
+          "magnitude": 2.9,
+          "magnitude_type": "mblg",
+          "place": "25 km SE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-05-25T22:19:49.470000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000by58"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000by7f",
+          "lat": 28.182,
+          "lon": -16.136,
+          "magnitude": 2.4,
+          "magnitude_type": "mblg",
+          "place": "30 km SE of Candelaria, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-05-26T17:03:28.030000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000by7f"
+        },
+        {
+          "depth_km": 24.1,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c2uh",
+          "lat": 28.041,
+          "lon": -16.152,
+          "magnitude": 2,
+          "magnitude_type": "mblg",
+          "place": "35 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-07-18T21:54:31.550000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c2uh"
+        },
+        {
+          "depth_km": 16.3,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c39s",
+          "lat": 28.041,
+          "lon": -16.166,
+          "magnitude": 2.3,
+          "magnitude_type": "mblg",
+          "place": "34 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-07-25T05:47:33.130000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c39s"
+        },
+        {
+          "depth_km": 27.5,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c3mh",
+          "lat": 28.119,
+          "lon": -16.214,
+          "magnitude": 2.9,
+          "magnitude_type": "mblg",
+          "place": "25 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-07-29T03:47:08.920000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c3mh"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c5bv",
+          "lat": 28.174,
+          "lon": -16.176,
+          "magnitude": 2.3,
+          "magnitude_type": "mblg",
+          "place": "26 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-08-19T12:25:24.520000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c5bv"
+        },
+        {
+          "depth_km": 15.2,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c6ab",
+          "lat": 28.198,
+          "lon": -16.289,
+          "magnitude": 2,
+          "magnitude_type": "mblg",
+          "place": "15 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-08-30T20:28:25.660000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c6ab"
+        },
+        {
+          "depth_km": 20,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c6ac",
+          "lat": 28.129,
+          "lon": -16.147,
+          "magnitude": 2.5,
+          "magnitude_type": "mblg",
+          "place": "31 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-08-30T20:28:40.830000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c6ac"
+        },
+        {
+          "depth_km": 21.6,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c6ad",
+          "lat": 28.115,
+          "lon": -16.137,
+          "magnitude": 2.5,
+          "magnitude_type": "mblg",
+          "place": "32 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-08-30T20:32:42.680000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c6ad"
+        },
+        {
+          "depth_km": 27.3,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c6b2",
+          "lat": 28.101,
+          "lon": -16.138,
+          "magnitude": 2.2,
+          "magnitude_type": "mblg",
+          "place": "33 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-08-31T00:58:21.920000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c6b2"
+        },
+        {
+          "depth_km": 24.6,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000c6ce",
+          "lat": 28.133,
+          "lon": -16.15,
+          "magnitude": 2.5,
+          "magnitude_type": "mblg",
+          "place": "30 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-08-31T10:39:59.590000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000c6ce"
+        },
+        {
+          "depth_km": 0,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cccn",
+          "lat": 28.118,
+          "lon": -16.142,
+          "magnitude": 2.5,
+          "magnitude_type": "mblg",
+          "place": "31 km ESE of Fasnia, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-11-08T18:26:22.500000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cccn"
+        },
+        {
+          "depth_km": 16.9,
+          "depth_reference": "Profundidad publicada por ComCat; sin transformación vertical al MDT.",
+          "id": "usp000cexz",
+          "lat": 28.042,
+          "lon": -16.174,
+          "magnitude": 2,
+          "magnitude_type": "mblg",
+          "place": "33 km ESE of Lomo de Arico, Spain",
+          "source": "USGS ComCat histórico",
+          "source_review_status": "reviewed",
+          "territory": "Área de estudio Tenerife/mar",
+          "time": "2003-12-10T07:01:08.990000+00:00",
+          "uncertainty": {
+            "depth_km": null,
+            "horizontal_km": null,
+            "magnitude": null
+          },
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/usp000cexz"
+        }
+      ],
+      "from": "2002-12-31T00:00:00+00:00",
+      "magnitude_median": 2.5,
+      "uncertainty_available": {
+        "depth_km": 0,
+        "horizontal_km": 0,
+        "magnitude": 0
+      },
+      "until": "2004-01-01T00:00:00+00:00"
+    }
+  },
+  "run_id": "b4de445ffe75643744d4d4e8083ece3f11fcc4e6c0891d29e51dd4ad8521804b",
+  "schema": "risklab.research-run/1",
+  "spatial": {
+    "cells": [
+      {
+        "bounds": [
+          -16.75,
+          28.3,
+          -16.7,
+          28.349999999999998
+        ],
+        "count": 2,
+        "id": "4:7"
+      },
+      {
+        "bounds": [
+          -16.7,
+          28.3,
+          -16.65,
+          28.349999999999998
+        ],
+        "count": 1,
+        "id": "5:7"
+      },
+      {
+        "bounds": [
+          -16.65,
+          28.3,
+          -16.599999999999998,
+          28.349999999999998
+        ],
+        "count": 1,
+        "id": "6:7"
+      },
+      {
+        "bounds": [
+          -16.2,
+          28,
+          -16.15,
+          28.05
+        ],
+        "count": 2,
+        "id": "15:1"
+      },
+      {
+        "bounds": [
+          -16.2,
+          28.05,
+          -16.15,
+          28.099999999999998
+        ],
+        "count": 2,
+        "id": "15:2"
+      },
+      {
+        "bounds": [
+          -16.15,
+          28,
+          -16.099999999999998,
+          28.05
+        ],
+        "count": 1,
+        "id": "16:1"
+      },
+      {
+        "bounds": [
+          -16.15,
+          28.099999999999998,
+          -16.099999999999998,
+          28.15
+        ],
+        "count": 1,
+        "id": "16:3"
+      },
+      {
+        "bounds": [
+          -16.15,
+          28.15,
+          -16.099999999999998,
+          28.2
+        ],
+        "count": 1,
+        "id": "16:4"
+      }
+    ],
+    "colocated_coordinates": 0,
+    "grid_degrees": 0.05,
+    "interpretation": "Descriptores de localizaciones publicadas. Las celdas no son clusters físicos; no hay test de significación ni modelo de peligro.",
+    "nearest_neighbour_median_km": 3.387151511,
+    "nearest_neighbour_n": 11,
+    "occupied_cells": 8,
+    "origin": [
+      -16.95,
+      27.95
+    ]
+  },
+  "state": "available",
+  "territorial_context": [
+    {
+      "municipality_id": null,
+      "quality": "polygon assignment from inherited boundaries, current validity unverified",
+      "records": 7,
+      "territory": "Entorno marítimo"
+    },
+    {
+      "municipality_id": "38022",
+      "quality": "polygon assignment from inherited boundaries, current validity unverified",
+      "records": 4,
+      "territory": "Tenerife"
+    }
+  ]
+}

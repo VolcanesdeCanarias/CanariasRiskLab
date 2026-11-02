@@ -18,3 +18,8 @@ Criterio de excelencia: capacidad demostrable, fuente/fecha/cobertura, seguridad
 ## Revisión funcional 01 · 2026-11-02
 
 Revisión01 (0.2): navegación municipal/sistemas documentales y bases oficiales IGN/PNOA integradas; Research preserva mapa útil. Relieve numérico real/batimetría y validación experta siguen pendientes. El importador MDT no equivale a entregar un modelo real.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+Primer recorrido integral 0.3: seleccionar sistema → corpus científico → histórico oficial archivado → análisis de catálogo/espacial/sensibilidad → explicación con evidencias → contexto territorial → informe/ZIP reproducible. Piloto Tenerife/Teide–Pico Viejo, no cobertura funcional completa del archipiélago. Conservar ocho islas/mar y casos pendientes explícitos. El valor del producto es comprender qué dicen y qué NO dicen los datos, no convertir tasas de un catálogo incompleto en vigilancia o predicción.

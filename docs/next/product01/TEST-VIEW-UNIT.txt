@@ -1,0 +1,11 @@
+✔ Research budget always retains a useful map on desktop/tablet/mobile (1.207987ms)
+✔ physical short screens scroll rather than yield negative camera dimensions (0.190827ms)
+✔ navigation bounds are finite, ordered and padded without adding precision (0.249715ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39.916498

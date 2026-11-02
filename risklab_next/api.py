@@ -230,7 +230,7 @@ def create_blueprint(adapters, failure, database=None):
 
     @blueprint.get('/next/assets/<path:name>')
     def assets(name):
-        if name not in {'app.mjs', 'style.css', 'earth.mjs', 'view-state.mjs', 'cartography.mjs'}:
+        if name not in {'app.mjs', 'style.css', 'earth.mjs', 'view-state.mjs', 'cartography.mjs', 'research.mjs'}:
             abort(404)
         return send_from_directory(ROOT / 'next', name)
 
@@ -305,4 +305,6 @@ def create_blueprint(adapters, failure, database=None):
         response.headers['Cache-Control'] = 'no-store'
         return response
 
+    from .research import register_research
+    register_research(blueprint, store, geography)
     return blueprint

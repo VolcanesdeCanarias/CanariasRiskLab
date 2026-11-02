@@ -12,7 +12,7 @@ export class BaseMaps {
       layer.addTo(this.map);this.active.push(layer);
     };
     this.notice(`${config.name} · solicitando cartografía…`,false);
-    add(config.url,config.kind==='street'?null:config.layers);
+    add(config.url,config.kind==='street'?null:config.layers,config.id==='pnoa'||config.kind==='hybrid');
     if(config.kind==='hybrid')add(config.overlay_url,config.overlay_layers,true);
   }
 }

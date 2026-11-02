@@ -1,0 +1,42 @@
+{
+  "schema":"risklab.scientific-context/1",
+  "case_id":"teide-pico-viejo",
+  "name":"Tenerife · Teide–Pico Viejo",
+  "reviewed_at":"2026-11-02",
+  "status":"documentary_primary_sources; expert scientific review pending",
+  "study_bounds":[-16.95,27.95,-16.05,28.70],
+  "study_area_note":"Caja de estudio Tenerife y entorno marino; no es límite geológico del sistema, zona de peligro ni adscripción causal de los sismos.",
+  "sources":[
+    {"id":"ign-geology","title":"IGN · Sismicidad, geología y tectónica de Tenerife","url":"https://www.ign.es/web/resources/sismologia/tproximos/sismotectonica/pag_sismotectonicas/can_tenerife.html","type":"official_document","consulted_at":"2026-11-02","publication_date":null},
+    {"id":"igme-guide","title":"IGME-CSIC · Guía geológica del Parque Nacional del Teide, 2ª edición","url":"https://www.igme.es/libros-y-guias/parque-nacional-del-teide-2a-edicion/","type":"scientific_geological_reference","consulted_at":"2026-11-02","publication_date":null},
+    {"id":"gvp","title":"Smithsonian GVP · Tenerife 383030, historia eruptiva","url":"https://volcano.si.edu/volcano.cfm?vn=383030","type":"scientific_catalogue","consulted_at":"2026-11-02","publication_date":null},
+    {"id":"miteco","title":"MITECO · Teide, valores naturales","url":"https://www.miteco.gob.es/es/parques-nacionales-oapn/red-parques-nacionales/parques-nacionales/teide/valores-naturales.html","type":"official_document","consulted_at":"2026-11-02","publication_date":null},
+    {"id":"usgs-coverage","title":"USGS · Limitaciones para localizar terremotos pequeños fuera de EE. UU.","url":"https://earthquake.usgs.gov/earthquakes/map/?about=true&help=missing","type":"provider_limitations","consulted_at":"2026-11-02","publication_date":null},
+    {"id":"hospital-register","title":"Ministerio de Sanidad · CNH 380178","url":"https://www.sanidad.gob.es/ciudadanos/centros.do?metodo=realizarDetalle&numero=380178&tipo=hospital","type":"official_register","consulted_at":"2026-11-02","publication_date":null}
+  ],
+  "geology":[
+    {"id":"geo-1","claim":"El complejo Teide–Pico Viejo reúne estratovolcanes compuestos en el contexto postcaldera de Las Cañadas.","sources":["ign-geology","igme-guide"]},
+    {"id":"geo-2","claim":"Las Cañadas y los ejes de rift forman parte del contexto estructural de Tenerife. Aquí no se dibujan trazas o límites geológicos sin una capa acreditada.","sources":["ign-geology"]}
+  ],
+  "history":[
+    {"id":"eruption-1798","year":1798,"name":"Chahorra / Narices del Teide","relation":"Flanco suroeste de Pico Viejo","claim":"Erupción histórica en el ámbito del parque y en el flanco de Pico Viejo; no es una erupción del cráter sumital del Teide.","sources":["miteco","gvp"]},
+    {"id":"eruption-1909","year":1909,"name":"Chinyero","relation":"Rift noroeste de Tenerife; contexto insular","claim":"El registro insular GVP recoge Chinyero en 1909. No se traslada esa fecha al cráter del Teide.","sources":["gvp"]}
+  ],
+  "documented_observations":[
+    {"id":"ign-2004","year":2004,"claim":"IGN describe un episodio sísmico de baja magnitud en 2004 con agrupaciones en Icod y Vilaflor; los datos USGS no reconstruyen por sí solos ese catálogo regional.","sources":["ign-geology"]},
+    {"id":"ign-2016","year":2016,"claim":"IGN documenta un enjambre en Las Cañadas el 2 de octubre de 2016. Un cero de USGS en ese año no demuestra inactividad.","sources":["ign-geology"]},
+    {"id":"ign-2019","year":2019,"claim":"IGN documenta otro enjambre en Las Cañadas el 14 de julio de 2019. Es contexto documental, no incorporación de eventos inventados al catálogo.","sources":["ign-geology"]}
+  ],
+  "territory":[
+    {"id":"park","name":"Parque Nacional del Teide","kind":"protected_territorial_context","geometry":null,"quality":"Existencia y contexto documentados; límites oficiales no incorporados","sources":["miteco"]},
+    {"id":"CNH-380178","name":"Hospital Universitario de Canarias","kind":"hospital","municipality":"San Cristóbal de La Laguna","address":"Carretera Cuesta Taco s/n","geometry":null,"quality":"Referencia transcrita del registro oficial; coordenadas, capacidad y estado operativo no certificados por RiskLab. No se calcula proximidad a una dirección sin geocodificación validada.","sources":["hospital-register"]}
+  ],
+  "relations":[
+    {"from":"teide-pico-viejo","to":"geo-1","kind":"documented_geological_context"},
+    {"from":"eruption-1798","to":"teide-pico-viejo","kind":"documented_flank_eruption"},
+    {"from":"study_observations","to":"teide-pico-viejo","kind":"shared_study_area_only_not_causal"},
+    {"from":"CNH-380178","to":"Tenerife","kind":"documented_municipality_not_exposure"}
+  ],
+  "missing_signals":["GNSS histórico validado no adquirido","InSAR no adquirido","Geoquímica no adquirida","MDT/batimetría numéricos reales no validados"],
+  "limits":["No se infiere origen volcánico, intrusión, unrest, alerta ni erupción a partir de la proximidad o los cambios del catálogo.","Inventarios manuales heredados no se promueven a inventarios oficiales. No hay escenario de afectación ni cálculo de exposición, vulnerabilidad o riesgo.","La revisión documental no sustituye validación científica experta ni comunicaciones oficiales vigentes."]
+}

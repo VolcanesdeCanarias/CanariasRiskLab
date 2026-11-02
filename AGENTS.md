@@ -14,3 +14,8 @@ Decisiones técnicas rutinarias autorizadas: avanzar sin pedir nueva confirmaci�
 ## Revisión funcional 01 · 2026-11-02
 
 Revisión funcional 01 incorporada: docs/next/REVIEW-01.md. No redimensionar cámaras ocultas; conservar mínimo de mapa, selección y filtros entre perfiles. Separar fallos de cartografía/adquisición/falta de cobertura. Importación MDT solo real y documentada; fixtures de alturas exclusivamente en tests.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+Prioridad de producto01: entregar capacidades verticales verificables, no limitar las iteraciones a controles/cartografía. Cuaderno Tenerife implementado; no ampliar cobertura o promover el KMZ sin verificación. Ver docs/next/PRODUCT-REVIEW-01.md y RESEARCH-METHOD.md. ArchivoUSGS solo puede actualizarse creando versión nueva con originales, hashes y reconciliación; no sobrescribir esta evidencia. Asistencia acotada no es LLM/IA predictiva. Mantener perfiles y actualidad de fuentes separados de la investigación histórica.

@@ -23,3 +23,10 @@ Revisión necesaria: sismología (completitud/errores/reconciliación de catálo
 ## Revisión funcional 01 · 2026-11-02
 
 Revisión01: fichas GVP son referencias documentales verificables, no evaluación de actividad. Encuadres de sistema no son límites geológicos/peligro. descriptive-counts/1.1 añade selección municipal/profundidad y abstención fuera de cobertura; fórmulas experimentales heredadas intactas. WMS de sombreado/relieve/batimetría es imagen, no validación de elevación 3D. Importador/renderer probado con fixtures de tests; ningún MDT real validado todavía. Malla reducida/LOD no añaden precisión ni rellenan nodata; datum sin convertir solo aproxima una vista, no una medición.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+catalogue-rates-spatial/1.0 implementa tasas de registros, ventanas iguales UTC, vecino más próximo epicentral, celdas y sensibilidad. Contraste técnico independiente SQL/cosenos esféricos, nulos, leapyear y reproducción CLI; revisión científica experta sigue pendiente. No p-valores o bandas ficticias ante completitud/detección desconocidas; no inferir actividad real, origen volcánico o causalidad. Mezcla de escalas no produce mediana de magnitud comparable. Umbral de consulta no es Mc.
+
+Correlación documental crítica: catálogoUSGS con huecos no invalida sismicidad documentada porIGN; no traducir cero de la selección o fuente a quietud. Corpus vinculado a afirmaciones y tipos de relación, no a polígonos/estructuras inventados. Proximidad/celda no es foco físico ni riesgo. Contexto hospital/parque sin geometría acreditada no permite exposición. Asistencia determinista con abstención, no IA científica avanzada ni comunicación institucional. Ver método/reportes y validación requerida antes de operación.

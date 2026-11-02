@@ -26,3 +26,10 @@ No se han introducido datos simulados en producción, ni observaciones GNSS/InSA
 Revisión01: fuentes/cartografía y verificaciones directas en docs/next/OFFICIAL-CARTOGRAPHY.md. IGN topográfica/PNOA/híbrida con atribución de capabilities; sin archivos Esri privados. Tres fichas GVP con fecha de consulta, no alertas ni validación experta. Inventario de cuatro estaciones sin etiqueta de operación actual. La Graciosa usa mayor componente septentrional de Teguise, sin Alegranza/Montaña Clara; regla pendiente de certificación SIG.
 
 MDT real no adquirido: importador preparado, sin dataset simulado en producción. imported_at no es vuelo/levantamiento oficial. no_coverage distinto de vacío/fallo/filtros/solapamiento parcial. GRAFCAN/IHM/EMODnet investigados, sin conexión implementada ni cobertura efectiva por isla verificada.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+HistóricoUSGS adquirido oficialmente: ventana consultada2000–2026, cajaTenerife/mar,181 filas reconciliadasGeoJSON/CSV/count, todas net=us;4 magnitudes nulas preservadas. Solo1 registro publica horizontalError/depthError/magError; no hay error0 inventado. Originales y manifiesto con URL/política/hash/tiempo de generación comunicada por proveedor, no fecha ficticia de levantamiento. Datos USGS y política ANSS documentadas. No completitud instrumental ni detección homogénea verificadas; mayor parte2000–2008 y otro registro2019.
+
+Fuentes primarias de contexto: IGN descripción geológica/sísmica de Tenerife, IGME guía del Teide, GVP383030, MITECO y CNH380178. Son síntesis documentales con consulta y publicación desconocida explícita, no niveles oficiales vigentes. Hospital sin geometría, capacidad/operación no certificadas. Polígonos municipales son los heredados, no inventario oficial nuevo. KMZ/archivo privadoEarth no usados como datos validados. No se ha adquirido históricoIGN/multiseñal; no declarar caída general por un404 de URL FDSN probada sin acreditar interfaz oficial.

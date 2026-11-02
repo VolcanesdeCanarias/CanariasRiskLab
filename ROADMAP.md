@@ -37,3 +37,12 @@ Siguiente secuencia autorizada: consolidar pruebas de esta entrega → ingesta c
 Revisión01: MAP-01/02/05 implementados y comprobados en cuatro viewports; MAP-03 primera integración IGN/PNOA/híbrida y evaluación oficial documentada; MAP-06 leyenda plegable/capas por naturaleza. F2-02 navegación municipal/bounds/filtro y sistemas documentales; áreas/coordenadas aún pendientes. F1-06 tres fichas documentales, no catálogo completo ni validación experta. F2-01 histograma/filtro profundidad y estaciones manuales recuperados.
 
 MAP-04 parcial: importador/malla LOD probados, sin MDT real. Siguiente tarea: habilitar dominio oficial mediante configuración autorizada o recibir archivo auténtico; verificar licencia/datum/resolución/cobertura, importar isla piloto y probar geodesia/LOD/Mac. Cierre exige archivo real con checksum y revisión vertical; no imagen WMS. Mantener pendientes archivo crudo/retención y endurecimiento público.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+Producto01 reordena prioridades: recorrido vertical implementado en pilotoTenerife, no completar la plataforma por añadir otro visor. Nuevos entregables: históricoUSGS181 reconciliado, corpus primario, método espacial/tasas/sensibilidad, asistencia acotada, contexto territorial y exportación evidencias/CLI.
+
+Siguiente prioridad P1: históricoIGN adquirido mediante interfaz documentada con licencia/calidad, reconciliación y análisis de completitud; después primera señalGNSS/InSAR auténtica con unidades/datum/huecos, corpus revisado científicamente, activos georreferenciados acreditados y proximidad distinguida de exposición. Cada fuente debe entregar originales versionados y pruebas. El archivo crudo/versionado existe para este piloto; ingesta/retención/cuotas de fuentes recientes siguen pendientes.
+
+MDT/batimetría no bloquean el valor científico inicial pero siguen pendientes de fuentes/resolución/licencia/datum y validación; no imagen inclinada como sustituto. Institucional/auth/escenarios permanecen cerrados. Antes de exposición pública: XSS/seguridad de legado, límites, cuotas, backups y revisión humana.

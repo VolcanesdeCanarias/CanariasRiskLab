@@ -1,0 +1,34 @@
+Chromium 154.0.8037.57
+✔ 2D all-islands coverage, source labels and real event selection UI (4112.513155ms)
+✔ citizen and research share exact analysis snapshot and result (2261.605279ms)
+✔ Research open resize minimize close preserve Leaflet position (2074.463158ms)
+✔ quick filters discard stale results and preserve shared params (2218.186449ms)
+✔ IGN 403 never becomes zero or reassurance and recovers (2183.930875ms)
+✔ USGS failure is separate, empty is explicit, later acquisition recovers (2030.785816ms)
+✔ empty IGN has no index and no claim of absent activity (1819.282044ms)
+✔ institutional profile grants no server permissions (1770.013975ms)
+✔ 3D renders hypocenters and survives dock changes without camera jumps (4700.153098ms)
+✔ mobile viewport has no horizontal overflow and retains filters/research (2403.660217ms)
+✔ playback and exports refer to full selected interval (2278.278443ms)
+✔ MAP-01 repeated experience changes preserve island framing at four viewport sizes (5002.899735ms)
+✔ MAP-02 Research maximization, minimization and restore keep a useful map (3414.55017ms)
+✔ MAP-05 2D/3D transition preserves selected event, filters and camera context (3364.166447ms)
+✔ MAP-03 official basemaps and layer failures never change acquisition statistics (2643.774254ms)
+✔ territorial navigation includes La Graciosa, municipalities and documentary systems (2010.577194ms)
+✔ advanced depth filters remain active with identical results in Ciudadania (1961.273505ms)
+✔ optional DEM mesh renderer accepts a clearly test-only grid without fabricating nodata (2598.780911ms)
+✔ period wholly outside source coverage is unavailable rather than zero events (2432.819395ms)
+✔ PRODUCT-01 complete real historical case links science, analysis, territory and evidence (2875.264956ms)
+✔ PRODUCT-02 changed parameters invalidate export and produce a new reproducible run (2605.575106ms)
+✔ PRODUCT-03 assistance cites numerical evidence and refuses eruption predictions (2416.543843ms)
+✔ PRODUCT-04 research errors never export stale numbers and later recover (2297.295054ms)
+✔ PRODUCT-05 historical research remains independent from failed live IGN acquisition (2519.959026ms)
+✔ PRODUCT-06 archived case works on mobile and preserves shared results across public profiles (2355.250769ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66477.804959

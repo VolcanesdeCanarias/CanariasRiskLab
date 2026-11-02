@@ -82,3 +82,18 @@ Revisión01 actualiza estas filas manteniendo las 60 originales:
 | 56–57,60 | Falta de cobertura distinta de cero y cartografía fallida independiente; regresión ampliada | Persistencia cruda, cuotas, seguridad del legado, preparación pública |
 
 Legado disponible no equivale a migración completa. Originales y fórmulas preservados.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+Actualización de producto01, conservando F01–F60 y funciones heredadas:
+
+| Funciones | Implementado en piloto | Pendiente |
+|---|---|---|
+| F08–F12,F19–F27 | ArchivoUSGS181 oficial, originales/hash/reconciliación, serie anual/consulta, filtros y comparación reproducible, CSV/HTML/ZIP | HistóricoIGN completo, completitud instrumental/multiseñal |
+| F35–F36 | Geología/clasificación/estructuras e historia1798/1909 con fuentes primarias y relaciones tipadas | Cartografía geológica/vectorial acreditada, revisión experta, catálogo completo |
+| F43–F44 | Asignación territorial derivada versionada, parque/hospital documentados, sin convertir referencias manuales en oficiales | Geolocalización acreditada, proximidad/exposición con escenarios/modelos |
+| F47–F54,F58 | Método exploratorio de catálogo, vecino/celdas/sensibilidad y explicación con evidencias; consultas acotadas | Clusters/focos/unrest causal y métodos científicos avanzados validados; no predicción |
+| F56–F57,F60 | Originales históricos inmutables/runhash/CLI, corrupción/estado/refusal/export seguro,114 pruebas ampliadas | Pipeline global con cuotas/retención, endurecimiento operativo |
+
+Piloto soloTenerife/mar; otras islas no tienen caso histórico implementado. 3D/legado y navegación multinsular conservados; ninguna capacidad prevista se declara completada por existir documentación.

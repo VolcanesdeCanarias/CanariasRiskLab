@@ -25,3 +25,18 @@ ADR-013: importación local GeoTIFF documentado con malla LOD limitada; no empaq
 ADR-014: sistema documental navega cámara/ficha, sin inventar polígono geológico ni filtrar observaciones silenciosamente. Municipio/profundidad son filtros de servidor exportables.
 
 ADR-015: sin cobertura total → count nulo/no_coverage, sin CSV/gráfico cero; fallos cartográficos independientes de adquisición.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+ADR-016: priorizar salto funcional vertical en Tenerife/Teide–Pico Viejo sobre nuevas iteraciones de controles; mantener núcleo y Earth como componente.
+
+ADR-017: usar snapshot oficialUSGS181 con originales/reconciliación en lugar de promover el KMZ candidato. Probar procedencia/integridad y declarar sesgos no equivale a validar completitud. No falsa cobertura en otras islas.
+
+ADR-018: análisis exploratorio de tasas/celdas/vecino con sensibilidad y controles de incertidumbre; sin inferencia geofísica o p-valores cuando supuestos no están acreditados.
+
+ADR-019: asistencia acotada a herramientas/resultados/corpus, sin LLM ni agentes por apariencia; evidencia por campo, abstención fuera de alcance.
+
+ADR-020: referencia hospitalaria primaria sin coordenadas: no copiar las manuales para fingir proximidad/exposición. Geología/historia y límites de estudio tipados y separados.
+
+ADR-021: exportación reproducible original+run+informe+checksums y CLI, dependencias de código/geografía identificadas. Cambiar parámetros invalida resultados; fuentes recientes e históricas independientes.

@@ -76,3 +76,50 @@ test('period wholly outside source coverage is unavailable rather than zero even
  await page.fill('#until',day);await page.fill('#from','2020-01-01T00:00');await page.click('#apply');await loaded(null);
  assert.equal(await page.evaluate(()=>risklabNext.state.result.state),'no_coverage');assert.equal(await page.locator('#export').isDisabled(),true);assert.equal(await page.locator('#depth-chart rect').count(),0);assert.match(await page.locator('#data-status').innerText(),/no tiene cobertura/);
 });
+
+async function researchRun(){await page.click('#open-study');await page.waitForFunction(()=>risklabNext.study.run?.periods.current.count===11);}
+test('PRODUCT-01 complete real historical case links science, analysis, territory and evidence',async()=>{
+ await page.selectOption('#territory','Tenerife');await loaded(4);await page.selectOption('#volcanic-system','gvp-383030');await researchRun();
+ assert.equal(await page.locator('#study').isVisible(),true);assert.equal(await page.locator('#context').isVisible(),false);assert.match(await page.locator('#study-eruptions').innerText(),/1798/);assert.match(await page.locator('#study-eruptions').innerText(),/1909/);
+ assert.match(await page.locator('#study-dataset').innerText(),/181 registros/);assert.equal(await page.locator('#study-current-count').innerText(),'11');assert.equal(await page.locator('#study-previous-count').innerText(),'35');
+ assert.match(await page.locator('#study-territorial').innerText(),/Hospital Universitario de Canarias/);assert.match(await page.locator('#study-interpretation').innerText(),/No se infiere/);
+ assert.equal(await page.evaluate(()=>risklabNext.state.studyEvents.length),11);assert.equal(await page.evaluate(()=>risklabNext.study.run.comparison.inference_allowed),false);
+ const downloadPromise=page.waitForEvent('download');await page.locator('#study-evidence').scrollIntoViewIfNeeded();await page.click('#study-evidence');const download=await downloadPromise;
+ assert.match(download.suggestedFilename(),/evidence.zip/);assert.equal(fs.readFileSync(await download.path()).subarray(0,2).toString(),'PK');
+});
+test('PRODUCT-02 changed parameters invalidate export and produce a new reproducible run',async()=>{
+ await researchRun();const original=await page.evaluate(()=>risklabNext.study.run.run_id);await page.locator('#study-min-mag').scrollIntoViewIfNeeded();await page.fill('#study-min-mag','2.5');
+ assert.equal(await page.locator('#study-evidence').isDisabled(),true);assert.equal(await page.evaluate(()=>risklabNext.study.run),null);assert.equal(await page.locator('#study-series rect').count(),0);
+ await page.click('#study-run');await page.waitForFunction(()=>risklabNext.study.run?.parameters.min_mag===2.5);
+ assert.notEqual(await page.evaluate(()=>risklabNext.study.run.run_id),original);const second=await page.evaluate(()=>risklabNext.study.run.run_id);await page.click('#study-run');await page.waitForFunction(id=>risklabNext.study.run?.run_id===id,second);
+});
+test('PRODUCT-03 assistance cites numerical evidence and refuses eruption predictions',async()=>{
+ await researchRun();await page.locator('#study-question').scrollIntoViewIfNeeded();await page.fill('#study-question','¿Cómo ha cambiado la tasa del catálogo?');await page.click('#study-ask');await page.waitForFunction(()=>document.querySelector('#study-answer').textContent.includes('11'));
+ assert.match(await page.locator('#study-answer').innerText(),/35/);assert.match(await page.locator('#study-answer-evidence').innerText(),/periods.current/);
+ await page.fill('#study-question','¿Va a erupcionar?');await page.click('#study-ask');await page.waitForFunction(()=>document.querySelector('#study-answer').textContent.includes('No puedo deducir'));
+});
+test('PRODUCT-04 research errors never export stale numbers and later recover',async()=>{
+ await researchRun();await page.route('**/api/v1/research/runs',r=>r.fulfill({status:503,json:{error:'Dataset no verificable (test-only transport failure)'}}));
+ await page.locator('#study-run').scrollIntoViewIfNeeded();await page.click('#study-run');await page.waitForFunction(()=>document.querySelector('#study-status').classList.contains('error'));
+ assert.equal(await page.locator('#study-evidence').isDisabled(),true);assert.equal(await page.evaluate(()=>risklabNext.study.run),null);assert.equal(await page.locator('#study-current-count').innerText(),'—');
+ await page.unroute('**/api/v1/research/runs');await page.click('#study-run');await page.waitForFunction(()=>risklabNext.study.run?.periods.current.count===11);
+});
+test('PRODUCT-05 historical research remains independent from failed live IGN acquisition',async()=>{
+ await researchRun();const before=await page.evaluate(()=>risklabNext.study.run.run_id);await api.post(base+'/__test__/next-scenario/IGN/error');await page.evaluate(()=>document.querySelector('#refresh').click());
+ await page.waitForFunction(()=>risklabNext.state.snapshot?.quality.state==='unavailable');assert.equal(await page.evaluate(()=>risklabNext.study.run.run_id),before);assert.equal(await page.evaluate(()=>risklabNext.state.studyEvents.length),11);
+ assert.match(await page.locator('#data-status').innerText(),/Histórico USGS/);await page.click('#close-study');assert.equal(await page.evaluate(()=>risklabNext.state.studyActive),false);
+});
+test('PRODUCT-06 archived case works on mobile and preserves shared results across public profiles',async()=>{
+ await page.setViewportSize({width:390,height:844});await researchRun();const before=await page.evaluate(()=>risklabNext.study.run.run_id);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.ok(await page.locator('#map-stage').evaluate(e=>e.clientHeight)>=280);
+ await page.selectOption('#profile','research');assert.equal(await page.evaluate(()=>risklabNext.study.run.run_id),before);await page.selectOption('#profile','citizen');assert.equal(await page.evaluate(()=>risklabNext.study.run.run_id),before);
+ await page.selectOption('#territory','La Graciosa');assert.equal(await page.locator('#study').isVisible(),false);assert.equal(await page.evaluate(()=>risklabNext.state.studyActive),false);
+});
+
+test('PRODUCT-07 delayed catalogue cannot reactivate a closed study or overwrite La Graciosa',async()=>{
+ await researchRun();let release,held=false;const gate=new Promise(resolve=>release=resolve);
+ await page.route('**/api/v1/research/catalogue',async route=>{const response=await route.fetch();held=true;await gate;await route.fulfill({response});});
+ await page.locator('#show-study-all').scrollIntoViewIfNeeded();await page.click('#show-study-all');for(let i=0;i<50&&!held;i++)await page.waitForTimeout(20);assert.ok(held);
+ await page.click('#close-study');await page.selectOption('#territory','La Graciosa');await loaded(0);release();await page.waitForTimeout(150);
+ assert.equal(await page.evaluate(()=>risklabNext.study.active),false);assert.equal(await page.evaluate(()=>risklabNext.state.studyActive),false);assert.equal(await page.locator('#territory').inputValue(),'La Graciosa');
+});

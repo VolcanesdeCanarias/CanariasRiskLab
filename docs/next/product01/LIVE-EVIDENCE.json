@@ -1,0 +1,15 @@
+{
+  "browser": "154.0.8037.57",
+  "data": "Actual archived USGS ComCat; no generated observation fixtures; not real-time monitoring",
+  "dataset": "609f4f89a7b470e2975163a4b289cae92f7e26e1209646c4f00b03a657be3879",
+  "run_id": "b4de445ffe75643744d4d4e8083ece3f11fcc4e6c0891d29e51dd4ad8521804b",
+  "current": 11,
+  "previous": 35,
+  "ratio": 0.31428571428571433,
+  "nearest_neighbour_median_km": 3.387151511,
+  "errors": [],
+  "imageFailures": [],
+  "imagesLoaded": 6,
+  "tileTransport": "Authentic IGN images via configured proxy, TLS verified",
+  "institutional": "not enabled"
+}

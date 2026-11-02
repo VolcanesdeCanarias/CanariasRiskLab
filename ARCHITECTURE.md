@@ -38,3 +38,12 @@ Revisión01: view-state.mjs separa estado geográfico de consultas y calcula pre
 Catálogo añade bounds por isla/municipio, fichas GVP, instrumentación manual no operativa verificada y registro fijo WMS. Método descriptive-counts/1.1 añade municipality_id/min_depth/max_depth compartidos en comparación/CSV. no_coverage mantiene count nulo y bloquea CSV. Normalización1.1 corrige componentes de Teguise; instantáneas antiguas conservadas.
 
 cartography.mjs integra fuentes fijas sin proxy público. terrain.py lee derivado local fijo, presupuesto limitado, metadatos declarados y nodata. Cesium puede dibujar malla de LOD; no hay MDT real incluido, batimetría, transformación vertical ni colisiones contra esa malla. Ver TERRAIN-IMPORT.md.
+
+
+## Revisión de producto 01 · 2026-11-02
+
+Nuevo módulo research.py dentro del Blueprint Flask canónico: casos/catálogo históricos, POST ejecuciones, GET ejecución inmutable, consultas acotadas y exportaciones. Originales USGSGeoJSON/CSV/count+manifest versionados en risklab_next/data/research; loader estricto verifica checksums, reconciliación, rangos y nulos. Contexto científico separado en JSON, referencias primarias y relaciones tipadas sin causalidad. Geometría municipal conserva su hash y calidad heredada.
+
+research_runs SQLite guarda resultados por hash de dataset/parámetros/contexto/método/código/geografía. Método catalogue-rates-spatial/1.0, especificación y CLI para repetición offline. Exportación allowlist HTML/CSV/JSON/ZIP, escapes/CSP y originales/checksums sin exponer archivos internos. research.mjs es un cuaderno en la misma aplicación, no un backend/prototipo independiente. Estado y datos históricos separados del IGN/USGS reciente: un fallo reciente no invalida evidencia archivada. Cambios de parámetros invalidan exportaciones/respuestas pendientes.
+
+Asistencia determinista de herramientas por intención acotada, con rutas de evidencia; sin ejecución arbitraria, proveedor LLM o pago. Más fuentes/multiseñal, RAG y validación quedan posteriores. No se atribuye cobertura/certidumbre por existir una respuesta HTTP200.

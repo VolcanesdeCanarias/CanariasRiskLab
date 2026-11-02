@@ -1,6 +1,6 @@
 # Canarias RiskLab NEXT · revisión local
 
-Revisión funcional01 · versión0.2, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
+Revisión de producto01 · versión0.3, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
 
 ## Mac
 
@@ -20,4 +20,7 @@ Selecciona territorio/fuente/periodo UTC, pulsa Aplicar, explora eventos y abre 
 
 La revisión 01 añade bases topográfica IGN, PNOA e híbrida, navegación municipal/sistemas documentales, filtro e histograma de profundidad y Research con mapa mínimo. El 3D muestra cartografía sobre elipsoide y eventos, **sin MDT ni batimetría reales validados en esta entrega**. Incluye importador local opcional de GeoTIFF auténtico documentado, aún pendiente de prueba con un MDT real. El Earth V2.1 privado conserva su terreno local separado. Capas manuales opcionales no certifican actividad ni instalaciones críticas. No hay logo oficial disponible para incorporar.
 
-Consulta [revisión actual y pruebas](docs/next/REVIEW-01.md), [cartografía oficial](docs/next/OFFICIAL-CARTOGRAPHY.md), [MDT opcional](docs/next/TERRAIN-IMPORT.md), [entrega anterior](docs/next/REVIEW.md), [matriz funcional](FEATURE-MATRIX.md), [arquitectura](ARCHITECTURE.md), [fuentes](DATA-SOURCES.md) y [punto de reanudación](SESSION-HANDOFF.md). No fusionar ni desplegar sin aprobación expresa.
+Consulta [recorrido geocientífico y pruebas actuales](docs/next/PRODUCT-REVIEW-01.md), [método y reproducción](docs/next/RESEARCH-METHOD.md), [revisión anterior](docs/next/REVIEW-01.md), [cartografía oficial](docs/next/OFFICIAL-CARTOGRAPHY.md), [MDT opcional](docs/next/TERRAIN-IMPORT.md), [entrega anterior](docs/next/REVIEW.md), [matriz funcional](FEATURE-MATRIX.md), [arquitectura](ARCHITECTURE.md), [fuentes](DATA-SOURCES.md) y [punto de reanudación](SESSION-HANDOFF.md). No fusionar ni desplegar sin aprobación expresa.
+
+
+Para probar el salto funcional: selecciona Tenerife/Teide–Pico Viejo y pulsa **Investigar un sistema · caso Tenerife**. El históricoUSGS archivado funciona sin adquisición reciente; la cartografía externa sí necesita conexión. Ejecuta el caso2004 mbLg≥2, consulta fuentes/series/tasas/espacio, pregunta por cobertura y exporta el informe o ZIP de evidencias. Es un piloto con181 registros oficiales de procedencia verificada, no un catálogo regional completo ni una predicción. Para leer un resultado sin arrancar la aplicación, descarga docs/next/product01/example-evidence.zip, descomprímelo y abre report.html en tu navegador.

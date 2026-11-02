@@ -523,7 +523,7 @@ def parse_ign_canarias():
 # USGS
 # =========================================================
 
-def fetch_usgs_canarias():
+def fetch_usgs_canarias(preserve_missing_magnitude=False):
     url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
     response = fetch_source(url, "USGS", timeout=20)
     if not any(kind in response.headers.get("Content-Type", "").lower()
@@ -559,7 +559,8 @@ def fetch_usgs_canarias():
             dt = datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
             if dt > now_utc() + timedelta(minutes=5):
                 raise ValueError("Fecha futura")
-            magnitude = finite_number(props.get("mag") if props.get("mag") is not None else 0)
+            magnitude = (None if preserve_missing_magnitude and props.get("mag") is None
+                         else finite_number(props.get("mag") if props.get("mag") is not None else 0))
         except (AttributeError, KeyError, TypeError, ValueError, OverflowError, OSError) as exc:
             raise invalid_source("USGS", "el catálogo contiene eventos incompletos o inválidos.") from exc
         if not (26 <= lat <= 31 and -19 <= lon <= -12):
@@ -571,6 +572,7 @@ def fetch_usgs_canarias():
             "lon": lon,
             "profundidad_km": depth,
             "magnitud": magnitude,
+            **({"tipo_magnitud": props.get("magType")} if preserve_missing_magnitude else {}),
             "localizacion": props.get("place", "Canarias"),
             "datetime_iso": dt.isoformat(),
             "source": "USGS",
@@ -1583,6 +1585,15 @@ def api_risklab_bundle():
             "enjambres": [],
             "instrumentation": load_instrumentation_json()
         }), status
+
+
+from risklab_next import create_blueprint
+
+app.register_blueprint(create_blueprint(
+    {"IGN": lambda: parse_ign_canarias(),
+     "USGS": lambda: fetch_usgs_canarias(preserve_missing_magnitude=True)},
+    acquisition_failure,
+))
 
 
 if __name__ == "__main__":

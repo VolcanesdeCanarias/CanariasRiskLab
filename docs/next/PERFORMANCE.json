@@ -1,0 +1,9 @@
+{
+  "catalogue_records": 13573,
+  "data": "real historical candidate; provenance not validated",
+  "runs": 30,
+  "median_ms": 6.890964999911375,
+  "max_ms": 8.81487800143077,
+  "selected_count": 4,
+  "python": "3.12.14"
+}

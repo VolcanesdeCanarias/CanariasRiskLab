@@ -1,0 +1,20 @@
+Chromium 154.0.8037.57
+✔ 2D all-islands coverage, source labels and real event selection UI (3787.005388ms)
+✔ citizen and research share exact analysis snapshot and result (3678.405388ms)
+✔ Research open resize minimize close preserve Leaflet position (3413.955704ms)
+✔ quick filters discard stale results and preserve shared params (2656.715854ms)
+✔ IGN 403 never becomes zero or reassurance and recovers (3826.225679ms)
+✔ USGS failure is separate, empty is explicit, later acquisition recovers (4281.971635ms)
+✔ empty IGN has no index and no claim of absent activity (2010.214231ms)
+✔ institutional profile grants no server permissions (1618.082824ms)
+✔ 3D renders hypocenters and survives dock changes without camera jumps (5280.462259ms)
+✔ mobile viewport has no horizontal overflow and retains filters/research (2414.646806ms)
+✔ playback and exports refer to full selected interval (2265.241701ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35344.970625

@@ -1,0 +1,427 @@
+{
+  "provenance": {
+    "repository": "VolcanesdeCanarias/CanariasRiskLab",
+    "commit": "647bec9544e2bc2fbee36731e850cca60b685c2a",
+    "status": "manual_unverified",
+    "warning": "Referencias heredadas; no acreditan actividad actual ni carácter crítico. Tagoro tiene coordenadas discrepantes: no se representa hasta verificarlas."
+  },
+  "volcanoes": [
+    {
+      "name": "Teide",
+      "island": "Tenerife",
+      "lat": 28.2724,
+      "lon": -16.6425,
+      "status": "Activo",
+      "type": "Estratovolcán"
+    },
+    {
+      "name": "Pico Viejo",
+      "island": "Tenerife",
+      "lat": 28.2636,
+      "lon": -16.6598,
+      "status": "Activo",
+      "type": "Complejo volcánico"
+    },
+    {
+      "name": "Chinyero",
+      "island": "Tenerife",
+      "lat": 28.3128,
+      "lon": -16.7872,
+      "status": "Histórico",
+      "type": "Cono volcánico"
+    },
+    {
+      "name": "Montaña Negra",
+      "island": "Tenerife",
+      "lat": 28.34,
+      "lon": -16.77,
+      "status": "Histórico",
+      "type": "Cono volcánico"
+    },
+    {
+      "name": "Cumbre Vieja",
+      "island": "La Palma",
+      "lat": 28.5708,
+      "lon": -17.8353,
+      "status": "Activo",
+      "type": "Dorsal volcánica activa"
+    },
+    {
+      "name": "Tajogaite",
+      "island": "La Palma",
+      "lat": 28.6128,
+      "lon": -17.866,
+      "status": "Reciente",
+      "type": "Centro eruptivo 2021"
+    },
+    {
+      "name": "Teneguía",
+      "island": "La Palma",
+      "lat": 28.4684,
+      "lon": -17.8483,
+      "status": "Histórico",
+      "type": "Cono volcánico"
+    },
+    {
+      "name": "San Antonio",
+      "island": "La Palma",
+      "lat": 28.477,
+      "lon": -17.846,
+      "status": "Histórico",
+      "type": "Cono volcánico"
+    },
+    {
+      "name": "Timanfaya",
+      "island": "Lanzarote",
+      "lat": 29.0167,
+      "lon": -13.75,
+      "status": "Histórico",
+      "type": "Campo volcánico"
+    },
+    {
+      "name": "La Corona",
+      "island": "Lanzarote",
+      "lat": 29.2316,
+      "lon": -13.4706,
+      "status": "Histórico",
+      "type": "Cono volcánico"
+    },
+    {
+      "name": "Bandama",
+      "island": "Gran Canaria",
+      "lat": 28.0085,
+      "lon": -15.4564,
+      "status": "Inactivo",
+      "type": "Caldera / cono"
+    }
+  ],
+  "infrastructures": [
+    {
+      "nombre": "Puerto de Granadilla",
+      "tipo": "puerto",
+      "lat": 28.051,
+      "lon": -16.508,
+      "municipio": "Granadilla de Abona",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Puerto de Los Cristianos",
+      "tipo": "puerto",
+      "lat": 28.045,
+      "lon": -16.72,
+      "municipio": "Arona",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Puerto de Santa Cruz de Tenerife",
+      "tipo": "puerto",
+      "lat": 28.47,
+      "lon": -16.239,
+      "municipio": "Santa Cruz de Tenerife",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Aeropuerto Tenerife Sur",
+      "tipo": "aeropuerto",
+      "lat": 28.044,
+      "lon": -16.572,
+      "municipio": "Granadilla de Abona",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Aeropuerto Tenerife Norte",
+      "tipo": "aeropuerto",
+      "lat": 28.482,
+      "lon": -16.341,
+      "municipio": "San Cristóbal de La Laguna",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Hospital Universitario de Canarias",
+      "tipo": "hospital",
+      "lat": 28.4511,
+      "lon": -16.2985,
+      "municipio": "San Cristóbal de La Laguna",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Hospital Universitario Nuestra Señora de Candelaria",
+      "tipo": "hospital",
+      "lat": 28.4419,
+      "lon": -16.2865,
+      "municipio": "Santa Cruz de Tenerife",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Hospital Quirónsalud Tenerife",
+      "tipo": "hospital",
+      "lat": 28.4607,
+      "lon": -16.2525,
+      "municipio": "Santa Cruz de Tenerife",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Hospital Quirónsalud Costa Adeje",
+      "tipo": "hospital",
+      "lat": 28.0944,
+      "lon": -16.735,
+      "municipio": "Adeje",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Hospiten Sur",
+      "tipo": "hospital",
+      "lat": 28.072,
+      "lon": -16.7294,
+      "municipio": "Arona",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Hospiten Bellevue",
+      "tipo": "hospital",
+      "lat": 28.4161,
+      "lon": -16.548,
+      "municipio": "Puerto de la Cruz",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Pabellón Roberto Estrello",
+      "tipo": "polideportivo",
+      "lat": 28.4917,
+      "lon": -16.315,
+      "municipio": "Santa Cruz de Tenerife",
+      "isla": "Tenerife"
+    },
+    {
+      "nombre": "Puerto de Santa Cruz de La Palma",
+      "tipo": "puerto",
+      "lat": 28.6819,
+      "lon": -17.7648,
+      "municipio": "Santa Cruz de La Palma",
+      "isla": "La Palma"
+    },
+    {
+      "nombre": "Aeropuerto de La Palma",
+      "tipo": "aeropuerto",
+      "lat": 28.626,
+      "lon": -17.755,
+      "municipio": "Villa de Mazo",
+      "isla": "La Palma"
+    },
+    {
+      "nombre": "Hospital General de La Palma",
+      "tipo": "hospital",
+      "lat": 28.6671,
+      "lon": -17.7915,
+      "municipio": "Breña Alta",
+      "isla": "La Palma"
+    },
+    {
+      "nombre": "Polideportivo Municipal de Los Llanos",
+      "tipo": "polideportivo",
+      "lat": 28.6562,
+      "lon": -17.9116,
+      "municipio": "Los Llanos de Aridane",
+      "isla": "La Palma"
+    },
+    {
+      "nombre": "Campo de Fútbol de El Paso",
+      "tipo": "campo_futbol",
+      "lat": 28.6514,
+      "lon": -17.8797,
+      "municipio": "El Paso",
+      "isla": "La Palma"
+    },
+    {
+      "nombre": "Puerto de La Estaca",
+      "tipo": "puerto",
+      "lat": 27.763,
+      "lon": -17.902,
+      "municipio": "Valverde",
+      "isla": "El Hierro"
+    },
+    {
+      "nombre": "Aeropuerto de El Hierro",
+      "tipo": "aeropuerto",
+      "lat": 27.814,
+      "lon": -17.887,
+      "municipio": "Valverde",
+      "isla": "El Hierro"
+    },
+    {
+      "nombre": "Puerto de Las Palmas",
+      "tipo": "puerto",
+      "lat": 28.141,
+      "lon": -15.418,
+      "municipio": "Las Palmas de Gran Canaria",
+      "isla": "Gran Canaria"
+    },
+    {
+      "nombre": "Puerto de Arinaga",
+      "tipo": "puerto",
+      "lat": 27.86,
+      "lon": -15.39,
+      "municipio": "Agüimes",
+      "isla": "Gran Canaria"
+    },
+    {
+      "nombre": "Aeropuerto de Gran Canaria",
+      "tipo": "aeropuerto",
+      "lat": 27.9319,
+      "lon": -15.3866,
+      "municipio": "Ingenio",
+      "isla": "Gran Canaria"
+    },
+    {
+      "nombre": "Hospital Universitario Doctor Negrín",
+      "tipo": "hospital",
+      "lat": 28.1232,
+      "lon": -15.4466,
+      "municipio": "Las Palmas de Gran Canaria",
+      "isla": "Gran Canaria"
+    },
+    {
+      "nombre": "Hospital Universitario Insular de Gran Canaria",
+      "tipo": "hospital",
+      "lat": 28.0914,
+      "lon": -15.4149,
+      "municipio": "Las Palmas de Gran Canaria",
+      "isla": "Gran Canaria"
+    },
+    {
+      "nombre": "Puerto de Arrecife",
+      "tipo": "puerto",
+      "lat": 28.963,
+      "lon": -13.547,
+      "municipio": "Arrecife",
+      "isla": "Lanzarote"
+    },
+    {
+      "nombre": "Puerto de Playa Blanca",
+      "tipo": "puerto",
+      "lat": 28.862,
+      "lon": -13.829,
+      "municipio": "Yaiza",
+      "isla": "Lanzarote"
+    },
+    {
+      "nombre": "Aeropuerto César Manrique-Lanzarote",
+      "tipo": "aeropuerto",
+      "lat": 28.945,
+      "lon": -13.605,
+      "municipio": "San Bartolomé",
+      "isla": "Lanzarote"
+    },
+    {
+      "nombre": "Puerto del Rosario",
+      "tipo": "puerto",
+      "lat": 28.497,
+      "lon": -13.862,
+      "municipio": "Puerto del Rosario",
+      "isla": "Fuerteventura"
+    },
+    {
+      "nombre": "Aeropuerto de Fuerteventura",
+      "tipo": "aeropuerto",
+      "lat": 28.452,
+      "lon": -13.863,
+      "municipio": "Puerto del Rosario",
+      "isla": "Fuerteventura"
+    },
+    {
+      "nombre": "Hospital General de Fuerteventura",
+      "tipo": "hospital",
+      "lat": 28.5005,
+      "lon": -13.8591,
+      "municipio": "Puerto del Rosario",
+      "isla": "Fuerteventura"
+    },
+    {
+      "nombre": "Puerto de San Sebastián de La Gomera",
+      "tipo": "puerto",
+      "lat": 28.092,
+      "lon": -17.109,
+      "municipio": "San Sebastián de La Gomera",
+      "isla": "La Gomera"
+    },
+    {
+      "nombre": "Aeropuerto de La Gomera",
+      "tipo": "aeropuerto",
+      "lat": 28.029,
+      "lon": -17.214,
+      "municipio": "Alajeró",
+      "isla": "La Gomera"
+    }
+  ],
+  "volcanic_zones": [
+    {
+      "name": "Teide - Pico Viejo",
+      "island": "Tenerife",
+      "description": "Complejo central activo de Tenerife",
+      "coords": [
+        [
+          28.33,
+          -16.74
+        ],
+        [
+          28.33,
+          -16.55
+        ],
+        [
+          28.2,
+          -16.55
+        ],
+        [
+          28.2,
+          -16.74
+        ]
+      ]
+    },
+    {
+      "name": "Cumbre Vieja",
+      "island": "La Palma",
+      "description": "Dorsal volcánica activa de La Palma",
+      "coords": [
+        [
+          28.73,
+          -17.92
+        ],
+        [
+          28.69,
+          -17.78
+        ],
+        [
+          28.42,
+          -17.8
+        ],
+        [
+          28.46,
+          -17.94
+        ]
+      ]
+    },
+    {
+      "name": "Timanfaya - Mancha Blanca",
+      "island": "Lanzarote",
+      "description": "Campo volcánico histórico de Lanzarote",
+      "coords": [
+        [
+          29.1,
+          -13.92
+        ],
+        [
+          29.1,
+          -13.63
+        ],
+        [
+          28.95,
+          -13.63
+        ],
+        [
+          28.95,
+          -13.92
+        ]
+      ]
+    }
+  ]
+}

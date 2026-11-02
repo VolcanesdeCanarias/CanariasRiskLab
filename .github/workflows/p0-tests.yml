@@ -1,8 +1,8 @@
-name: P0 security and data reliability
+name: RiskLab P0 and NEXT regression
 
 on:
   push:
-    branches: [fix/p0-security-data-reliability]
+    branches: [fix/p0-security-data-reliability, integration/next-phase1]
   pull_request:
     branches: [main]
 
@@ -29,9 +29,16 @@ jobs:
       - run: npm ci --prefix tests/browser
       - run: npx --prefix tests/browser playwright install --with-deps chromium
       - run: node tests/browser/review.cjs
+      - run: npm ci
+      - run: node tests/next/browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: browser-review-fixtures
           path: work/browser-review/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: next-browser-review-fixtures
+          path: work/next-captures/
       - run: git diff --check

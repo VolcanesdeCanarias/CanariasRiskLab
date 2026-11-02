@@ -1,0 +1,24 @@
+{
+  "browser": "154.0.8037.57",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "wall_ms": 4815,
+  "errors": [],
+  "state": {
+    "snapshot": "9a9538f7afd3d64af6f75d56d2366b3653538eb51ea3f7d43ce182eb5e816256",
+    "quality": {
+      "checked_at": "2026-11-02T14:48:45+00:00",
+      "count": 20,
+      "state": "available"
+    },
+    "statistics": {
+      "count": 4,
+      "max_magnitude": 2.2,
+      "missing_magnitude": 0
+    },
+    "tiles": 0
+  },
+  "mocked": false
+}

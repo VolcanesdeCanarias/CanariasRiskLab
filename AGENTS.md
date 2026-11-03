@@ -24,3 +24,8 @@ Prioridad de producto01: entregar capacidades verticales verificables, no limita
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 Observatorio0.4: preservar `research_v1.py` byte a byte para reproducción0.3; implementar nuevos métodos en `observatory.py`. No sobrescribir originales IGN archivados. Originales completos se conservan localmente; publicación solo de tablas extraídas y GeoJSON transparente, sin campos de sesión. Ver docs/next/OBSERVATORY-01.md.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+Mantener el canal continuo separado de las funciones históricas y de P0. Leer [CONTINUOUS-01](docs/next/CONTINUOUS-01.md). No adquirir desde handlers HTTP ni al importar Flask. No publicar bases SQLite, backups o HTML original con sesión; los registros públicos normalizados y sus huellas sí son exportables. Probar deduplicación, revisiones, cobertura, fallos y recuperación antes de continuar. No fusionar ni desplegar.

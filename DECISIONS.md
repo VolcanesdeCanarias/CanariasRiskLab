@@ -45,3 +45,8 @@ ADR-021: exportación reproducible original+run+informe+checksums y CLI, depende
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 D0.4: usar paginación pública IGN verificada, rechazar CSV de solo cabecera y páginas duplicadas; acotar versión a2023–2024. Añadir BDDAE oficial como capa independiente sin sustituir GeoJSON original. Conservar implementación0.3 inmutable para reproducibilidad. Agrupar por celdas/bloques sin interpretar focos. La asistencia no es LLM. Conservar originales completos localmente; publicar tablas sísmicas sin sesión y GeoJSON administrativo transparente. Revisión automática rechazó HTML opaco con metadatos de sesión: no se publica. MDT permanece explícitamente ausente mientras no se autorice origen o aporte archivo oficial.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+Se implementa adquisición independiente del navegador, SQLite privado y leases por fuente. Las ausencias en una respuesta válida se conservan como registros no confirmados, sin inferir retirada. Un fallo nunca crea ausencia de actividad. La cobertura inicial limitada se muestra en lugar de fingir un año completo. No se añade IA predictiva ni se despliega. [Justificación y operación](docs/next/CONTINUOUS-01.md).

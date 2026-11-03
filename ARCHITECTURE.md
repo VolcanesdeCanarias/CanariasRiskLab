@@ -52,3 +52,8 @@ Asistencia determinista de herramientas por intención acotada, con rutas de evi
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 Nuevo módulo `observatory.py` y cliente `observatory.mjs/css`, registrados por fachada `research.py`; API/servidor heredados intactos. `research_v1.py` conserva método0.3 y sus hashes. Archivo IGN inmutable + BDDAE con polígonos completos cacheados, originales completos privados locales; tablas públicas sin sesión y GeoJSON municipal transparente. SQLite guarda ejecuciones inmutables; exportaciones públicas acotadas. Sin backend institucional habilitado ni LLM.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+El canal `risklab_next/continuous` añade conectores oficiales, planificación en servidor, ledger SQLite WAL privado, versiones inmutables y API analítica reproducible. `abrir.py` inicia el recolector; un supervisor independiente prepara una futura instancia Render con disco compartido entre web y worker. No se ha desplegado. [Diseño y operación](docs/next/CONTINUOUS-01.md).

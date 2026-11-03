@@ -113,3 +113,20 @@ Piloto soloTenerife/mar; otras islas no tienen caso histórico implementado. 3D/
 | Perfiles públicos | Operativos diferenciados | mismos resultados,controles avanzados por perfil |
 | Gestión autenticada | No habilitada | API403,no permisos por selector |
 | Cuaderno USGS0.3 | Conservado/reproducible | método fuente byte a byte |
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+| Función0.5 | Estado | Evidencia/límite |
+|---|---|---|
+| IGN automático | Operativo local | 10min,datos oficiales nuevos adquiridos |
+| USGS complementaria | Operativo local | 15min,query+count,independiente |
+| Revisiones/duplicados | Operativo | versiones inmutables,transacciones,leases |
+| Fallo/recuperación | Operativo | últimos válidos,retraso,backoff,sin sustitución |
+| Ausencia en respuesta válida | Operativo | conserva no-devueltos,excluye confirmación,sin inferir retirada |
+| 24h/7d | Operativo con cobertura informada | al corte válido,fuente/territorio/filtros |
+| 30d/1a/histórico | Parcial según cobertura | no backfill automáticoIGN;no ceros ficticios |
+| Refresco mapa/gráficos | Operativo | conserva cámara/filtros/periodo fijo |
+| Publicación/latencia | Información limitada | desconocida cuando no publicada,HTTPDate no es publicación |
+| Render persistente | Preparado,no desplegado | una instancia/disco,ejemplo desactivado |
+| Multiseñal | Contrato preparado | GNSS/InSAR/gases no conectados |

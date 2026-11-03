@@ -1,6 +1,6 @@
 # Canarias RiskLab NEXT · revisión local
 
-Observatorio multinsular · versión0.4, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
+Observatorio de actualización continua · versión 0.5, en desarrollo. No es un sistema oficial de vigilancia, alerta o predicción. `/` conserva CanariasRiskLab con P0; `/next/` abre la nueva experiencia.
 
 ## Mac
 
@@ -14,7 +14,7 @@ npm ci
 python3 abrir.py
 ```
 
-Se abre http://127.0.0.1:8787/next/ . Para detener: Ctrl+C. El servidor solo escucha en tu Mac. No despliega nada ni modifica Render. Si el puerto está ocupado: `RISKLAB_PORT=8788 python3 abrir.py`. Necesitas conexión para adquisición IGN/USGS y teselas OSM; un 403 se mostrará como fallo, nunca como actividad cero. npm ci instala SDKs con versiones fijadas; no activa servicios de pago. El ZIP de GitHub no contiene dependencias instaladas: no se presenta como paquete offline autocontenido.
+Se abre http://127.0.0.1:8787/next/?mode=continuous . Para detener: Ctrl+C. El servidor solo escucha en tu Mac. No despliega nada ni modifica Render. Si el puerto está ocupado: `RISKLAB_PORT=8788 python3 abrir.py`. Necesitas conexión para adquisición IGN/USGS y teselas OSM; un 403 se mostrará como fallo, nunca como actividad cero. npm ci instala SDKs con versiones fijadas; no activa servicios de pago. El ZIP de GitHub no contiene dependencias instaladas: no se presenta como paquete offline autocontenido.
 
 Selecciona territorio/fuente/periodo UTC, pulsa Aplicar, explora eventos y abre Investigación. El panel inferior permite cambiar altura con ratón/táctil o flechas de teclado; minimizar/cerrar conserva cámara. Exportación utiliza la selección completa (el cursor de reproducción solo cambia visualización). Perfiles comparten resultados; Gestión institucional es espacio no habilitado con acceso servidor rechazado.
 
@@ -29,3 +29,12 @@ Para probar el salto funcional: selecciona Tenerife/Teide–Pico Viejo y pulsa *
 ## Nuevo recorrido multinsular
 
 Pulsa **Investigar Canarias · histórico IGN**. Compara islas y periodos, explora series/profundidades, consulta municipios oficiales en el área visible y pregunta por evidencias. Archivo IGN: 3.609 registros de 2023–2024, sin simulaciones. Funciona sin adquisición reciente; cartografía externa requiere red. Exporta JSON/CSV y reproduce con `python3 tools/reproduce_observatory.py run.json`. [Guía de revisión y límites](docs/next/OBSERVATORY-01.md).
+
+
+## Canal de actualización continua 0.5
+
+`python3 abrir.py` abre el observatorio continuo y arranca el recolector en el servidor local. IGN cada 10 min y USGS cada 15 min; sigue adquiriendo con el navegador cerrado mientras Python permanezca abierto. La primera ejecución necesita red: no incluye una base viva precargada ni datos simulados. Los archivos históricos anteriores son independientes.
+
+Consulta fuentes y último éxito; elige periodo, territorio y filtros y revisa cobertura. Al arrancar solo hay diez días nominales IGN y treinta USGS: un año no se finge completo. Fija el periodo UTC para mantenerlo durante actualizaciones; JSON congela datos/método y se reproduce con `python3 tools/reproduce_continuous.py run.json`.
+
+[Recorrido, arquitectura, frecuencia, operación y limitaciones](docs/next/CONTINUOUS-01.md). [Capturas reales](docs/next/continuous01/captures). Worker independiente opcional: `python3 -m risklab_next.continuous.worker`; no es necesario ejecutarlo aparte si se usa abrir.py. Diagnóstico, auditoría y copia privada: `tools/audit_continuous.py`. No copiar bases ni HTML crudo a GitHub. El ejemplo Render no despliega nada y necesita revisión/aprobación del disco y plan antes de usarlo.

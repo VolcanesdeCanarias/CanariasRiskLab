@@ -38,3 +38,8 @@ Fuentes primarias de contexto: IGN descripción geológica/sísmica de Tenerife,
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 Nuevos archivos: `risklab_next/data/observatory/ign-2023-2024` (consulta oficial IGN3609 filas,73 originales locales y extracción pública de tablas,criterios/total/hashes/licencia compatible CC BY4); `ign-administration` (WFS IGN BDDAE,92 unidades originales/88 municipios derivados,CC BY4,EPSG4326). Original WFS local sin pérdida; restaurador verifica el hash o recupera la respuesta desde el servicio público. GeoJSON completo de88 municipios incluido en formato legible. GVP5 fichas primarias,clasificación morfológica diferenciada de clusters sísmicos. No se promovió KMZ privado ni se generaron observaciones. Fecha descarga no equivale a vigencia operacional.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+IGN: endpoint público get10dias, ventana nominal de diez días, cada 600 segundos. USGS: FDSN GeoJSON y count, ventana de treinta días, cada 900 segundos. No se mezclan ni sustituyen. Fecha de publicación desconocida cuando no se proporciona; consulta, evento, revisión y primera detección local permanecen separados. [URLs, condiciones, validación y latencia](docs/next/CONTINUOUS-01.md).

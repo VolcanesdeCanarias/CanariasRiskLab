@@ -20,3 +20,8 @@ Nuevo contrato USGS conserva magnitud ausente nula; el endpoint antiguo mantiene
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 0.4: nuevo observatorio IGN multinsular dentro de `/next/`, selección ocho islas/mar,comparación,celdas/tiempo,gráficos,fichas,consultas deterministas,exportación/reproducción y capa municipal IGN. Navegación al nuevo espacio desde Análisis/Territorio; perfiles públicos diferenciados; preservación cuaderno0.3. Pruebas y capturas reales en docs/next/observatory01. Sin cambios en server.py,index.html de producción,main,PR1,Earth o Render.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+Añadido el observatorio de adquisición continua: IGN cada 10 minutos, USGS independiente cada 15, persistencia/versiones, errores con conservación del último dato válido, cobertura explícita, análisis y exportación reproducibles. Prueba oficial: 21 → 22 → 23 registros IGN en sondeos programados. Interfaz móvil/escritorio y contexto conservado durante actualizaciones. [Evidencias y límites](docs/next/CONTINUOUS-01.md).

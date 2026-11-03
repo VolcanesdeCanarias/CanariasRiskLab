@@ -35,3 +35,8 @@ Correlación documental crítica: catálogoUSGS con huecos no invalida sismicida
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 Procedencia/integridad IGN contrastadas contra originales y total publicado, no certificación de completitud instrumental. UTC y periodos semiabiertos; previo de duración exacta; no conversión de escalas. Celdas/bloques solo agrupamientos descriptivos. Intersecciones administrativas no son exposición ni peligro. Caja Teide manual de navegación: recorta observaciones, no adscribe origen. Datum profundidad no especificado en tabla; sin transformación al MDT. Validación científica experta pendiente.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+Los cálculos nuevos son descriptivos y reproducibles mediante `continuous-catalogue-descriptive/1.0`; no certifican actividad, anomalías ni alertas. Cobertura nominal no equivale a completitud instrumental. Datos de publicación e incertidumbre ausentes permanecen desconocidos. Agrupaciones por celdas no son focos físicos. Los métodos históricos permanecen intactos y sus ejemplos se reproducen. [Límites y evidencia](docs/next/CONTINUOUS-01.md).

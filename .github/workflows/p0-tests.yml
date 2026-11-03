@@ -33,6 +33,7 @@ jobs:
       - run: node tests/next/view-state.test.mjs
       - run: node tests/next/browser.cjs
       - run: node tests/next/observatory.cjs
+      - run: node tests/next/continuous.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

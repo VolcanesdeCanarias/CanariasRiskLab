@@ -28,3 +28,8 @@ Primer recorrido integral 0.3: seleccionar sistema → corpus científico → hi
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 El recorrido multinsular incluye observación histórica IGN, análisis y explicación fundamentada dentro de la aplicación. Ciudadanía e Investigación comparten ejecuciones; Gestión permanece restringida. No confundir avance descriptivo con validación de interpretación científica.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+El observatorio recibe y conserva observaciones oficiales, permite explorarlas y explicar resultados descriptivos con trazabilidad. La actualización continua no implica tiempo real instrumental, catálogo completo ni sistema de vigilancia. Ciudadanía e Investigación comparten resultados; Gestión institucional continúa sin habilitar. [Recorrido funcional](docs/next/CONTINUOUS-01.md).

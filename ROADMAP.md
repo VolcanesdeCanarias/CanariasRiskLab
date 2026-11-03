@@ -51,3 +51,8 @@ MDT/batimetría no bloquean el valor científico inicial pero siguen pendientes 
 ## Salto funcional multinsular · 0.4 · 2026-11-02
 
 Entregado: consulta IGN2023–2024 multinsular, comparación territorial/temporal, exploración gráfica, celdas/bloques descriptivos, asistencia vinculada a ejecución y capa municipal oficial consultable. Siguiente: ampliar el archivo a años adicionales mediante nuevas versiones, estudiar completitud/cambios de red y revisar atribución geográfica. MDT: falta autorización de salida a servicios.idee.es/centrodedescargas.cnig.es o un GeoTIFF oficial aportado; no bloquea las funciones anteriores. Después: instalaciones oficiales, GNSS/InSAR/gases, auth institucional y revisión experta.
+
+
+## Actualización continua · 0.5 · 2026-11-03
+
+Entregado el canal sísmico continuo y su demostración local. Siguiente validación: backfill oficial IGN para ampliar cobertura, caracterización de completitud, política de archivo/retención y supervisión operativa. Escalado multiinstancia requiere PostgreSQL u otro almacenamiento compartido. GNSS, InSAR y geoquímica necesitan contratos y validación propios; no se simulan. Render sigue pendiente de aprobación. [Detalles](docs/next/CONTINUOUS-01.md).

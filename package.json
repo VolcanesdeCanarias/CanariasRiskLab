@@ -1,0 +1,16 @@
+{
+  "name": "canarias-risklab-next-review",
+  "private": true,
+  "version": "0.3.0",
+  "scripts": {
+    "test:next": "node tests/next/browser.cjs",
+    "test:unit:next": "node tests/next/view-state.test.mjs"
+  },
+  "dependencies": {
+    "cesium": "1.146.0",
+    "leaflet": "1.9.4"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}

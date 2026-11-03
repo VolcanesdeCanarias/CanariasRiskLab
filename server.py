@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory, request
+from flask import Flask, jsonify, send_from_directory, request, abort
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -8,7 +8,12 @@ import os
 import math
 import json
 
-app = Flask(__name__, static_folder='.')
+app = Flask(__name__, static_folder=None)
+PUBLIC_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+PUBLIC_FILES = frozenset({
+    "index.html", "municipios_canarias.geojson",
+    "la_palma_exclusion15ene26.geojson", "ign_instrumentation.json", "catalogo.kmz",
+})
 
 IGN_URL = "https://www.ign.es/web/vlc-ultimo-terremoto/-/terremotos-canarias/get10dias"
 
@@ -81,6 +86,12 @@ OFFICIAL_VOLCANIC_STATUS = [
         "nota": "Estado oficial insular mostrado en verde."
     }
 ]
+
+OFFICIAL_STATUS_METADATA = {
+    "mode": "manual", "is_live": False, "current_verified": False,
+    "reference_date": "2026-04-06",
+    "notice": "Referencia manual PEVOLCA del 2026-04-06. Vigencia no comprobada; no es una actualización oficial en tiempo real.",
+}
 
 MUNICIPALITIES_BY_ISLAND = {
     "Tenerife": [
@@ -352,10 +363,77 @@ def load_instrumentation_json():
 # INGESTA IGN
 # =========================================================
 
+class DataAcquisitionError(Exception):
+    """A source failure, distinct from a successfully acquired empty catalogue."""
+
+    def __init__(self, source, code, message, upstream_status=None):
+        super().__init__(message)
+        self.source = source
+        self.code = code
+        self.upstream_status = upstream_status
+
+
+def source_status(source, events):
+    return {
+        "source": source,
+        "state": "available" if events else "empty",
+        "checked_at": now_utc().isoformat(),
+        "count": len(events),
+    }
+
+
+def acquisition_failure(error, source):
+    if isinstance(error, DataAcquisitionError):
+        status = 504 if error.code == "timeout" else 502
+        code, message = error.code, str(error)
+        upstream_status = error.upstream_status
+    else:
+        status, code = 500, "internal_error"
+        message, upstream_status = "No se pudo completar el análisis de datos.", None
+    app.logger.warning("%s: %s (upstream_status=%s)", source, code, upstream_status)
+    return {
+        "ok": False,
+        "error": message,
+        "error_code": code,
+        "data_status": {
+            "source": source, "state": "unavailable", "count": None,
+            "checked_at": now_utc().isoformat(), "upstream_status": upstream_status,
+        },
+    }, status
+
+
+def fetch_source(url, source, timeout, headers=None):
+    try:
+        response = requests.get(url, headers=headers, timeout=timeout)
+        response.raise_for_status()
+        if response.status_code != 200:
+            raise DataAcquisitionError(source, "http_error", f"{source}: respuesta HTTP inesperada.", response.status_code)
+        return response
+    except requests.Timeout as exc:
+        raise DataAcquisitionError(source, "timeout", f"{source}: tiempo de espera agotado.") from exc
+    except requests.HTTPError as exc:
+        status = exc.response.status_code if exc.response is not None else None
+        raise DataAcquisitionError(source, "http_error", f"{source}: error HTTP {status}.", status) from exc
+    except requests.RequestException as exc:
+        raise DataAcquisitionError(source, "connection_error", f"{source}: no se pudo adquirir la información.") from exc
+
+
+def invalid_source(source, message):
+    return DataAcquisitionError(source, "invalid_response", f"{source}: {message}")
+
+
+def finite_number(value):
+    number = parse_float(value)
+    if not math.isfinite(number):
+        raise ValueError("Número no finito")
+    return number
+
+
 def fetch_ign_html():
     headers = {"User-Agent": "Mozilla/5.0 CanariasRiskLab/1.0"}
-    response = requests.get(IGN_URL, headers=headers, timeout=25)
-    response.raise_for_status()
+    response = fetch_source(IGN_URL, "IGN", timeout=25, headers=headers)
+    if "text/html" not in response.headers.get("Content-Type", "").lower():
+        raise invalid_source("IGN", "el contenido recibido no es HTML.")
     return response.text
 
 
@@ -363,56 +441,54 @@ def parse_ign_canarias():
     html_text = fetch_ign_html()
     soup = BeautifulSoup(html_text, "html.parser")
 
-    eventos = []
-    rows = soup.select("tr")
+    # Match the published table, not arbitrary dates elsewhere in the page.
+    required = {
+        "id": "evento", "fecha": "fecha", "hora": "hora utc",
+        "lat": "latitud", "lon": "longitud", "depth": "profundidad",
+        "mag": "magnitud", "type": "tipo mag", "place": "localizacion",
+    }
+    table, columns, header = None, {}, None
+    for candidate in soup.select("table"):
+        for row in candidate.select("tr"):
+            labels = [normalize_text(clean_text(c.get_text(" ", strip=True))) for c in row.find_all(["td", "th"])]
+            mapping = {key: next((i for i, label in enumerate(labels) if label.startswith(prefix)), None)
+                       for key, prefix in required.items()}
+            if all(i is not None for i in mapping.values()):
+                table, columns, header = candidate, mapping, row
+                break
+        if table is not None:
+            break
+    if table is None:
+        raise invalid_source("IGN", "no se reconoce la tabla de eventos.")
+
+    eventos, explicit_empty, event_ids = [], False, set()
+    reference_time = now_utc()
+    rows = table.select("tr")
 
     for row in rows:
+        if row is header or not row.find("td"):
+            continue
         cells = [clean_text(td.get_text(" ", strip=True)) for td in row.find_all(["td", "th"])]
-        if len(cells) < 8:
+        if not any(cells):
             continue
-
-        joined = " ".join(cells)
-        if not re.search(r"\d{2}/\d{2}/\d{4}", joined):
+        message = normalize_text(" ".join(cells)).rstrip(".")
+        if message in {"no se han encontrado terremotos", "no hay terremotos", "no hay eventos"}:
+            explicit_empty = True
             continue
-        if not re.search(r"\d{2}:\d{2}:\d{2}", joined):
-            continue
-
         try:
-            fecha_idx = next(i for i, c in enumerate(cells) if re.fullmatch(r"\d{2}/\d{2}/\d{4}", c))
-            hora_idx = fecha_idx + 1
-
-            fecha = cells[fecha_idx]
-            hora = cells[hora_idx]
-            lat = parse_float(cells[hora_idx + 1])
-            lon = parse_float(cells[hora_idx + 2])
-            profundidad = parse_float(cells[hora_idx + 3])
-
-            mag = None
-            tipo_mag = ""
-            localizacion = ""
-
-            for i in range(hora_idx + 4, min(len(cells), hora_idx + 10)):
-                if re.fullmatch(r"-?\d+[.,]\d+", cells[i]):
-                    mag = parse_float(cells[i])
-                    if i + 1 < len(cells):
-                        tipo_mag = cells[i + 1]
-                        localizacion = " ".join(cells[i + 2:]).strip()
-                    break
-
-            if mag is None:
-                continue
-
-            dt = None
-            try:
-                dt = datetime.strptime(f"{fecha} {hora}", "%d/%m/%Y %H:%M:%S").replace(tzinfo=timezone.utc)
-            except ValueError:
-                pass
-
-            evento_id = ""
-            for c in cells:
-                if re.fullmatch(r"es\d+[a-z0-9]+", c.lower()):
-                    evento_id = c
-                    break
+            values = {key: cells[index] for key, index in columns.items()}
+            fecha, hora = values["fecha"], values["hora"]
+            dt = datetime.strptime(f"{fecha} {hora}", "%d/%m/%Y %H:%M:%S").replace(tzinfo=timezone.utc)
+            lat, lon = finite_number(values["lat"]), finite_number(values["lon"])
+            profundidad, mag = finite_number(values["depth"]), finite_number(values["mag"])
+            evento_id, tipo_mag, localizacion = values["id"], values["type"], values["place"]
+            if (not re.fullmatch(r"es\d+[a-z0-9]+", evento_id.lower())
+                    or evento_id.lower() in event_ids
+                    or not (-90 <= lat <= 90 and -180 <= lon <= 180)
+                    or not (-10 <= profundidad <= 1000 and -10 <= mag <= 10)
+                    or dt > reference_time + timedelta(minutes=5)):
+                raise ValueError("Campos fuera de rango")
+            event_ids.add(evento_id.lower())
 
             isla = classify_island(lat, lon)
             municipio = canonical_municipality_name(infer_municipality(localizacion, isla))
@@ -432,40 +508,73 @@ def parse_ign_canarias():
                 "municipio": municipio,
                 "source": "IGN_live"
             })
-        except Exception:
-            pass
+        except (ValueError, IndexError, TypeError) as exc:
+            raise invalid_source("IGN", "la tabla contiene eventos incompletos o inválidos; no se calcularán indicadores.") from exc
 
+    if explicit_empty and eventos:
+        raise invalid_source("IGN", "la tabla contiene información contradictoria.")
+    if not eventos and not explicit_empty:
+        raise invalid_source("IGN", "la tabla está vacía sin confirmación de ausencia de eventos.")
+    if eventos and max(parse_event_datetime(e) for e in eventos) < reference_time - timedelta(days=11):
+        raise DataAcquisitionError("IGN", "stale_data", "IGN: el catálogo de diez días está desactualizado.")
     return eventos
 
 # =========================================================
 # USGS
 # =========================================================
 
-def fetch_usgs_canarias():
+def fetch_usgs_canarias(preserve_missing_magnitude=False):
     url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
-    data = requests.get(url, timeout=20).json()
+    response = fetch_source(url, "USGS", timeout=20)
+    if not any(kind in response.headers.get("Content-Type", "").lower()
+               for kind in ("application/json", "application/geo+json")):
+        raise invalid_source("USGS", "el contenido recibido no es JSON.")
+    try:
+        data = response.json()
+    except ValueError as exc:
+        raise invalid_source("USGS", "el contenido recibido no es JSON válido.") from exc
+    if (not isinstance(data, dict) or data.get("type") != "FeatureCollection"
+            or not isinstance(data.get("features"), list)):
+        raise invalid_source("USGS", "no se reconoce el catálogo GeoJSON.")
+    try:
+        metadata = data["metadata"]
+        generated = datetime.fromtimestamp(finite_number(metadata["generated"]) / 1000, tz=timezone.utc)
+        if metadata["status"] != 200 or metadata["count"] != len(data["features"]):
+            raise ValueError("Metadatos contradictorios")
+        if not now_utc() - timedelta(hours=2) <= generated <= now_utc() + timedelta(minutes=5):
+            raise DataAcquisitionError("USGS", "stale_data", "USGS: fecha de generación del feed no vigente.")
+    except (KeyError, TypeError, ValueError, OverflowError, OSError) as exc:
+        raise invalid_source("USGS", "los metadatos del feed no son válidos.") from exc
 
     eventos = []
-    for feature in data.get("features", []):
-        coords = feature.get("geometry", {}).get("coordinates", [])
-        props = feature.get("properties", {})
-
-        if len(coords) < 3:
-            continue
-
-        lon, lat, depth = coords[:3]
+    for feature in data["features"]:
+        try:
+            if feature.get("type") != "Feature" or feature["geometry"]["type"] != "Point":
+                raise ValueError("Geometría inesperada")
+            lon, lat, depth = [finite_number(v) for v in feature["geometry"]["coordinates"][:3]]
+            props = feature["properties"]
+            if not (-90 <= lat <= 90 and -180 <= lon <= 180 and -10 <= depth <= 1000):
+                raise ValueError("Coordenadas fuera de rango")
+            timestamp_ms = finite_number(props["time"])
+            dt = datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
+            if dt > now_utc() + timedelta(minutes=5):
+                raise ValueError("Fecha futura")
+            magnitude = (None if preserve_missing_magnitude and props.get("mag") is None
+                         else finite_number(props.get("mag") if props.get("mag") is not None else 0))
+        except (AttributeError, KeyError, TypeError, ValueError, OverflowError, OSError) as exc:
+            raise invalid_source("USGS", "el catálogo contiene eventos incompletos o inválidos.") from exc
         if not (26 <= lat <= 31 and -19 <= lon <= -12):
             continue
 
-        timestamp_ms = props.get("time", 0) or 0
         eventos.append({
             "id": feature.get("id"),
             "lat": lat,
             "lon": lon,
             "profundidad_km": depth,
-            "magnitud": props.get("mag", 0) or 0,
+            "magnitud": magnitude,
+            **({"tipo_magnitud": props.get("magType")} if preserve_missing_magnitude else {}),
             "localizacion": props.get("place", "Canarias"),
-            "datetime_iso": datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc).isoformat(),
+            "datetime_iso": dt.isoformat(),
             "source": "USGS",
             "isla": classify_island(lat, lon)
         })
@@ -1273,35 +1382,42 @@ def exposed_infrastructures(events_recent, island_name=None, municipio=None):
 
 @app.route("/")
 def root():
-    return send_from_directory(".", "index.html")
+    return send_from_directory(PUBLIC_DIRECTORY, "index.html")
 
 
 @app.route("/<path:path>")
 def static_proxy(path):
-    return send_from_directory(".", path)
+    if path not in PUBLIC_FILES:
+        abort(404)
+    return send_from_directory(PUBLIC_DIRECTORY, path)
 
 
 @app.route("/api/ign-canarias")
 def api_ign_canarias():
     try:
         eventos = parse_ign_canarias()
-        return jsonify({"ok": True, "count": len(eventos), "eventos": eventos})
+        return jsonify({"ok": True, "count": len(eventos), "eventos": eventos,
+                        "data_status": source_status("IGN", eventos)})
     except Exception as e:
-        return jsonify({"ok": False, "error": str(e), "count": 0, "eventos": []}), 500
+        payload, status = acquisition_failure(e, "IGN")
+        return jsonify({**payload, "count": None, "eventos": []}), status
 
 
 @app.route("/api/usgs-canarias")
 def api_usgs_canarias():
     try:
         eventos = fetch_usgs_canarias()
-        return jsonify({"ok": True, "count": len(eventos), "eventos": eventos})
+        return jsonify({"ok": True, "count": len(eventos), "eventos": eventos,
+                        "data_status": source_status("USGS", eventos)})
     except Exception as e:
-        return jsonify({"ok": False, "error": str(e), "count": 0, "eventos": []}), 500
+        payload, status = acquisition_failure(e, "USGS")
+        return jsonify({**payload, "count": None, "eventos": []}), status
 
 
 @app.route("/api/official-volcanic-status")
 def api_official_volcanic_status():
-    return jsonify({"ok": True, "official_status": OFFICIAL_VOLCANIC_STATUS})
+    return jsonify({"ok": True, "official_status": OFFICIAL_VOLCANIC_STATUS,
+                    "official_status_metadata": OFFICIAL_STATUS_METADATA})
 
 
 @app.route("/api/instrumentation")
@@ -1327,20 +1443,21 @@ def api_risklab_clusters():
 
         return jsonify({
             "ok": True,
+            "data_status": source_status("IGN", recent),
             "clusters": ranking,
             "temporal_clusters": temporal,
             "focus_summary": summary,
             "enjambres": swarms
         })
     except Exception as e:
+        payload, status = acquisition_failure(e, "IGN")
         return jsonify({
-            "ok": False,
-            "error": str(e),
+            **payload,
             "clusters": [],
             "temporal_clusters": [],
-            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."},
+            "focus_summary": {"focos_detectados": None, "foco_dominante": None, "lectura": "Focos no evaluados: datos no disponibles."},
             "enjambres": []
-        }), 500
+        }), status
 
 
 @app.route("/api/risklab-bundle")
@@ -1365,22 +1482,27 @@ def api_risklab_bundle():
         analytics_base = recent_selected if municipio_filter else recent_island
 
         summary = grouped_summary_by_island(recent)
-        risklab_index = compute_risklab_index(analytics_base, island_filter)
-        interpretation = auto_interpretation(analytics_base, municipio_filter or island_filter or "Canarias")
+        # An empty validated catalogue is not a measurement of the experimental index.
+        # Keep scientific functions untouched; gate their publication at the API boundary.
+        for item in summary.values():
+            if item["eventos_30d"] == 0:
+                item["risklab_index"] = None
+        risklab_index = compute_risklab_index(analytics_base, island_filter) if analytics_base else None
+        interpretation = auto_interpretation(analytics_base, municipio_filter or island_filter or "Canarias") if analytics_base else None
         depth = depth_profile(events_in_days(analytics_base, 30))
         compare = compare_windows(analytics_base)
-        acceleration = compute_acceleration(analytics_base)
-        baseline = compute_baseline(analytics_base, island_filter)
-        regime = detect_regime_change(analytics_base, island_filter)
-        migration = detect_depth_migration(analytics_base, island_filter)
-        anomaly = compute_anomaly_signal(analytics_base, island_filter)
+        acceleration = compute_acceleration(analytics_base) if analytics_base else None
+        baseline = compute_baseline(analytics_base, island_filter) if analytics_base else None
+        regime = detect_regime_change(analytics_base, island_filter) if analytics_base else None
+        migration = detect_depth_migration(analytics_base, island_filter) if analytics_base else None
+        anomaly = compute_anomaly_signal(analytics_base, island_filter) if analytics_base else None
         serie = serie_temporal(events_in_days(analytics_base, 30))
 
         municipal_stats = build_municipality_stats(recent_island, island_filter)
         municipal_ranking = municipality_ranking(recent_island, island_filter)
-        selected_municipality = municipality_summary(recent_island, municipio_filter) if municipio_filter else None
+        selected_municipality = municipality_summary(recent_island, municipio_filter) if municipio_filter and analytics_base else None
         municipal_clusters = detect_municipal_clusters(recent_island, island_filter)
-        infra_expuestas = exposed_infrastructures(recent_island, island_filter, municipio_filter)
+        infra_expuestas = exposed_infrastructures(recent_island, island_filter, municipio_filter) if analytics_base else []
 
         focus_clusters = build_focus_ranking(recent, island_filter)
         focus_temporal = build_temporal_clusters(recent, island_filter)
@@ -1400,10 +1522,12 @@ def api_risklab_bundle():
             ),
             "infraestructuras": len([x for x in EMERGENCY_INFRASTRUCTURES if not island_filter or x["isla"] == island_filter]),
             "infra_expuestas": infra_expuestas
-        }
+        } if analytics_base else None
 
         return jsonify({
             "ok": True,
+            "data_status": source_status("IGN", recent),
+            "analysis_status": {"state": "available" if analytics_base else "no_events", "count": len(analytics_base)},
             "ign_eventos": analytics_base,
             "summary": summary,
             "risklab_index": risklab_index,
@@ -1418,6 +1542,7 @@ def api_risklab_bundle():
             "territorial": territorial,
             "serie": serie,
             "official_status": OFFICIAL_VOLCANIC_STATUS,
+            "official_status_metadata": OFFICIAL_STATUS_METADATA,
             "municipal_stats": municipal_stats,
             "municipal_ranking": municipal_ranking,
             "selected_municipality": selected_municipality,
@@ -1430,9 +1555,10 @@ def api_risklab_bundle():
             "instrumentation": instrumentation
         })
     except Exception as e:
+        payload, status = acquisition_failure(e, "IGN")
         return jsonify({
-            "ok": False,
-            "error": str(e),
+            **payload,
+            "analysis_status": {"state": "unavailable", "count": None},
             "ign_eventos": [],
             "summary": {},
             "risklab_index": None,
@@ -1446,7 +1572,8 @@ def api_risklab_bundle():
             "anomaly": None,
             "territorial": None,
             "serie": {"labels": [], "counts": [], "mmax": []},
-            "official_status": [],
+            "official_status": OFFICIAL_VOLCANIC_STATUS,
+            "official_status_metadata": OFFICIAL_STATUS_METADATA,
             "municipal_stats": {},
             "municipal_ranking": [],
             "selected_municipality": None,
@@ -1454,10 +1581,19 @@ def api_risklab_bundle():
             "infra_expuestas": [],
             "focus_clusters": [],
             "focus_temporal_clusters": [],
-            "focus_summary": {"focos_detectados": 0, "foco_dominante": None, "lectura": "Error al calcular focos."},
+            "focus_summary": {"focos_detectados": None, "foco_dominante": None, "lectura": "Focos no evaluados: datos no disponibles."},
             "enjambres": [],
-            "instrumentation": []
-        }), 500
+            "instrumentation": load_instrumentation_json()
+        }), status
+
+
+from risklab_next import create_blueprint
+
+app.register_blueprint(create_blueprint(
+    {"IGN": lambda: parse_ign_canarias(),
+     "USGS": lambda: fetch_usgs_canarias(preserve_missing_magnitude=True)},
+    acquisition_failure,
+))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+# EXAMPLE ONLY: no service is created or modified by this file.
+# Persistent disk/plan requires separate approval and current price review.
+services:
+  - type: web
+    name: risklab-next-review
+    runtime: python
+    autoDeploy: false
+    buildCommand: pip install -r requirements.txt && npm ci
+    startCommand: python -m risklab_next.continuous.runtime
+    healthCheckPath: /api/v1/continuous/health
+    disk:
+      name: observations
+      mountPath: /var/data/risklab
+      sizeGB: 5
+    envVars:
+      - key: RISKLAB_CONTINUOUS_DB
+        value: /var/data/risklab/continuous.sqlite
+      - key: RISKLAB_NEXT_DB
+        value: /var/data/risklab/snapshots.sqlite

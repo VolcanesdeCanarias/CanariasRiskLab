@@ -1,0 +1,182 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2000-06-05T11:12:03.400Z,28.044,-16.205,18.8,3.3,mblg,5,,,,us,usp0009u1x,2014-11-07T01:10:19.215Z,"Canary Islands, Spain region",earthquake,,,,,reviewed,mdd,mdd
+2000-06-21T08:57:42.420Z,28.14,-16.068,35,,,6,,,,us,usp0009uxn,2014-11-07T01:10:23.968Z,"32 km WNW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,us
+2000-09-10T16:53:12.440Z,28.771,-16.316,51.6,,,4,,,,us,usp000a00n,2014-11-07T01:11:03.988Z,"28 km N of Tegueste, Spain",earthquake,,,,,reviewed,mdd,us
+2001-03-11T15:02:47.610Z,28.058,-16.168,0,2.9,mblg,4,,,,us,usp000ab7y,2014-11-07T01:12:20.021Z,"33 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-03-13T01:28:42.070Z,28.506,-15.976,35,,,5,,,,us,usp000aba7,2014-11-07T01:12:20.330Z,"27 km E of Santa Cruz de Tenerife, Spain",earthquake,,,,,reviewed,mdd,us
+2001-08-15T03:30:27.850Z,28.441,-16.66,20.4,3.1,mblg,4,,,,us,usp000amga,2014-11-07T01:13:33.759Z,"5 km N of San Juan de la Rambla, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-10-22T22:18:05.240Z,28.237,-16.371,0,2.5,mblg,5,,,,us,usp000arf9,2014-11-07T01:14:02.295Z,"6 km E of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-10-25T05:04:11.910Z,28.131,-16.209,0,2.9,mblg,5,,,,us,usp000arkz,2014-11-07T01:14:02.893Z,"25 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-11-02T01:24:18.310Z,28.249,-16.356,8.8,2.4,mblg,4,,,,us,usp000as2f,2014-11-07T01:14:09.316Z,"8 km E of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-11-06T02:48:40.430Z,28.28,-16.425,0,2.9,mblg,4,,,,us,usp000asaq,2014-11-07T01:14:12.470Z,"3 km SSW of Güimar, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-11-18T02:46:28.130Z,28.178,-16.248,0,2.9,mblg,4,,,,us,usp000at23,2014-11-07T01:14:16.174Z,"19 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-11-25T04:49:34.640Z,28.852,-15.883,29.6,2.9,mblg,4,,,,us,usp000atet,2014-11-07T01:14:18.107Z,"55 km NE of Santa Cruz de Tenerife, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-11-27T19:56:02.730Z,28.106,-16.244,0,2.6,mblg,4,,,,us,usp000atkp,2014-11-07T01:14:19.373Z,"23 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2001-12-08T01:36:53.190Z,27.814,-16.566,0,2.7,mblg,5,,,,us,usp000au78,2014-11-07T01:14:26.962Z,"23 km SSE of Las Rosas, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-03-01T05:36:19.800Z,28.06,-16.162,0,2.7,mblg,4,,,,us,usp000azcy,2014-11-07T01:15:00.679Z,"Canary Islands, Spain region",earthquake,,,,,reviewed,mdd,mdd
+2002-03-06T16:35:00.950Z,28.244,-16.175,0,2.4,mblg,4,,,,us,usp000aztk,2014-11-07T01:15:05.442Z,"22 km ESE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-03-07T02:08:05.050Z,28.076,-16.249,17,2.9,mblg,5,,,,us,usp000azut,2014-11-07T01:15:05.591Z,"25 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-03-16T02:50:50.840Z,28.104,-16.16,0,3.1,mblg,4,,,,us,usp000b0dt,2014-11-07T01:15:09.975Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-03-23T03:03:45.010Z,28.077,-16.206,0,3.2,mblg,4,,,,us,usp000b0vy,2014-11-07T01:15:13.070Z,"28 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-04-30T16:01:38.590Z,28.088,-16.192,0,2.9,mblg,4,,,,us,usp000b3f2,2014-11-07T01:15:29.725Z,"29 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-05-10T01:14:03.960Z,28.14,-16.153,24.7,2.6,mblg,6,,,,us,usp000b41u,2014-11-07T01:15:36.380Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-05-18T02:25:14.180Z,28.136,-16.246,0,2.8,mblg,4,,,,us,usp000b4hb,2014-11-07T01:15:38.233Z,"Canary Islands, Spain region",earthquake,,,,,reviewed,mdd,mdd
+2002-06-04T23:12:36.440Z,28.042,-16.162,0,3,mblg,5,,,,us,usp000b5hv,2014-11-07T01:15:46.058Z,"34 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-06-21T14:51:10.620Z,28.09,-16.155,0,3.3,mblg,4,,,,us,usp000b6ng,2014-11-07T01:15:52.343Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-06-21T22:29:20.310Z,28.027,-15.762,28,2.8,mblg,4,,,,us,usp000b6p5,2014-11-07T01:15:52.389Z,"4 km NNE of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-06-24T11:48:05.770Z,28.15,-16.14,4,2.7,mblg,4,,,,us,usp000b6um,2014-11-07T01:15:53.004Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-07-11T07:30:16.770Z,27.991,-16.129,0,3.1,mblg,5,,,,us,usp000b7x4,2014-11-07T01:16:02.576Z,"34 km W of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-07-26T23:43:52.910Z,28.11,-16.159,13,2,mblg,5,,,,us,usp000b8uv,2014-11-07T01:16:06.992Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-07-27T14:50:42.800Z,28.004,-16.782,24.6,2.4,mblg,5,,,,us,usp000b8vu,2014-11-07T01:16:07.063Z,"8 km SW of Playa de las Américas, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-09-11T09:14:33.290Z,28.086,-16.175,0,2.3,mblg,4,,,,us,usp000bbz6,2014-11-07T01:16:29.829Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-09-13T13:57:23.720Z,28.145,-16.36,32.5,2.5,mblg,4,,,,us,usp000bc58,2014-11-07T01:16:30.706Z,"12 km E of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-09-21T10:46:11.390Z,28.08,-16.172,0,2.5,mblg,4,,,,us,usp000bctb,2014-11-07T01:16:33.470Z,"Canary Islands, Spain region",earthquake,,,,,reviewed,mdd,mdd
+2002-09-21T12:07:37.520Z,28.171,-16.163,0,2.5,mblg,4,,,,us,usp000bcth,2014-11-07T01:16:33.503Z,"28 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-10-04T13:49:05.850Z,28.02,-16.182,22.3,2.8,mblg,6,,,,us,usp000bdsq,2014-11-07T01:16:41.789Z,"33 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-10-08T09:33:49.450Z,28.112,-16.188,0,2.5,mblg,4,,,,us,usp000be1v,2014-11-07T01:16:43.320Z,"28 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-10-28T19:19:41.170Z,28.186,-16.129,0,2.8,mblg,8,,,,us,usp000bfj1,2014-11-07T01:16:49.686Z,"30 km SE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-11-01T10:51:47.490Z,28.108,-16.205,6.6,2.5,mblg,5,,,,us,usp000bft5,2014-11-07T01:16:54.009Z,"27 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-11-10T17:07:17.480Z,28.129,-16.143,0,2.6,mblg,4,,,,us,usp000bhbe,2014-11-07T01:17:06.361Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-11-24T05:35:02.690Z,28.155,-16.148,0,3.1,mblg,5,,,,us,usp000bj9b,2014-11-07T01:17:10.759Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-12-18T21:47:56.350Z,28.174,-16.142,0,2.8,mblg,4,,,,us,usp000bky8,2014-11-07T01:17:22.577Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2002-12-23T03:51:21.010Z,28.721,-16.291,1.6,2.9,mblg,4,,,,us,usp000bm7u,2014-11-07T01:17:24.537Z,"22 km N of Tegueste, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-01-22T18:37:12.570Z,28.048,-16.159,0,3,mblg,5,,,,us,usp000bp06,2014-11-07T01:17:37.253Z,"34 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-01-24T05:06:14.930Z,28.069,-16.136,26.4,2.1,mblg,4,,,,us,usp000bp3b,2014-11-07T01:17:37.952Z,"35 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-01-31T08:30:31.230Z,28.142,-16.181,0,3.3,mblg,4,,,,us,usp000bppd,2014-11-07T01:17:40.072Z,"27 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-02T16:17:40.030Z,28.108,-16.247,0,3,mblg,4,,,,us,usp000bpuw,2014-11-07T01:17:44.073Z,"23 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-06T05:41:34.940Z,28.141,-16.188,8.9,2.6,mblg,4,,,,us,usp000bq2t,2014-11-07T01:17:45.691Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-06T09:56:29.240Z,28.339,-16.281,21.7,2.1,mblg,4,,,,us,usp000bq33,2014-11-07T01:17:45.712Z,"9 km E of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-06T15:10:02.340Z,28.126,-16.099,35.4,,,4,,,,us,usp000bq3s,2014-11-07T01:17:45.774Z,"34 km WNW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,us
+2003-02-06T18:58:46.060Z,28.067,-16.095,0,2.9,mblg,5,,,,us,usp000bq44,2014-11-07T01:17:45.830Z,"32 km WNW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-08T15:13:24.440Z,28.091,-16.13,0,2.8,mblg,5,,,,us,usp000bq8t,2014-11-07T01:17:46.342Z,"34 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-09T00:47:51.380Z,28.052,-16.132,27,2.8,mblg,5,,,,us,usp000bq9s,2014-11-07T01:17:46.446Z,"35 km WNW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-09T13:20:50.170Z,28.064,-16.126,25.8,2.9,mblg,6,,,,us,usp000bqat,2014-11-07T01:17:46.585Z,"34 km WNW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-09T19:00:24.300Z,28.065,-16.141,33.3,2,mblg,4,,,,us,usp000bqba,2014-11-07T01:17:46.688Z,"34 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-12T23:40:19.880Z,28.094,-16.145,0,2.7,mblg,4,,,,us,usp000bqjg,2014-11-07T01:17:47.578Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-02-28T16:42:14.600Z,28.133,-16.194,10.3,2.7,mblg,5,,,,us,usp000brnv,2014-11-07T01:17:53.243Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-03-02T00:07:46.240Z,27.993,-16.164,31,3.1,mblg,6,218.9,,,us,usp000brrz,2014-11-07T01:17:57.251Z,"36 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-03-07T12:31:14.710Z,28.367,-15.891,0,2.5,mblg,5,200.9,,,us,usp000bs4q,2014-11-07T01:18:00.435Z,"33 km NW of Gáldar, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-03-24T08:11:20.220Z,28.206,-16.371,0,2.5,mblg,4,174.1,,,us,usp000btd3,2014-11-07T01:18:07.876Z,"7 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-03-25T03:11:34.590Z,28.069,-16.142,0,2.3,mblg,4,201.1,,,us,usp000btf7,2014-11-07T01:18:08.051Z,"34 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-03-29T20:04:54.110Z,27.781,-16.725,10.8,2.3,mblg,5,235.1,,,us,usp000btta,2014-11-07T01:18:09.805Z,"26 km SSW of Las Rosas, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-04-05T17:46:41.290Z,28.024,-16.184,24,2.9,mblg,6,213,,,us,usp000buf6,2014-11-07T01:18:17.748Z,"33 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-04-05T20:54:58.110Z,28.086,-16.226,28.5,2.2,mblg,5,200.8,,,us,usp000bufp,2014-11-07T01:18:17.807Z,"26 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-04-08T10:43:21.860Z,28.034,-16.225,0,2.9,mblg,5,213.1,,,us,usp000buq2,2014-11-07T01:18:18.748Z,"29 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-04-10T04:50:57.840Z,28.147,-16.189,27.8,2.3,mblg,5,184.1,,,us,usp000buut,2014-11-07T01:18:19.372Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-04-28T23:22:40.970Z,28.215,-16.192,23.8,3.3,mblg,8,169.7,,,us,usp000bw5w,2014-11-07T01:18:27.039Z,"23 km SE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-05-18T18:45:34.190Z,28.087,-16.113,3.3,2.6,mblg,4,195.6,,,us,usp000bxfs,2014-11-07T01:18:38.033Z,"34 km WNW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-05-24T04:26:18.350Z,28.224,-16.331,0,1.9,mblg,4,167.1,,,us,usp000by0f,2014-11-07T01:18:41.792Z,"10 km E of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-05-25T22:19:49.470Z,28.099,-16.235,26.8,2.9,mblg,5,198.3,,,us,usp000by58,2014-11-07T01:18:42.659Z,"25 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-05-26T17:03:28.030Z,28.182,-16.136,0,2.4,mblg,4,173.6,,,us,usp000by7f,2014-11-07T01:18:43.013Z,"30 km SE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-06-07T22:59:52.420Z,28.119,-16.501,0,1.9,mblg,4,225,,,us,usp000bzay,2014-11-07T01:18:52.373Z,"5 km SSW of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-06-09T14:31:21.060Z,28.103,-16.184,0,1.9,mblg,4,194.6,,,us,usp000bzg0,2014-11-07T01:18:53.178Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-06-14T15:00:26.760Z,28.081,-16.233,13.4,1.2,mblg,4,202.4,,,us,usp000bzv4,2014-11-07T01:18:55.591Z,"26 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-06-16T21:40:21.340Z,28.181,-16.177,24.2,1.6,mblg,4,175.3,,,us,usp000c01h,2014-11-07T01:18:56.794Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-06-22T09:58:36.780Z,28.088,-16.201,0,1.6,mblg,5,199.1,,,us,usp000c0ks,2014-11-07T01:18:58.629Z,"28 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-07-16T16:47:09.430Z,28.206,-16.205,15.1,1.8,mblg,4,169.8,,,us,usp000c2nj,2014-11-07T01:19:13.757Z,"23 km E of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-07-18T21:54:31.550Z,28.041,-16.152,24.1,2,mblg,6,207.8,,,us,usp000c2uh,2014-11-07T01:19:15.087Z,"35 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-07-25T05:47:33.130Z,28.041,-16.166,16.3,2.3,mblg,6,208.5,,,us,usp000c39s,2014-11-07T01:19:17.447Z,"34 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-07-29T03:47:08.920Z,28.119,-16.214,27.5,2.9,mblg,7,192,,,us,usp000c3mh,2014-11-07T01:19:19.255Z,"25 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-12T11:23:46.190Z,28.126,-16.204,10,1.8,mblg,4,190.1,,,us,usp000c4pf,2014-11-07T01:19:30.250Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-19T12:25:24.520Z,28.174,-16.176,0,2.3,mblg,5,169,,,us,usp000c5bv,2014-11-07T01:19:33.009Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-30T20:28:25.660Z,28.198,-16.289,15.2,2,mblg,5,166.8,,,us,usp000c6ab,2014-11-07T01:19:37.071Z,"15 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-30T20:28:40.830Z,28.129,-16.147,20,2.5,mblg,9,162.2,,,us,usp000c6ac,2014-11-07T01:19:37.072Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-30T20:32:42.680Z,28.115,-16.137,21.6,2.5,mblg,6,178.3,,,us,usp000c6ad,2014-11-07T01:19:37.084Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-30T20:52:56.370Z,28.137,-16.157,20,1.2,mblg,4,185.3,,,us,usp000c6af,2014-11-07T01:19:37.087Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-31T00:58:21.920Z,28.101,-16.138,27.3,2.2,mblg,8,166.2,,,us,usp000c6b2,2014-11-07T01:19:37.132Z,"33 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-08-31T10:39:59.590Z,28.133,-16.15,24.6,2.5,mblg,8,161.7,,,us,usp000c6ce,2014-11-07T01:19:37.278Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-01T09:46:17.530Z,28.139,-16.908,71.4,0,,6,205,,,us,usp000c6ee,2014-11-07T01:19:39.623Z,"10 km WSW of Playa de San Juan, Spain",earthquake,,,,,reviewed,mdd,us
+2003-09-01T20:01:18.530Z,28.134,-16.15,20,1.4,mblg,4,175.3,,,us,usp000c6ft,2014-11-07T01:19:40.640Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-04T02:08:15.690Z,28.145,-16.141,0,1.1,mblg,4,182.8,,,us,usp000c6ps,2014-11-07T01:19:43.885Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-19T05:48:16.450Z,28.311,-15.961,0,1.5,mblg,4,179.1,,,us,usp000c7zh,2014-11-07T01:19:52.275Z,"33 km ESE of Santa Cruz de Tenerife, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-19T21:59:53.610Z,28.364,-16.485,0,1.4,mblg,5,142.9,,,us,usp000c81k,2014-11-07T01:19:52.426Z,"4 km SE of La Orotava, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-23T05:48:26.940Z,28.213,-16.096,27,1.5,mblg,5,160.9,,,us,usp000c8cg,2014-11-07T01:19:54.646Z,"31 km ESE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-23T12:22:26.890Z,28.138,-16.216,21.6,1.8,mblg,4,175.4,,,us,usp000c8dc,2014-11-07T01:19:54.729Z,"24 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-24T22:13:21.120Z,28.293,-16.349,23.6,1.8,mblg,4,230,,,us,usp000c8hd,2014-11-07T01:19:55.800Z,"6 km ESE of Güimar, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-09-27T17:37:35.530Z,28.078,-16.158,35.8,0,,5,184.8,,,us,usp000c8un,2014-11-07T01:19:58.407Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,us
+2003-09-30T10:04:22.490Z,28.093,-16.284,30.2,1.7,mblg,5,183.2,,,us,usp000c950,2014-11-07T01:20:00.216Z,"21 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-10-10T00:10:32.250Z,28.216,-16.345,0,1.2,mblg,4,170.1,,,us,usp000ca18,2014-11-07T01:20:10.559Z,"9 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-10-18T12:32:13.490Z,28.16,-16.24,0,1.3,mblg,4,182.7,,,us,usp000capq,2014-11-07T01:20:13.501Z,"21 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-10-28T22:42:27.270Z,27.964,-15.543,0,2.9,mblg,8,207.5,,,us,usp000cbgk,2014-11-07T01:20:16.960Z,"5 km S of Vega de San Mateo, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-11-04T21:42:31.610Z,28.106,-16.172,26.4,1.7,mblg,5,180.2,,,us,usp000cc2q,2014-11-07T01:20:24.679Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-11-08T18:26:22.500Z,28.118,-16.142,0,2.5,mblg,5,177.9,,,us,usp000cccn,2014-11-07T01:20:25.826Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-11-16T16:47:18.200Z,28.131,-16.196,0,1.4,mblg,4,188.4,,,us,usp000cczq,2014-11-07T01:20:29.835Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-11-20T05:04:51.010Z,28.112,-16.223,0,1,mblg,4,179.7,,,us,usp000cdfj,2014-11-07T01:20:31.668Z,"25 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-11-20T20:03:28.780Z,28.096,-16.154,42.7,0,,8,166.8,,,us,usp000cdh7,2014-11-07T01:20:31.890Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,us
+2003-11-22T06:20:47.440Z,28.027,-16.167,11,1.8,mblg,5,193.2,,,us,usp000cdn5,2014-11-07T01:20:32.523Z,"34 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-12-10T07:01:08.990Z,28.042,-16.174,16.9,2,mblg,5,190.8,,,us,usp000cexz,2014-11-07T01:20:43.880Z,"33 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-12-12T04:22:50.200Z,28.154,-16.346,0,1.3,mblg,5,174.1,,,us,usp000cf32,2014-11-07T01:20:44.573Z,"12 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-12-24T06:51:00.510Z,27.874,-15.634,0,1.5,mblg,4,224,,,us,usp000cfxk,2014-11-07T01:20:48.424Z,"8 km SW of San Bartolomé de Tirajana, Spain",earthquake,,,,,reviewed,mdd,mdd
+2003-12-29T21:38:57.870Z,28.134,-16.262,7.5,1.6,mblg,4,190.7,,,us,usp000cggr,2014-11-07T01:20:51.406Z,"20 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-01-04T02:49:36.580Z,28.117,-16.214,0,1.8,mblg,4,192.8,,,us,usp000ch1m,2014-11-07T01:20:58.871Z,"25 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-01-07T00:20:51.270Z,28.441,-16.319,0,1.5,mblg,4,118.8,,,us,usp000char,2014-11-07T01:20:59.833Z,"4 km S of La Laguna, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-01-20T17:00:24.400Z,28.818,-16.547,66.9,0,,5,268.3,,,us,usp000cjb2,2014-11-07T01:21:06.334Z,"40 km NNW of Tacoronte, Spain",earthquake,,,,,reviewed,mdd,us
+2004-02-06T20:37:31.670Z,28.121,-16.14,11.3,1.6,mblg,5,177.4,,,us,usp000ckk2,2014-11-07T01:21:18.685Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-02-09T06:39:12.570Z,28.247,-16.391,12.7,1.5,mblg,4,159.3,,,us,usp000cktg,2014-11-07T01:21:19.759Z,"4 km ENE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-02-10T21:10:15.050Z,28.025,-16.183,27.9,2.5,mblg,7,193.6,,,us,usp000ckx8,2014-11-07T01:21:20.141Z,"33 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-02-12T16:35:37.550Z,28.127,-16.165,25,1.9,mblg,6,176.5,,,us,usp000cm23,2014-11-07T01:21:20.756Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-02-23T01:17:42.650Z,28.085,-16.23,23.9,1.3,mblg,4,184.1,,,us,usp000cmur,2014-11-07T01:21:24.894Z,"26 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-02-23T21:26:35.030Z,28.227,-16.294,8,1.5,mblg,5,165.8,,,us,usp000cmwu,2014-11-07T01:21:25.771Z,"14 km E of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-03-14T20:10:38.830Z,28.048,-16.138,20.4,2.2,mblg,8,173.8,,,us,usp000cpyp,2014-11-07T01:21:42.258Z,"35 km W of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-03-17T22:47:54.770Z,28.148,-16.153,0,1.6,mblg,4,182.6,,,us,usp000cq6t,2014-11-07T01:21:43.934Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-03-21T01:02:47.490Z,28.134,-16.145,0,1.2,mblg,4,185.8,,,us,usp000cqgb,2014-11-07T01:21:45.560Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-03-26T07:03:26.420Z,28.637,-16.178,28.2,1.8,mblg,4,322.7,,,us,usp000cqx8,2014-11-07T01:21:47.137Z,"19 km NE of Tegueste, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-03-27T07:05:14.790Z,28.131,-16.162,0,1.9,mblg,6,175.9,,,us,usp000cr08,2014-11-07T01:21:47.478Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-03-28T19:29:42.190Z,28.148,-16.142,0,1.5,mblg,4,182.1,,,us,usp000cr54,2014-11-07T01:21:48.451Z,"30 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-15T08:22:58.920Z,28.076,-16.167,30.5,2.2,mblg,5,185.2,,,us,usp000cshv,2014-11-07T01:21:59.935Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-21T16:36:31.220Z,28.071,-16.305,29,1.8,mblg,5,186.8,,,us,usp000ct27,2014-11-07T01:22:03.928Z,"20 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-21T18:05:20.130Z,28.304,-16.644,9.5,2.2,mblg,4,154.4,,,us,usp000ct2d,2014-11-07T01:22:03.942Z,"7 km S of La Guancha, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-22T02:14:53.290Z,28.302,-16.684,12,1.5,mblg,6,158.5,,,us,usp000ct35,2014-11-07T01:22:04.011Z,"8 km SSE of Icod de los Vinos, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-23T18:20:18.680Z,28.051,-16.194,0,1.7,mblg,4,207.5,,,us,usp000ct7r,2014-11-07T01:22:04.737Z,"31 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-25T05:35:10.710Z,28.204,-16.71,0,1.8,mblg,4,185.2,,,us,usp000ctc1,2014-11-07T01:22:05.377Z,"6 km E of Guía de Isora, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-30T00:34:02.750Z,28.157,-16.196,0,1.3,mblg,4,172.1,,,us,usp000ctss,2014-11-07T01:22:08.917Z,"25 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-30T01:14:27.860Z,28.162,-16.253,16.8,1.6,mblg,4,171.9,,,us,usp000ctsw,2014-11-07T01:22:08.925Z,"20 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-04-30T10:46:01.860Z,28.144,-16.14,0,2.3,mblg,4,173.4,,,us,usp000ctu8,2014-11-07T01:22:09.020Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-04T03:24:29.490Z,28.302,-16.68,11.3,2,mblg,5,158.1,,,us,usp000cu4c,2014-11-07T01:22:14.305Z,"8 km SSW of La Guancha, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-08T18:19:23.420Z,28.717,-15.586,47.6,0,,5,181.4,,,us,usp000cug4,2014-11-07T01:22:16.034Z,"63 km N of Gáldar, Spain",earthquake,,,,,reviewed,mdd,us
+2004-05-11T20:31:11.240Z,28.344,-16.732,2.7,3,mblg,9,137.3,,,us,usp000cusg,2014-11-07T01:22:17.376Z,"3 km SSW of Icod de los Vinos, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-12T03:47:16.680Z,28.134,-16.219,15.8,1.5,mblg,4,176,,,us,usp000cutj,2014-11-07T01:22:17.680Z,"24 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-13T06:01:15.210Z,28.044,-16.159,26.5,2.2,mblg,4,190.4,,,us,usp000cuww,2014-11-07T01:22:18.145Z,"34 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-16T23:51:26.920Z,28.255,-16.662,13.1,1,mblg,4,145.7,,,us,usp000cv97,2014-11-07T01:22:20.215Z,"11 km NNW of Vilaflor, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-17T07:31:16.060Z,28.329,-16.692,0,1.5,mblg,4,165.6,,,us,usp000cvah,2014-11-07T01:22:20.314Z,"5 km SSE of Icod de los Vinos, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-17T07:32:50.850Z,28.314,-16.726,4.7,2.1,mblg,4,165.8,,,us,usp000cvaj,2014-11-07T01:22:20.315Z,"6 km SSW of Icod de los Vinos, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-17T20:17:31.610Z,28.141,-16.136,0,1.5,mblg,4,173.8,,,us,usp000cvcb,2014-11-07T01:22:20.473Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-19T01:43:31.030Z,28.171,-16.119,0,2.1,mblg,4,168.5,,,us,usp000cvh3,2014-11-07T01:22:20.947Z,"32 km SE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-24T04:02:58.130Z,28.081,-16.184,14.1,2.6,mblg,9,167,,,us,usp000cw20,2014-11-07T01:22:23.623Z,"30 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-25T10:13:08.140Z,28.111,-16.143,0,1.8,mblg,4,179,,,us,usp000cw62,2014-11-07T01:22:24.090Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-05-31T20:13:42.300Z,28.09,-16.245,6.7,1.9,mblg,4,183.4,,,us,usp000cwrt,2014-11-07T01:22:26.764Z,"24 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-06-03T19:06:26.180Z,28.173,-16.114,0,1.7,mblg,4,168.1,,,us,usp000cx0t,2014-11-07T01:22:32.331Z,"32 km SE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2004-06-29T20:40:30.220Z,28.006,-16.27,29.5,1.3,mblg,4,196.7,,,us,usp000cz69,2014-11-07T01:22:44.039Z,"27 km SE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-02-20T12:43:13.200Z,28.056,-16.242,0,2.5,mblg,6,169.9,,,us,usp000dgk9,2014-11-07T01:25:01.616Z,"26 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-02-24T14:56:15.520Z,28.151,-15.987,31.9,2.6,mblg,7,155.3,,,us,usp000dgvv,2014-11-07T01:25:03.258Z,"27 km NW of San Nicolás, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-03-31T22:24:40.140Z,28.192,-16.155,28.4,2.8,m,4,165.8,,,us,usp000dkux,2014-11-07T01:25:23.080Z,"27 km SE of Candelaria, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-04-25T21:14:35.130Z,28.133,-16.195,4.4,2.5,mblg,6,160,,,us,usp000dp7u,2014-11-07T01:25:41.025Z,"26 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-05-07T13:50:27.250Z,28.079,-16.177,15.3,2.5,mblg,7,167.3,,,us,usp000dq4w,2014-11-07T01:25:50.014Z,"31 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-06-24T16:56:04.880Z,28.055,-16.217,23.1,2.7,mblg,5,188.7,,,us,usp000dtue,2014-11-07T01:26:17.231Z,"28 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-06-30T01:01:02.320Z,28.996,-16.518,68.4,2.8,m,5,215.4,,,us,usp000du6m,2014-11-07T01:26:18.492Z,"56 km NNW of Tegueste, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-08-22T07:05:03.040Z,28.18,-16.224,41.2,2.8,m,4,168.7,,,us,usp000dxu6,2014-11-07T01:26:51.289Z,"21 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-09-02T15:14:10.620Z,28.056,-16.248,7.3,2.7,mblg,4,188.7,,,us,usp000dyks,2014-11-07T01:26:59.187Z,"26 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-09-17T16:23:32.880Z,28.03,-16.15,21.3,2.8,mblg,7,174.5,,,us,usp000dzm2,2014-11-07T01:27:05.147Z,"36 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2005-11-22T11:32:22.630Z,28.584,-16.708,38.6,4.1,m,8,169.6,,,us,usp000e4q0,2014-11-07T01:27:42.277Z,"21 km NNW of San Juan de la Rambla, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-03-15T17:03:42.950Z,28.978,-16.76,59.9,4.1,m,7,200.5,,,us,usp000ec7s,2014-11-07T01:28:31.966Z,"Canary Islands, Spain region",earthquake,,,,,reviewed,mdd,mdd
+2006-05-02T01:27:55.290Z,27.625,-15.626,44.8,2.9,m,4,282.9,,,us,usp000eg0w,2014-11-07T01:29:01.029Z,"15 km SSW of Playa del Ingles, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-05-28T09:50:47.430Z,28.103,-16.246,24.5,2.5,mblg,7,163.7,,,us,usp000ej58,2014-11-07T01:29:12.194Z,"24 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-07-04T03:07:30.390Z,28.02,-16.26,16.9,2.6,m,4,194.5,,,us,usp000emvq,2014-11-07T01:29:35.093Z,"27 km SE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-08-14T12:47:58.790Z,28.071,-16.946,22,2.5,mblg,6,201.2,,,us,usp000eqx7,2014-11-07T01:29:57.862Z,"16 km E of San Sebastián de la Gomera, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-10-02T23:45:18.170Z,28.143,-16.134,48.6,2.8,m,5,173.5,,,us,usp000eucp,2014-11-07T01:30:29.419Z,"31 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-10-16T21:05:27.710Z,28.629,-16.353,72.3,2.5,m,6,217.2,,,us,usp000evbh,2014-11-07T01:30:34.758Z,"12 km NNW of Tegueste, Spain",earthquake,,,,,reviewed,mdd,mdd
+2006-11-02T12:05:20.890Z,28.986,-16.327,66.2,2.7,m,4,279.5,,,us,usp000ewg0,2014-11-07T01:30:44.013Z,"52 km N of Tegueste, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-01-02T21:32:16.930Z,28.08,-16.268,0,2.4,mblg,5,185.1,,,us,usp000f1ke,2014-11-07T01:31:17.404Z,"23 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-01-06T01:41:34.270Z,28.943,-16.294,59.2,2.7,m,4,276.8,,,us,usp000f1sp,2014-11-07T01:31:18.990Z,"47 km N of Tegueste, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-06-03T17:48:31.860Z,28.05,-16.193,25.2,3.1,mblg,7,171.2,,,us,usp000fda4,2014-11-07T01:32:38.630Z,"31 km ESE of Lomo de Arico, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-09-20T01:26:11.100Z,28.103,-16.139,22.8,2.6,mblg,5,180.4,,,us,usp000fnr5,2014-11-07T01:33:37.512Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-10-05T02:19:40.350Z,28.064,-16.155,28.6,2.8,mblg,8,169.5,,,us,usp000fpws,2014-11-07T01:33:50.866Z,"33 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-10-05T17:31:59.140Z,27.548,-17.265,26.1,4.6,mb,10,138.1,,,us,usp000fpye,2014-11-07T01:33:51.217Z,"57 km S of Alajeró, Spain",earthquake,,,,1,reviewed,mdd,us
+2007-10-26T06:30:58.120Z,28.093,-16.143,29.3,2.5,mblg,4,182.1,,,us,usp000fr9f,2014-11-07T01:33:59.519Z,"33 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-10-27T11:32:14.370Z,28.094,-16.154,0,2.9,mblg,4,182,,,us,usp000frcm,2014-11-07T01:33:59.948Z,"32 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-11-07T22:48:00.460Z,28.115,-16.232,23.2,2.7,mblg,6,162.3,,,us,usp000fs55,2014-11-07T01:34:08.326Z,"24 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2007-12-27T18:05:34.370Z,28.113,-16.167,0,3,mblg,7,162.7,,,us,usp000fvdr,2014-11-07T01:34:30.364Z,"29 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2008-01-07T06:42:48.660Z,28.08,-16.211,31.7,2.7,mblg,7,184.7,,,us,usp000fw5r,2014-11-07T01:34:37.956Z,"28 km SE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2008-01-15T23:15:58.520Z,28.219,-16.391,24,2.8,mblg,8,149.9,,,us,usp000fwt3,2014-11-07T01:34:42.724Z,"5 km ESE of Fasnia, Spain",earthquake,,,,,reviewed,mdd,mdd
+2008-05-13T07:45:29.590Z,28.437,-16.014,30.3,3.5,mblg,7,142.3,,,us,usp000g6h7,2014-11-07T01:35:59.618Z,"23 km E of Santa Cruz de Tenerife, Spain",earthquake,,,,,reviewed,mdd,mdd
+2019-01-18T06:36:50.660Z,28.2989,-15.9541,10,4.4,mb,,113,0.491,0.76,us,us2000j5kz,2021-10-20T06:52:19.576Z,"33 km NW of Agaete, Spain",earthquake,8.2,1.4,0.19,8,reviewed,us,us

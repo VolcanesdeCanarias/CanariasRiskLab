@@ -1,0 +1,9 @@
+{
+  "runs": 20,
+  "median_ms": 16.842638498928864,
+  "max_ms": 68.80021600227337,
+  "records_original": 181,
+  "records_current": 11,
+  "records_previous": 35,
+  "scope": "Local Flask/source verification/analysis/SQLite, no network images; not a Mac GPU benchmark"
+}

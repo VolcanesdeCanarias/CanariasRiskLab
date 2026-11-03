@@ -1,0 +1,16 @@
+Chromium 154.0.8037.57
+✔ PRODUCT-01 complete real historical case links science, analysis, territory and evidence (4343.171181ms)
+✔ PRODUCT-02 changed parameters invalidate export and produce a new reproducible run (2569.618957ms)
+✔ PRODUCT-03 assistance cites numerical evidence and refuses eruption predictions (2585.514401ms)
+✔ PRODUCT-04 research errors never export stale numbers and later recover (2561.301003ms)
+✔ PRODUCT-05 historical research remains independent from failed live IGN acquisition (2438.693109ms)
+✔ PRODUCT-06 archived case works on mobile and preserves shared results across public profiles (2205.150477ms)
+✔ PRODUCT-07 delayed catalogue cannot reactivate a closed study or overwrite La Graciosa (2742.866895ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19918.031286

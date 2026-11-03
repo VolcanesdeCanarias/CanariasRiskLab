@@ -1,0 +1,25 @@
+[2026-11-02 21:45:31,541] WARNING in server: IGN: http_error (upstream_status=403)
+/workspace/canarias-risklab-next/tests/test_observatory.py:79: ResourceWarning: unclosed file <_io.BufferedReader name='/workspace/canarias-risklab-next/next/observatory.mjs'>
+  self.assertEqual(self.client.get('/next/observatory.mjs').status_code,200)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[2026-11-02 21:45:34,627] WARNING in server: IGN: invalid_response (upstream_status=None)
+[2026-11-02 21:45:34,630] WARNING in server: IGN: invalid_response (upstream_status=None)
+[2026-11-02 21:45:34,631] WARNING in server: IGN: http_error (upstream_status=403)
+[2026-11-02 21:45:34,632] WARNING in server: IGN: http_error (upstream_status=429)
+[2026-11-02 21:45:34,633] WARNING in server: IGN: http_error (upstream_status=500)
+[2026-11-02 21:45:34,633] WARNING in server: IGN: http_error (upstream_status=503)
+[2026-11-02 21:45:34,634] WARNING in server: USGS: http_error (upstream_status=403)
+[2026-11-02 21:45:34,635] WARNING in server: USGS: http_error (upstream_status=429)
+[2026-11-02 21:45:34,635] WARNING in server: USGS: http_error (upstream_status=500)
+[2026-11-02 21:45:34,636] WARNING in server: USGS: http_error (upstream_status=503)
+[2026-11-02 21:45:34,839] WARNING in server: IGN: timeout (upstream_status=None)
+[2026-11-02 21:45:34,840] WARNING in server: IGN: connection_error (upstream_status=None)
+[2026-11-02 21:45:34,841] WARNING in server: USGS: timeout (upstream_status=None)
+[2026-11-02 21:45:34,841] WARNING in server: USGS: connection_error (upstream_status=None)
+[2026-11-02 21:45:34,844] WARNING in server: IGN: internal_error (upstream_status=None)
+[2026-11-02 21:45:34,845] WARNING in server: USGS: invalid_response (upstream_status=None)
+[2026-11-02 21:45:34,853] WARNING in server: IGN: invalid_response (upstream_status=None)
+----------------------------------------------------------------------
+Ran 77 tests in 8.652s
+
+OK

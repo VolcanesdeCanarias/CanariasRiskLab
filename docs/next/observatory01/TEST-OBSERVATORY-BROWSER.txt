@@ -1,0 +1,15 @@
+✔ IGN multinsular comparisons, interactive time bins, exact event selection and profiles (4809.885723ms)
+✔ eight islands and marine queries remain distinct with no fabricated records (5934.257317ms)
+✔ rapid filter changes discard late analysis and invalidate exports and assistance (2998.611595ms)
+✔ official territorial geometry query and documented system navigation preserve analysis (2561.417091ms)
+✔ grounded answers cite execution, abstain on eruption and reject foreign scope (2836.392058ms)
+✔ acquisition failure, historical recovery, no coverage and institution remain explicit (2830.187517ms)
+✔ mobile layout, 3D transitions and legacy notebook remain operational (3622.541967ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25711.374668

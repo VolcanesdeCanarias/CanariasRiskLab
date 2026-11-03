@@ -1,0 +1,10 @@
+{
+  "index.html": true,
+  "catalogo.kmz": true,
+  "municipios_canarias.geojson": true,
+  "la_palma_exclusion15ene26.geojson": true,
+  "ign_instrumentation.json": true,
+  "render.yaml": true,
+  "server.py": true,
+  "research_v1.py": true
+}

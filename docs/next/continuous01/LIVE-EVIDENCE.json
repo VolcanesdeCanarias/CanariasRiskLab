@@ -1,0 +1,44 @@
+{
+  "browser": "154.0.8037.57",
+  "openedAt": "2026-11-03T15:12:26.699Z",
+  "finishedAt": "2026-11-03T15:12:45.440Z",
+  "data": "Real official IGN/USGS server acquisitions. No simulated production observations.",
+  "initialAcquisition": "fff3b3b6226649b286ee61239c7917ed",
+  "finalAcquisition": "1dfe5f0ebea94cebb90829d07a2c14a4",
+  "initialCount": 6,
+  "finalCount": 6,
+  "source": "IGN",
+  "coverage": {
+    "fraction": 1,
+    "meaning": "Ventanas solicitadas al proveedor; no completitud de detección ni garantía de publicación inmediata.",
+    "state": "covered_nominally"
+  },
+  "lastSuccessfulQuery": "2026-11-03T15:12:41.210672+00:00",
+  "asOf": "2026-11-03T15:12:40.563821+00:00",
+  "automaticObserved": true,
+  "scheduledAcquisitionBefore": "fff3b3b6226649b286ee61239c7917ed",
+  "scheduledAcquisitionAfter": "1dfe5f0ebea94cebb90829d07a2c14a4",
+  "poseBefore": {
+    "lat": 28.819152218687886,
+    "lon": -15.77499999999999,
+    "zoom": 7
+  },
+  "poseAfter": {
+    "lat": 28.819152218687886,
+    "lon": -15.77499999999999,
+    "zoom": 7
+  },
+  "unchangedPose": true,
+  "errors": [],
+  "mobileOverflow": false,
+  "imageStatus": {
+    "200": 111,
+    "502": 16
+  },
+  "clientStatusPolls": 6,
+  "run_id": "f515d91618477408b77b7ae41d3da1bbafcb3074636a3aa19dce9aec94a65ce3",
+  "method": "continuous-catalogue-descriptive/1.0",
+  "tileTransport": "Genuine IGN WMS via configured proxy, TLS verified",
+  "publicationLatency": "Unknown; not inferred from event age",
+  "collector": "Server-side scheduled worker, independent of client polling"
+}

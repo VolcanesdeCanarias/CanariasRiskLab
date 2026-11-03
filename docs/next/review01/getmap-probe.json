@@ -1,0 +1,29 @@
+[
+  {
+    "id": "topo",
+    "url": "https://www.ign.es/wms-inspire/mapa-raster?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&SRS=EPSG%3A4326&BBOX=-16.9%2C28.1%2C-16.1%2C28.65&WIDTH=512&HEIGHT=512&FORMAT=image%2Fpng&LAYERS=mtn_rasterizado&STYLES=",
+    "status": 200,
+    "type": "image/png",
+    "image_signature": "89504e470d0a1a0a",
+    "bytes": 196982,
+    "cors": "*"
+  },
+  {
+    "id": "ortho",
+    "url": "https://www.ign.es/wms-inspire/pnoa-ma?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&SRS=EPSG%3A4326&BBOX=-16.9%2C28.1%2C-16.1%2C28.65&WIDTH=512&HEIGHT=512&FORMAT=image%2Fpng&LAYERS=OI.OrthoimageCoverage&STYLES=",
+    "status": 200,
+    "type": "image/png",
+    "image_signature": "89504e470d0a1a0a",
+    "bytes": 284717,
+    "cors": "*"
+  },
+  {
+    "id": "labels",
+    "url": "https://www.ign.es/wms-inspire/ign-base?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&SRS=EPSG%3A4326&BBOX=-16.9%2C28.1%2C-16.1%2C28.65&WIDTH=512&HEIGHT=512&FORMAT=image%2Fpng&LAYERS=IGNBaseOrto&STYLES=",
+    "status": 200,
+    "type": "image/png",
+    "image_signature": "89504e470d0a1a0a",
+    "bytes": 36892,
+    "cors": "*"
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "schema": "risklab.historical-dataset/1",
+  "id": "usgs-tenerife-2000-2026",
+  "provider": "USGS ComCat",
+  "queried_at": "2026-11-02T17:52:27+00:00",
+  "source_generated_at_ms": 1793641947000,
+  "query_url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2000-01-01&endtime=2026-01-01&minlatitude=27.5&maxlatitude=29.0&minlongitude=-17.4&maxlongitude=-15.5&orderby=time-asc&limit=10000",
+  "csv_url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime=2000-01-01&endtime=2026-01-01&minlatitude=27.5&maxlatitude=29.0&minlongitude=-17.4&maxlongitude=-15.5&orderby=time-asc&limit=10000",
+  "count_url": "https://earthquake.usgs.gov/fdsnws/event/1/count?starttime=2000-01-01&endtime=2026-01-01&minlatitude=27.5&maxlatitude=29.0&minlongitude=-17.4&maxlongitude=-15.5",
+  "coverage": {
+    "from": "2000-01-01T00:00:00+00:00",
+    "until": "2026-01-01T00:00:00+00:00",
+    "bounds": [
+      -17.4,
+      27.5,
+      -15.5,
+      29.0
+    ],
+    "meaning": "Intervalo y caja consultados, no garantía de completitud instrumental."
+  },
+  "verification": {
+    "http_status": 200,
+    "geojson_rows": 181,
+    "csv_rows": 181,
+    "count_response": 181,
+    "status": "cross_format_validated",
+    "limits": "Validación de procedencia, formato e integridad; no validación de completitud ni de causalidad geofísica."
+  },
+  "licence": {
+    "name": "USGS public domain; network us for all included records",
+    "url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+    "policy_url": "https://www.usgs.gov/media/files/anss-data-and-products-policy"
+  },
+  "files": {
+    "catalogue.geojson": {
+      "sha256": "9696d57632ae32acf76b70471c059dae0cbfed3471f66ef8e29e34c0520cc0cf",
+      "bytes": 127748
+    },
+    "catalogue.csv": {
+      "sha256": "f1883a72b37152b8ae2b24313dc3d80746dd68cea3d5999405460b63473583d2",
+      "bytes": 29621
+    },
+    "count.txt": {
+      "sha256": "580811fa95269f3ecd4f22d176e079d36093573680b6ef66fa341e687a15b5da",
+      "bytes": 3
+    }
+  },
+  "limitations": [
+    "ComCat no sustituye el catálogo regional IGN ni representa exhaustivamente la microsismicidad.",
+    "Los años sin registros son ausencia de registros retornados por USGS, no ausencia demostrada de actividad.",
+    "No hay certificación de completitud ni homogeneidad temporal de detección.",
+    "No convertir magnitudes entre escalas sin metodología; se puede seleccionar un único tipo.",
+    "Solo una fila publica horizontalError/depthError/magError en este CSV; las ausencias no son error cero.",
+    "No se mezcla automáticamente con IGN reciente ni con el KMZ candidato."
+  ],
+  "time_note": "Fecha de generación comunicada por USGS; no fecha de cada revisión de origen."
+}

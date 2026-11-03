@@ -1,0 +1,6 @@
+__pycache__/
+tests/browser/node_modules/
+work/
+node_modules
+.risklab-next/
+.venv/

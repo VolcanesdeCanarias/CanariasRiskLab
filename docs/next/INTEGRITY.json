@@ -1,0 +1,29 @@
+{
+  "base": "ac9ff9c207625426e34ac047997d391c149a10a0",
+  "files": {
+    "index.html": {
+      "sha256": "605238415ae58fc6a67ea29d2062267765bd20d5c896797840b658ac428c3a40",
+      "unchanged": true
+    },
+    "catalogo.kmz": {
+      "sha256": "7069d77d674f91b41fe9f2e8192e33efe0a77f0566cee5e528e3a096cb6d9fb3",
+      "unchanged": true
+    },
+    "municipios_canarias.geojson": {
+      "sha256": "458b48a65238c1a21de827b60b34e7a9daa8e5a113b9f93f2d4507e26bdfcae1",
+      "unchanged": true
+    },
+    "la_palma_exclusion15ene26.geojson": {
+      "sha256": "9cf675549c5db5d25be8ee295b73dc19f82fbbbedf6353eb8189894a6321200a",
+      "unchanged": true
+    },
+    "ign_instrumentation.json": {
+      "sha256": "2ec40116a8f41ff2e42ab37f77ab85e06a5a2178294b7716c042017a6deabeb6",
+      "unchanged": true
+    },
+    "render.yaml": {
+      "sha256": "737fb41d5f5d9df41fdbb31768a0516674c902ecb03d33e824d19aa53647028c",
+      "unchanged": true
+    }
+  }
+}

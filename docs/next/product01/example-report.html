@@ -1,0 +1,157 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>RiskLab · Informe reproducible</title>
+<style>body{max-width:960px;margin:40px auto;padding:20px;font:15px/1.65 system-ui;color:#243e42}h1,h2{color:#145e62}code,pre{font-size:11px;overflow-wrap:anywhere;white-space:pre-wrap}table{border-collapse:collapse;width:100%}td,th{text-align:left;padding:7px;border-bottom:1px solid #ccdcd7}.notice{background:#fff4dc;padding:16px;border-left:4px solid #aa7827}a{color:#146970}@media print{body{margin:0}h2{break-after:avoid}}</style>
+<h1>Tenerife · Teide–Pico Viejo · Cuaderno de investigación</h1><p>Volcanes de Canarias · RiskLab NEXT · Informe descriptivo, sin predicción ni alerta oficial.</p>
+<p class="notice">Caja de estudio Tenerife y entorno marino; no es límite geológico del sistema, zona de peligro ni adscripción causal de los sismos. La completitud instrumental de ComCat no está acreditada: un cero de registros no demuestra inactividad.</p>
+<h2>1. Evidencia y reproducibilidad</h2><p>Ejecución: <code>b4de445ffe75643744d4d4e8083ece3f11fcc4e6c0891d29e51dd4ad8521804b</code><br>Dataset: <code>609f4f89a7b470e2975163a4b289cae92f7e26e1209646c4f00b03a657be3879</code><br>Método: catalogue-rates-spatial/1.0<br>Código SHA256: <code>a6827e600c59bee274622d588c577451b23accf8d54768a1f56bf7a76ff94552</code><br>Contexto SHA256: <code>e871a3d6ac5b3d775d171aa7e40525f976438b2005d60e9478d3945d1f2e1369</code></p><pre>{
+  &quot;case_id&quot;: &quot;teide-pico-viejo&quot;,
+  &quot;from&quot;: &quot;2004-01-01T00:00:00+00:00&quot;,
+  &quot;until&quot;: &quot;2005-01-01T00:00:00+00:00&quot;,
+  &quot;min_mag&quot;: 2.0,
+  &quot;mag_type&quot;: &quot;mblg&quot;,
+  &quot;grid_degrees&quot;: 0.05,
+  &quot;study_bounds&quot;: [
+    -16.95,
+    27.95,
+    -16.05,
+    28.7
+  ]
+}</pre>
+<h2>2. Observaciones históricas consultadas</h2><p>Fuente: USGS ComCat. 181 filas reconciliadas entre GeoJSON, CSV y count. Consulta desde 2000-01-01T00:00:00+00:00 hasta 2026-01-01T00:00:00+00:00 (excluido); no acredita cobertura de detección continua.</p><p><a href="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&amp;starttime=2000-01-01&amp;endtime=2026-01-01&amp;minlatitude=27.5&amp;maxlatitude=29.0&amp;minlongitude=-17.4&amp;maxlongitude=-15.5&amp;orderby=time-asc&amp;limit=10000">Consulta original</a> · <a href="https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits">Política de datos</a></p>
+<h2>3. Comparación y patrón espacial</h2><table><tr><th>Periodo</th><th>Desde / hasta excluido</th><th>Días</th><th>Registros</th><th>Tasa del catálogo/año</th></tr><tr><td>Previo</td><td>2002-12-31T00:00:00+00:00 / 2004-01-01T00:00:00+00:00</td><td>366.0</td><td>35</td><td>34.928278688524586</td></tr><tr><td>Actual</td><td>2004-01-01T00:00:00+00:00 / 2005-01-01T00:00:00+00:00</td><td>366.0</td><td>11</td><td>10.977459016393443</td></tr></table><p>USGS devuelve 11 registros para el periodo actual y 35 para el previo. Son registros del catálogo, no una medida completa de actividad. La razón de tasas publicadas es 0.314, con duraciones iguales de 366 días.</p><p>No se publica p-valor ni significación: faltan comprobaciones de completitud y estabilidad de detección. Vecino más próximo: distancia epicentral esférica, no hipocentral; celdas no son clusters físicos.</p><pre>{
+  &quot;comparison&quot;: {
+    &quot;catalogue_rate_ratio&quot;: 0.31428571428571433,
+    &quot;inference_allowed&quot;: false,
+    &quot;p_value&quot;: null,
+    &quot;reason&quot;: &quot;Completitud y estabilidad de detección no acreditadas; no se prueba un cambio de actividad geofísica.&quot;
+  },
+  &quot;spatial&quot;: {
+    &quot;grid_degrees&quot;: 0.05,
+    &quot;origin&quot;: [
+      -16.95,
+      27.95
+    ],
+    &quot;occupied_cells&quot;: 8,
+    &quot;cells&quot;: [
+      {
+        &quot;id&quot;: &quot;4:7&quot;,
+        &quot;count&quot;: 2,
+        &quot;bounds&quot;: [
+          -16.75,
+          28.3,
+          -16.7,
+          28.349999999999998
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;5:7&quot;,
+        &quot;count&quot;: 1,
+        &quot;bounds&quot;: [
+          -16.7,
+          28.3,
+          -16.65,
+          28.349999999999998
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;6:7&quot;,
+        &quot;count&quot;: 1,
+        &quot;bounds&quot;: [
+          -16.65,
+          28.3,
+          -16.599999999999998,
+          28.349999999999998
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;15:1&quot;,
+        &quot;count&quot;: 2,
+        &quot;bounds&quot;: [
+          -16.2,
+          28.0,
+          -16.15,
+          28.05
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;15:2&quot;,
+        &quot;count&quot;: 2,
+        &quot;bounds&quot;: [
+          -16.2,
+          28.05,
+          -16.15,
+          28.099999999999998
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;16:1&quot;,
+        &quot;count&quot;: 1,
+        &quot;bounds&quot;: [
+          -16.15,
+          28.0,
+          -16.099999999999998,
+          28.05
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;16:3&quot;,
+        &quot;count&quot;: 1,
+        &quot;bounds&quot;: [
+          -16.15,
+          28.099999999999998,
+          -16.099999999999998,
+          28.15
+        ]
+      },
+      {
+        &quot;id&quot;: &quot;16:4&quot;,
+        &quot;count&quot;: 1,
+        &quot;bounds&quot;: [
+          -16.15,
+          28.15,
+          -16.099999999999998,
+          28.2
+        ]
+      }
+    ],
+    &quot;nearest_neighbour_median_km&quot;: 3.387151511,
+    &quot;nearest_neighbour_n&quot;: 11,
+    &quot;colocated_coordinates&quot;: 0,
+    &quot;interpretation&quot;: &quot;Descriptores de localizaciones publicadas. Las celdas no son clusters físicos; no hay test de significación ni modelo de peligro.&quot;
+  },
+  &quot;magnitude_sensitivity&quot;: [
+    {
+      &quot;min_mag&quot;: 2.0,
+      &quot;current_count&quot;: 11,
+      &quot;previous_count&quot;: 35
+    },
+    {
+      &quot;min_mag&quot;: 2.5,
+      &quot;current_count&quot;: 3,
+      &quot;previous_count&quot;: 22
+    },
+    {
+      &quot;min_mag&quot;: 3.0,
+      &quot;current_count&quot;: 1,
+      &quot;previous_count&quot;: 5
+    }
+  ],
+  &quot;territorial_context&quot;: [
+    {
+      &quot;territory&quot;: &quot;Entorno marítimo&quot;,
+      &quot;municipality_id&quot;: null,
+      &quot;records&quot;: 7,
+      &quot;quality&quot;: &quot;polygon assignment from inherited boundaries, current validity unverified&quot;
+    },
+    {
+      &quot;territory&quot;: &quot;Tenerife&quot;,
+      &quot;municipality_id&quot;: &quot;38022&quot;,
+      &quot;records&quot;: 4,
+      &quot;quality&quot;: &quot;polygon assignment from inherited boundaries, current validity unverified&quot;
+    }
+  ]
+}</pre>
+<h2>4. Geología, estructuras e historia eruptiva</h2><ul><li>El complejo Teide–Pico Viejo reúne estratovolcanes compuestos en el contexto postcaldera de Las Cañadas. <small>[ign-geology, igme-guide]</small></li><li>Las Cañadas y los ejes de rift forman parte del contexto estructural de Tenerife. Aquí no se dibujan trazas o límites geológicos sin una capa acreditada. <small>[ign-geology]</small></li><li>1798 · Chahorra / Narices del Teide. Erupción histórica en el ámbito del parque y en el flanco de Pico Viejo; no es una erupción del cráter sumital del Teide. <small>[miteco, gvp]</small></li><li>1909 · Chinyero. El registro insular GVP recoge Chinyero en 1909. No se traslada esa fecha al cráter del Teide. <small>[gvp]</small></li></ul><h3>Contraste documental sísmico</h3><ul><li>2004 · Referencia documental. IGN describe un episodio sísmico de baja magnitud en 2004 con agrupaciones en Icod y Vilaflor; los datos USGS no reconstruyen por sí solos ese catálogo regional. <small>[ign-geology]</small></li><li>2016 · Referencia documental. IGN documenta un enjambre en Las Cañadas el 2 de octubre de 2016. Un cero de USGS en ese año no demuestra inactividad. <small>[ign-geology]</small></li><li>2019 · Referencia documental. IGN documenta otro enjambre en Las Cañadas el 14 de julio de 2019. Es contexto documental, no incorporación de eventos inventados al catálogo. <small>[ign-geology]</small></li></ul>
+<h2>5. Contexto territorial e infraestructuras</h2><ul><li>Parque Nacional del Teide · Existencia y contexto documentados; límites oficiales no incorporados [miteco]</li><li>Hospital Universitario de Canarias · Referencia transcrita del registro oficial; coordenadas, capacidad y estado operativo no certificados por RiskLab. No se calcula proximidad a una dirección sin geocodificación validada. [hospital-register]</li></ul><p>No se calcula exposición, vulnerabilidad, peligrosidad ni riesgo. La referencia hospitalaria carece de geometría acreditada en este paquete: no se inventan coordenadas ni distancias.</p>
+<h2>6. Serie anual del catálogo filtrado</h2><table><tr><th>Año</th><th>Seleccionados</th><th>Registros en área</th><th>Lectura</th></tr><tr><td>2000</td><td>1</td><td>2</td><td>records_selected</td></tr><tr><td>2001</td><td>8</td><td>8</td><td>records_selected</td></tr><tr><td>2002</td><td>25</td><td>25</td><td>records_selected</td></tr><tr><td>2003</td><td>35</td><td>63</td><td>records_selected</td></tr><tr><td>2004</td><td>11</td><td>37</td><td>records_selected</td></tr><tr><td>2005</td><td>6</td><td>9</td><td>records_selected</td></tr><tr><td>2006</td><td>2</td><td>5</td><td>records_selected</td></tr><tr><td>2007</td><td>8</td><td>8</td><td>records_selected</td></tr><tr><td>2008</td><td>2</td><td>2</td><td>records_selected</td></tr><tr><td>2009</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2010</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2011</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2012</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2013</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2014</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2015</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2016</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2017</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2018</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2019</td><td>0</td><td>0</td><td>empty_study_area</td></tr><tr><td>2020</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2021</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2022</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2023</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2024</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr><tr><td>2025</td><td>0</td><td>0</td><td>no_records_returned_not_proof_of_inactivity</td></tr></table>
+<h2>7. Incertidumbre y límites</h2><p>Número de registros con error informado en selección actual (no son valores de error): <code>{&quot;horizontal_km&quot;: 0, &quot;depth_km&quot;: 0, &quot;magnitude&quot;: 0}</code>. La ausencia de error no equivale a cero.</p><ul><li>ComCat no sustituye el catálogo regional IGN ni representa exhaustivamente la microsismicidad.</li><li>Los años sin registros son ausencia de registros retornados por USGS, no ausencia demostrada de actividad.</li><li>No hay certificación de completitud ni homogeneidad temporal de detección.</li><li>No convertir magnitudes entre escalas sin metodología; se puede seleccionar un único tipo.</li><li>Solo una fila publica horizontalError/depthError/magError en este CSV; las ausencias no son error cero.</li><li>No se mezcla automáticamente con IGN reciente ni con el KMZ candidato.</li><li>No se infiere origen volcánico, intrusión, unrest, alerta ni erupción a partir de la proximidad o los cambios del catálogo.</li><li>Inventarios manuales heredados no se promueven a inventarios oficiales. No hay escenario de afectación ni cálculo de exposición, vulnerabilidad o riesgo.</li><li>La revisión documental no sustituye validación científica experta ni comunicaciones oficiales vigentes.</li><li>El umbral de consulta no es una estimación de magnitud de completitud.</li><li>El documento IGN describe actividad regional que ComCat puede omitir; no concluir quietud en años sin registros.</li><li>Proximidad espacial no atribuye origen volcánico ni actividad al sistema.</li><li>No se ha validado un modelo de exposición, vulnerabilidad, peligro o riesgo.</li></ul><p>Señales pendientes: GNSS histórico validado no adquirido; InSAR no adquirido; Geoquímica no adquirida; MDT/batimetría numéricos reales no validados</p>
+<h2>8. Fuentes documentales</h2><ol><li id="ign-geology"><a rel="noopener noreferrer" href="https://www.ign.es/web/resources/sismologia/tproximos/sismotectonica/pag_sismotectonicas/can_tenerife.html">IGN · Sismicidad, geología y tectónica de Tenerife</a> · consulta 2026-11-02</li><li id="igme-guide"><a rel="noopener noreferrer" href="https://www.igme.es/libros-y-guias/parque-nacional-del-teide-2a-edicion/">IGME-CSIC · Guía geológica del Parque Nacional del Teide, 2ª edición</a> · consulta 2026-11-02</li><li id="gvp"><a rel="noopener noreferrer" href="https://volcano.si.edu/volcano.cfm?vn=383030">Smithsonian GVP · Tenerife 383030, historia eruptiva</a> · consulta 2026-11-02</li><li id="miteco"><a rel="noopener noreferrer" href="https://www.miteco.gob.es/es/parques-nacionales-oapn/red-parques-nacionales/parques-nacionales/teide/valores-naturales.html">MITECO · Teide, valores naturales</a> · consulta 2026-11-02</li><li id="usgs-coverage"><a rel="noopener noreferrer" href="https://earthquake.usgs.gov/earthquakes/map/?about=true&amp;help=missing">USGS · Limitaciones para localizar terremotos pequeños fuera de EE. UU.</a> · consulta 2026-11-02</li><li id="hospital-register"><a rel="noopener noreferrer" href="https://www.sanidad.gob.es/ciudadanos/centros.do?metodo=realizarDetalle&amp;numero=380178&amp;tipo=hospital">Ministerio de Sanidad · CNH 380178</a> · consulta 2026-11-02</li></ol><p>Contratos/ecuaciones: method-spec.json en el paquete. Para repetir: <code>python3 tools/reproduce_research.py run.json</code> en la versión de código cuyo SHA coincida. ZIP incluye originales y checksums; la revisión humana sigue siendo necesaria.</p></html>

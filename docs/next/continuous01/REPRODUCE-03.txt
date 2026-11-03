@@ -1,0 +1,7 @@
+{
+  "verified": true,
+  "run_id": "b4de445ffe75643744d4d4e8083ece3f11fcc4e6c0891d29e51dd4ad8521804b",
+  "current_count": 11,
+  "previous_count": 35,
+  "method": "catalogue-rates-spatial/1.0"
+}

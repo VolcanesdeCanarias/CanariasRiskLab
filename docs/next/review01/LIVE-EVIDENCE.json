@@ -1,0 +1,26 @@
+{
+  "browser": "154.0.8037.57",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "wall_ms": 5080,
+  "errors": [],
+  "tileFailures": [],
+  "mocked": false,
+  "tileTransport": "Real IGN responses via configured cloud proxy; TLS verification enabled",
+  "state": {
+    "snapshot": "262a15f2e0a38eff18ad58bf47377a19a24a72cfcdba8bcc3703428b497c7106",
+    "quality": {
+      "checked_at": "2026-11-02T17:09:56+00:00",
+      "count": 20,
+      "state": "available"
+    },
+    "statistics": {
+      "count": 4,
+      "max_magnitude": 2.2,
+      "missing_magnitude": 0
+    },
+    "tiles": 24
+  }
+}

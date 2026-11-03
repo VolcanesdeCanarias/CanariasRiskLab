@@ -1,0 +1,22 @@
+[2026-11-02 14:50:44,282] WARNING in server: IGN: http_error (upstream_status=403)
+[2026-11-02 14:50:44,499] WARNING in server: IGN: invalid_response (upstream_status=None)
+[2026-11-02 14:50:44,500] WARNING in server: IGN: invalid_response (upstream_status=None)
+[2026-11-02 14:50:44,501] WARNING in server: IGN: http_error (upstream_status=403)
+[2026-11-02 14:50:44,502] WARNING in server: IGN: http_error (upstream_status=429)
+[2026-11-02 14:50:44,503] WARNING in server: IGN: http_error (upstream_status=500)
+[2026-11-02 14:50:44,503] WARNING in server: IGN: http_error (upstream_status=503)
+[2026-11-02 14:50:44,504] WARNING in server: USGS: http_error (upstream_status=403)
+[2026-11-02 14:50:44,504] WARNING in server: USGS: http_error (upstream_status=429)
+[2026-11-02 14:50:44,505] WARNING in server: USGS: http_error (upstream_status=500)
+[2026-11-02 14:50:44,505] WARNING in server: USGS: http_error (upstream_status=503)
+[2026-11-02 14:50:44,630] WARNING in server: IGN: timeout (upstream_status=None)
+[2026-11-02 14:50:44,631] WARNING in server: IGN: connection_error (upstream_status=None)
+[2026-11-02 14:50:44,631] WARNING in server: USGS: timeout (upstream_status=None)
+[2026-11-02 14:50:44,632] WARNING in server: USGS: connection_error (upstream_status=None)
+[2026-11-02 14:50:44,633] WARNING in server: IGN: internal_error (upstream_status=None)
+[2026-11-02 14:50:44,634] WARNING in server: USGS: invalid_response (upstream_status=None)
+[2026-11-02 14:50:44,643] WARNING in server: IGN: invalid_response (upstream_status=None)
+----------------------------------------------------------------------
+Ran 41 tests in 0.813s
+
+OK

@@ -1,0 +1,480 @@
+{
+  "schema": "risklab.ign-archive/1",
+  "provider": "Instituto Geográfico Nacional",
+  "citation": "IGN. Catálogo de terremotos. https://doi.org/10.7419/162.03.2022",
+  "acquired_at": "2026-11-02T20:25:52.678222+00:00",
+  "coverage": {
+    "from": "2023-01-01T00:00:00+00:00",
+    "until": "2025-01-01T00:00:00+00:00",
+    "bounds": [
+      -19,
+      27,
+      -13,
+      30
+    ]
+  },
+  "count": 3609,
+  "licence": {
+    "name": "CC BY 4.0 ign.es",
+    "url": "https://www.ign.es/web/ign/portal/politica-datos"
+  },
+  "pages": [
+    {
+      "file": "page-00000.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=",
+      "original_sha256": "04c682886171e415b15874891a73adfe871a55542145a3ecf623a8ec293a7fec",
+      "compressed_sha256": "a5052cf1b1e2078afa552364c5e7b1ce5d5a55e2a2c84478276ce77a6be3046c"
+    },
+    {
+      "file": "page-00100.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=100",
+      "original_sha256": "9de1f3e72baf9d929028ae45aad709f610a8cc13d01316fefc0dc5a1249eca6d",
+      "compressed_sha256": "2aa6f2a3bea14b999df49db0a2d6292d8c6b1e50c206f0deccc915a2646b486f"
+    },
+    {
+      "file": "page-00150.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=150",
+      "original_sha256": "0d97b17a8a4e0d3ae89d08165e7ee817bc14c9e0414c499f18e710ce33cfa110",
+      "compressed_sha256": "e69391e5092dc431344243af263693926f7d58641b4f4c796b89ec0f5442a348"
+    },
+    {
+      "file": "page-00200.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=200",
+      "original_sha256": "1073a0349b20085f0923c9d9348d95a522fafd9d31236eafce043e07823341f6",
+      "compressed_sha256": "6d62eb8d4bbe50c04e21f239c3427a6fe2686e08d5e1c06e22a2eda4befc63d6"
+    },
+    {
+      "file": "page-00250.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=250",
+      "original_sha256": "f23875d7cb77ef7ef05000bf431de9ad1dfd159aeeb2f7874b3f02ebc4b6dcd8",
+      "compressed_sha256": "6f8218ca973bd420cafd2d5e13df89fe20ea543ada5d4deef4b24470c3a8658a"
+    },
+    {
+      "file": "page-00300.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=300",
+      "original_sha256": "b016d10dd37dbb4f37d312815de9fadb69b00c875b45f505d415bb06fde106f1",
+      "compressed_sha256": "f96dc45c55d959ad4f645f3b45f367da1982bcf9200b24df687a08e6e72dcbaf"
+    },
+    {
+      "file": "page-00350.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=350",
+      "original_sha256": "f4506d15fe2a45a7396e0c29233b4f2df9576ffcd60bf174387acecd4578e276",
+      "compressed_sha256": "73f976c43371bbb2920dfa8bb8167b94e71dd62d25549c9f7cbf64e04a5bfbd2"
+    },
+    {
+      "file": "page-00400.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=400",
+      "original_sha256": "ab287d7dc56e12d4882966b7979e341b39151cb8ccd65a012ac4f7def0c86ccb",
+      "compressed_sha256": "a36d83b2354575ee6da1e9e449e87bad718b25abb3053ac0e49797e9c217b51b"
+    },
+    {
+      "file": "page-00450.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=450",
+      "original_sha256": "1081393bbcad38075c767beeaeff97a5f86de06de41804450541bf3218dbe6f8",
+      "compressed_sha256": "6d4ff4322c6d4c867a68a87818c2ae7a7711615076f2c96742815cd8bd112fd5"
+    },
+    {
+      "file": "page-00500.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=500",
+      "original_sha256": "cf974e1e2e2f28d821bfefee3c51ba3c596c4aacec246649d10924188cf6cd3d",
+      "compressed_sha256": "72536e2a61cc06738172740425bbff32a4b24bd24763bf34b4e8c209fe9c15fe"
+    },
+    {
+      "file": "page-00550.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=550",
+      "original_sha256": "46e33aa26be7f5abd281af6ceb413f5364af05293b42e81fa0611b94c83081d6",
+      "compressed_sha256": "af49f63d9442f8d91e7ae54b921c4d98d44c3d1666b70d5a8d390e894817ba41"
+    },
+    {
+      "file": "page-00600.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=600",
+      "original_sha256": "c357b799e56751560670d1b1059865e74a44857cb6484e9bfe2a1562832be790",
+      "compressed_sha256": "4d25e2e2adf9aa7488e09f251102c465ec34d3a2751501f99293c38324be5f51"
+    },
+    {
+      "file": "page-00650.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=650",
+      "original_sha256": "e10a83185e198b4e0c0f283d09dfc70cae9c32d9e35167a257aecefffd822684",
+      "compressed_sha256": "69b56056f496efcc5ddda25aa5dbca24f582b082328e124eb7f39f6232206133"
+    },
+    {
+      "file": "page-00700.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=700",
+      "original_sha256": "671abf86d0f84c55a8866fbf40885faee4b9fe85c558fec1f38ff1cd31ba5206",
+      "compressed_sha256": "527f90d1e072d92c135c458d487b0827cb11dad07f70baad25794c919268f4b8"
+    },
+    {
+      "file": "page-00750.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=750",
+      "original_sha256": "32d0b4b73515e2da03d9082b69ecbeadc52a8b6ab398a63846772a2669589888",
+      "compressed_sha256": "89448c9c86ccba8f8034036b0f7f992488f9a852ed09d6ae4b6e4aa025f0ebab"
+    },
+    {
+      "file": "page-00800.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=800",
+      "original_sha256": "50fa66dfd3405e5d813b9b0679d254ef132056e83691fe33f984c7a579d538f1",
+      "compressed_sha256": "911170d2cbdfcc4937ed07a22e5a196192c2945abea569584ae7858288b91d05"
+    },
+    {
+      "file": "page-00850.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=850",
+      "original_sha256": "e814b4e5d7cbacba928dbd1c9ef34569a11160c363cd867f63a92bdfcfb392f8",
+      "compressed_sha256": "a0d16f77a4643b40e707e60ab1c84cb27fc79d0f629e6591408c16211be72704"
+    },
+    {
+      "file": "page-00900.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=900",
+      "original_sha256": "ea88cb4ff077cfca902e28c3bb5190c65c074ef3b5e9cfe14f82a73b86fefc0f",
+      "compressed_sha256": "d819151c4d5bfa80de22e80844cf716e8f02fc23894585b6c2b96a7a5571f0ee"
+    },
+    {
+      "file": "page-00950.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=950",
+      "original_sha256": "13443cad5ebc542ca679aabe59f35dc119f246887933ef5f7f0c8a4f380572f4",
+      "compressed_sha256": "8fd978d7e17371478e7153a90ff83c1143f90b00c4113c8a8d9611d3a48a833f"
+    },
+    {
+      "file": "page-01000.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1000",
+      "original_sha256": "7e4f1fa9bb16abb3f79462894fa4d7ea7cac56622bbd7b9c3c59c7d01f2399f3",
+      "compressed_sha256": "009f4d85b0e143678ba9e90acab3470fcb5d7ba89b6347260261c6071181cd7c"
+    },
+    {
+      "file": "page-01050.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1050",
+      "original_sha256": "5838d0936b9e1d610728fded22d946dde49f6106ecde9a5732f1598e86ff3bb8",
+      "compressed_sha256": "42e89c19910b8084ba590c8c6615ed63809d88b6ea541c58830a30a5bc8ee118"
+    },
+    {
+      "file": "page-01100.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1100",
+      "original_sha256": "77a97c76fcc3d26751ae29d3bd838b90fa54f007f920d7c9dc76090dee1bf512",
+      "compressed_sha256": "b846673fb25dbd8be77636a6eeb28311df6d4175d308374b7dc54d5d8452c520"
+    },
+    {
+      "file": "page-01150.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1150",
+      "original_sha256": "bbc265c07843eea2e8c9b0252aba60dca660e94186bf951933b5122acebce56b",
+      "compressed_sha256": "e703826b0addc0305f2ecf930de67061c7b736e89a0c13f42bab28fdb9a6ca89"
+    },
+    {
+      "file": "page-01200.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1200",
+      "original_sha256": "2e448b8723e7b7d8cfeace05177aa75be9f62ed2c9050d59c254bb9de862e5c1",
+      "compressed_sha256": "0e121f62831b2e48078f53088a195b717edabc73fcf75e69356a1718baa9679e"
+    },
+    {
+      "file": "page-01250.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1250",
+      "original_sha256": "5e1267117d8757aa98fc5f9a75544040f5ef18044c68ec143ed6eb58d54b8cfc",
+      "compressed_sha256": "9b03a3c759a4fff3508948d905fbfcacd1b674cb8c840b22676b807f177bbeb3"
+    },
+    {
+      "file": "page-01300.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1300",
+      "original_sha256": "a3122211e0bdc0f2544876e309a876354bd9139875e9e7884d0b2ee8d94e3447",
+      "compressed_sha256": "407f4af55f35f41c8a33599c9399d07fab492f654df1c4f3269d8e6660b22967"
+    },
+    {
+      "file": "page-01350.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1350",
+      "original_sha256": "32a7ca2a5d2552ce3044cc8ef6c7842a4805ad456cffdfc6e8c5e56e68d75983",
+      "compressed_sha256": "1ada0405b7704b09c6b06358a68049c27406887377e65b5c15868a58469e87f8"
+    },
+    {
+      "file": "page-01400.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1400",
+      "original_sha256": "c958d63d44322ab8b5d2d4b4322d75021914c1ff398de1c17ff5abd7fb7bdefd",
+      "compressed_sha256": "73bb7092f9a89b98f0bb3d52e466295016e52ecd81edefde32571aa7dcbec564"
+    },
+    {
+      "file": "page-01450.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1450",
+      "original_sha256": "1920612173eae7e64a59f1e2e8c028492993ff3d37f35b8a6ec54ecc8a34e596",
+      "compressed_sha256": "88825147baca383d292e792d530ba6250b8a94a1f1e7a8cb3159320a2d0e72e7"
+    },
+    {
+      "file": "page-01500.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1500",
+      "original_sha256": "8ca376116bdb95ace1776687193c033b75ec4f550b0c1f6da3d0f6f93a58f238",
+      "compressed_sha256": "cf0564472da2abd3d79932394367ee24684420c1875c70ad64523228de36abb8"
+    },
+    {
+      "file": "page-01550.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1550",
+      "original_sha256": "af884352db17900633f4eba395529a018e24f8897f25a231d01e9942876c0013",
+      "compressed_sha256": "684019ef0ff4f4b8c799e24dd3d121c456a5618adaf91ee67103ddbfe2f4f095"
+    },
+    {
+      "file": "page-01600.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1600",
+      "original_sha256": "5f92b8b6cac825cd80cbc3857b5b4a91bc56282ae0aec2a17d38ffb94a769657",
+      "compressed_sha256": "9f3434aa4f313a16e992eaa937bbeb0dea528e9fef88cd42bf1b74b4304c54f2"
+    },
+    {
+      "file": "page-01650.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1650",
+      "original_sha256": "3e1e19f9cdbd143ba0011dff96cde19b663af958fd0aaff9fd799c5ac2e93b93",
+      "compressed_sha256": "5781c6be177950427993515154a71b948eb7cee0e93993097d3a1b4bc2a4d7d3"
+    },
+    {
+      "file": "page-01700.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1700",
+      "original_sha256": "96e47551aebf5d8e216a39fcb185e945121e9602e176665948339ab882854a07",
+      "compressed_sha256": "f74c1541eb56c2464e871f58200a385b77dc97b26fb8a7a994ff2345b5cde3b0"
+    },
+    {
+      "file": "page-01750.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1750",
+      "original_sha256": "5548feaa59417f19900da207609299861c8a80c3f8499a7fd8219a7b9292f204",
+      "compressed_sha256": "87d68d00bcee8bebb971e728a900e09d4cd97724e80c29576190f111d255a6a6"
+    },
+    {
+      "file": "page-01800.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1800",
+      "original_sha256": "8188a5d695dd6e43b55c0adc3342e16d4d72503e5091e4623a06145ee1c3569a",
+      "compressed_sha256": "689c4ae6b8bb3fc4d8debdc13350a2525e72ed31eb3071ec530677987d32a7d5"
+    },
+    {
+      "file": "page-01850.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1850",
+      "original_sha256": "ed5f7c01f154061a5ca8640041e4a784ad9700f7aa72845e604a2824d46768fe",
+      "compressed_sha256": "b4452cae3d243a26e3cc9f1c20c71387050f7df92c9f1bec851fc9a2e6f521fc"
+    },
+    {
+      "file": "page-01900.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1900",
+      "original_sha256": "6a1c5a240dc40755cbe7071e0b20ddadfb766e2d7779485afa1f436299244f50",
+      "compressed_sha256": "f7ebee3ebcbb4a7c4016a89c12f4c15137f1bc8a1b1173a849d996273777cc8b"
+    },
+    {
+      "file": "page-01950.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=1950",
+      "original_sha256": "ed6567462e9c4459a54eb54fc12cb65a6754fa3c8357b0002ba1196370916b40",
+      "compressed_sha256": "b91f9e23c7aee27ffb785c33b6621f8ef1cc1426769e70bd9829916fa7d7e7b1"
+    },
+    {
+      "file": "page-02000.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2000",
+      "original_sha256": "3d17db2f2120652ec76e9f06f094aa8ad6e890995b5d2b81147fd0801a91366b",
+      "compressed_sha256": "fcd3f49af0d2a38262752a3f31c9cb801b68908fdd2ce0079252e272733bd75a"
+    },
+    {
+      "file": "page-02050.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2050",
+      "original_sha256": "79ab4dcc22cf8d754b37968d50593d91fc298325476594ad085480775c8ab7b7",
+      "compressed_sha256": "c36cc6b11ce1a6069bb47c6287930f97503a90ddfa4372984c420044cb6a970c"
+    },
+    {
+      "file": "page-02100.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2100",
+      "original_sha256": "72e3830c984b85c9a91f9866f40588d63361ab4061c8fdd1d0e936d0a0f485eb",
+      "compressed_sha256": "8ac2ce3afd28ea072f94fc3004f1d982e3880fb27a613848250959ee20e96300"
+    },
+    {
+      "file": "page-02150.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2150",
+      "original_sha256": "99edeb77eff4321e08e90f46f7530a91f6f24772baf03ca5ed0c1463dbb3fecb",
+      "compressed_sha256": "a67258c38d71606f969d14f35d32a092520fd28f24a83b54bfa17887ca75cca9"
+    },
+    {
+      "file": "page-02200.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2200",
+      "original_sha256": "4e747974b48a71de7add9230eca5996dbbd8f13ed025c0134bdffa2aca54541f",
+      "compressed_sha256": "2fee0b36de2ca1f8bfde4efe2bbbc57874aef656aea7d88ba024e2c59b038f3e"
+    },
+    {
+      "file": "page-02250.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2250",
+      "original_sha256": "347fb2f5f5fb73846086b4a93678f0a17ad507b924514d9f3427f441c654019f",
+      "compressed_sha256": "a3398dcdd2c8ea16cf7714e4c3f25b8b4a0265fb5bfef1f60a332df8c6a4b483"
+    },
+    {
+      "file": "page-02300.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2300",
+      "original_sha256": "9666d40e5d7ddc9a4c4da6a744e62be0f564910596e0838df198558b1930a585",
+      "compressed_sha256": "5707791618b248d61247dc5986d7f0287c480661e6a02345b8cdf79c86bf1146"
+    },
+    {
+      "file": "page-02350.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2350",
+      "original_sha256": "454317dd4a796a47ec593335dff642816d0771b43c44b3b634cdd670146925fa",
+      "compressed_sha256": "90317218b667ad83405e0d19c9b4ca9c57c7ab491827eab7d5ae3e472061d26d"
+    },
+    {
+      "file": "page-02400.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2400",
+      "original_sha256": "0fde8485b1fcfd8078341f2ece3002eb26e81d963e8e40672be72f5f29a9e9bb",
+      "compressed_sha256": "4b870c3541d0c8b41db87532cc72c6ed7e474e1e2be9e004b2359d1e99a529e1"
+    },
+    {
+      "file": "page-02450.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2450",
+      "original_sha256": "38934b5d030da0a001f27e503759c081d6f89ff1b790d4ca3f1e01b4cb10b64a",
+      "compressed_sha256": "462226c080c99a805a373fcf89c2461068c667329a5909d420a2806ad6a39f1a"
+    },
+    {
+      "file": "page-02500.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2500",
+      "original_sha256": "f97659a6164efdfd986e5f5b62a9c0f33921a17c65ed2fc47f6001d4cd248bcc",
+      "compressed_sha256": "d56bc6f9e83d2c66ad2830466d410a38a7a3c7c62ae0205899f94ec593b51b65"
+    },
+    {
+      "file": "page-02550.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2550",
+      "original_sha256": "aa0953d12a43b7a06e993cc5cd1d423e5beb7a1ae282a38f3d3f4d7b1980386f",
+      "compressed_sha256": "cabafce6d391011b94ab8d51f64f6fd1d4f55bb04a9603d6e221ec64a081fd70"
+    },
+    {
+      "file": "page-02600.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2600",
+      "original_sha256": "621af347e96123360f9a9f264c699778a98abca77193a1e2820c19e0ef1a1ba5",
+      "compressed_sha256": "6f7ba21839f69223ea06820e7e344372d2e4682643613d79a77aa778374e31ed"
+    },
+    {
+      "file": "page-02650.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2650",
+      "original_sha256": "e84983e72ab83acd2bae30bc008426daa6132eae10c74ab7b10d8b0b74957f78",
+      "compressed_sha256": "116ed2e4fb7d512e251ea8784802c68b33c26c5e9180b303b285b7fd39f6c11c"
+    },
+    {
+      "file": "page-02700.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2700",
+      "original_sha256": "d2c623f618dfc1f7cb3017aabaa9c9f7a3b7ed6ec4ffe5207e12112b00851f7b",
+      "compressed_sha256": "753d0a790d5a42215a33c2b3f79da0b7a60637e03c0079999c5e3408f30eb65d"
+    },
+    {
+      "file": "page-02750.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2750",
+      "original_sha256": "e93d97c549075568dd023f47f3cb888cba44c2f69685fe3c2b6565af4fec8a61",
+      "compressed_sha256": "d42c285a9fda63a6dc717a3ab9d35a64087e60f4ff7671bab38813cb2e0b066e"
+    },
+    {
+      "file": "page-02800.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2800",
+      "original_sha256": "b2e80389516db0527fa49c27d7160bad108ef5fd18e88cf0d5f9ff7f3b9f17c8",
+      "compressed_sha256": "01a29314476db1d002df8fb697ddcd00ac060b331505824b18336564555b281d"
+    },
+    {
+      "file": "page-02850.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2850",
+      "original_sha256": "daa94641dbcd66662289c4506b82746a828f8ad670b3a0c11d1f876f30707390",
+      "compressed_sha256": "ed0165af4dc37c9cea03808f9ebb79bfb7a82415e3d41fd1ed24b9e34b0f3f20"
+    },
+    {
+      "file": "page-02900.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2900",
+      "original_sha256": "ff1596954e13c55517c70e3439d3f077f1a66351d55e3ce93ed8f4b1027a58a7",
+      "compressed_sha256": "7655497f5de349751f21094fa05c8183f9c845512c84b41f4d2f93a2fff25a09"
+    },
+    {
+      "file": "page-02950.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=2950",
+      "original_sha256": "e7dbd692281bf42e23cee0e989233e7889ee3b655bc2a45a1e3ef0de54b6aceb",
+      "compressed_sha256": "b83af97369f26eb989662781d8f4b28cc157676c1acf35b4474088656ead2024"
+    },
+    {
+      "file": "page-03000.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3000",
+      "original_sha256": "9ffbf141f862c9e5efb0edba6ff59391bd07bf9ca06bbd8f24955e6feab331bf",
+      "compressed_sha256": "f28b3e900a18f89e4bbc26fdab25d670e714c9ab25542340937041aaa9e6f5ba"
+    },
+    {
+      "file": "page-03050.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3050",
+      "original_sha256": "f627e2bcf1af6764960ad990dbb5b995dcf32671289a3a2c4a7b85eedfceba92",
+      "compressed_sha256": "030118d411fe688a9a3cc57da79cf6acf24552e5e76759ea0a9806bcf4edee9a"
+    },
+    {
+      "file": "page-03100.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3100",
+      "original_sha256": "05faf1a9a6d6333388d316251aef66f9b9e2a24bfea927133046a0f27cf903d9",
+      "compressed_sha256": "429294653aaffb6c4ced4262f1bdcb82d0f435d36528d1df20aec2fc6ab3dd7b"
+    },
+    {
+      "file": "page-03150.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3150",
+      "original_sha256": "0e9e36c6108a917fa1b7163cfd8f6b3ae1ef6405222d844d8af47c08ec8b8233",
+      "compressed_sha256": "0b8d77c562d8c4fb88fb9d4d17a684b305257ca5fea5fa0fba5e75f70ed46e45"
+    },
+    {
+      "file": "page-03200.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3200",
+      "original_sha256": "7daa3da31bb302c401558beb3da445e559e6dc2bee33ecd8194bf1774603f91d",
+      "compressed_sha256": "03b71d6632d6723a5e761ffe431f044a0bc22d15f43c33aca37c21ec6451c547"
+    },
+    {
+      "file": "page-03250.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3250",
+      "original_sha256": "4a53951bc4dd71ca359c93b6e71f233f33dab7e1d5cf8a6c9b791b4cbd8f3b80",
+      "compressed_sha256": "8d1c0d32eb08bfb40237c94afcba40f6d52c2589b1f79ecd0f6736e799245648"
+    },
+    {
+      "file": "page-03300.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3300",
+      "original_sha256": "ce7d8f7c2b7f2feef0a271ec349ce6a1abf6f20d109750544955b472b220c9a0",
+      "compressed_sha256": "7fb072b4e990092b5dc805a393c00ba3b75d57b6133d6cdc80982d1b0ab4b919"
+    },
+    {
+      "file": "page-03350.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3350",
+      "original_sha256": "80220dc8b66a882a2f4b0cbf22e7d7186d001ed3674c7eb21c8d267072900277",
+      "compressed_sha256": "38f1631d5bd2efa6f4f6664bbd3211e31207b453425d577acb1bbaacc145dcc9"
+    },
+    {
+      "file": "page-03400.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3400",
+      "original_sha256": "1dac2afec442982f655b4b800a5297707e543e11bbeb2f70ee3c203c60c561cf",
+      "compressed_sha256": "6034111401211da8bacec10aeac50db3bfeff06cd3d6c9fa7865af8c3c04c66b"
+    },
+    {
+      "file": "page-03450.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3450",
+      "original_sha256": "b6585f27edb8216ab2128b509cd9a55539cbd87dcef85528c0fe1f79dff1122d",
+      "compressed_sha256": "8861797251652d2e7673f2a3d61120248031138722c2fce228f6ae751e6fdb05"
+    },
+    {
+      "file": "page-03500.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3500",
+      "original_sha256": "e07b630fd1bb67daae54bc9ce86edc3c007a95e1e37e53a9969596823c5c9044",
+      "compressed_sha256": "e4ad12e565fd71790ca45d3c9c942c1751a0c9ee3de9e540553b2f5d751dfd05"
+    },
+    {
+      "file": "page-03550.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3550",
+      "original_sha256": "093891a0880c2be34639149997e6b07794a6d6b0bfd34325a441f6e5c9f0c600",
+      "compressed_sha256": "cfe9aa83882d03957583781c08fe2e0c42e224273f9ae616801abc9e67b139df"
+    },
+    {
+      "file": "page-03600.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3600",
+      "original_sha256": "0ca8c7e7c535d5ac437a6a40bd364e1212ac96b63d265c982c308ce771e02556",
+      "compressed_sha256": "3fc2ce0534639a63acc745f4fa98979afd49bf124d99606c57b3a730abbd6cba"
+    },
+    {
+      "file": "page-03650.html.gz",
+      "url": "https://www.ign.es/web/ign/portal/sis-catalogo-terremotos/-/catalogo-terremotos/searchTerremoto?latMin=27&latMax=30&longMin=-19&longMax=-13&startDate=01%2F01%2F2023&endDate=31%2F12%2F2024&selIntensidad=N&selMagnitud=N&selProf=N&fases=no&intMin=0&intMax=8&magMin=0&magMax=8&profMin=&profMax=&cond=&indice=3650",
+      "original_sha256": "c28c56c3f21cda3af79de1213866914123de57d7666f3bf173ad70adfcf54fc0",
+      "compressed_sha256": "e41168fa4b86ae180a669f6259bc77e66f5ec011d3a71b204d28380fb23bdf65"
+    }
+  ],
+  "rows_sha256": "e420a515aa947f204d31c4ce9fffb06720e8cbe5306d236bb07bd07afb503939",
+  "limitations": [
+    "Archivo de una consulta, no catálogo completo histórico del IGN.",
+    "Cobertura consultada no garantiza completitud de detección ni homogeneidad.",
+    "Profundidad y magnitud según publicación; incertidumbre no incluida en tabla.",
+    "Páginas adquiridas en un intervalo; no instantánea transaccional del proveedor.",
+    "No asociar proximidad a origen volcánico ni ausencia de registros a ausencia de actividad."
+  ],
+  "public_table_capture": {
+    "extracted-tables.json": {
+      "bytes": 491028,
+      "sha256": "eef982e949a944c0362be9d8b78f22d0148781bac7fb6b144c6143986b7c6258"
+    },
+    "rows.json": {
+      "bytes": 432901,
+      "sha256": "e420a515aa947f204d31c4ce9fffb06720e8cbe5306d236bb07bd07afb503939"
+    }
+  },
+  "publication_note": "Full original portal HTML retained locally, excluded from public package because it contains anonymous session metadata. All seismic table fields, source URLs, original hashes and validated query criteria are included. Tables are a transparent extraction, not original full HTML."
+}

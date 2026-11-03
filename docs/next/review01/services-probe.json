@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ign-base",
+    "status": 200,
+    "type": "text/xml",
+    "location": null,
+    "bytes": 32315,
+    "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<WMS_Capabilities xml"
+  },
+  {
+    "id": "pnoa",
+    "status": 200,
+    "type": "text/xml",
+    "location": null,
+    "bytes": 27902,
+    "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<WMS_Capabilities xml"
+  },
+  {
+    "id": "raster",
+    "status": 200,
+    "type": "text/xml",
+    "location": null,
+    "bytes": 22710,
+    "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<WMS_Capabilities xml"
+  },
+  {
+    "id": "dem",
+    "status": 404,
+    "type": "text/html;charset=utf-8",
+    "location": null,
+    "bytes": 991,
+    "sample": "<html><head><title>Apache Tomcat/7.0.42 - Informe de Error</"
+  }
+]
